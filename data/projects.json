@@ -1,0 +1,18 @@
+[
+  {
+    "title": "AGC Padel Academy",
+    "description": "Plataforma web per a l'acadèmia amb enfocament comercial i experiència premium per alumnes i staff.",
+    "stack": ["Laravel", "Vue", "MySQL"],
+    "url": "https://agcpadelacademy.com/",
+    "github": "",
+    "featured": true
+  },
+  {
+    "title": "Chatbot Multiagent System",
+    "description": "Sistema amb múltiples agents AI per a resolució de tasques complexes i coordinació contextual.",
+    "stack": ["Python", "LLMs", "Agent Orchestration"],
+    "url": "",
+    "github": "https://github.com/Josafe/TFM-Sistema-Chatbot-Multiagent",
+    "featured": true
+  }
+]
