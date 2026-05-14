@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Motion } from '@vueuse/motion'
 import type { Project } from '~/types/project'
 
 defineProps<{
@@ -8,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <Motion
+  <div
     :initial="{ opacity: 0, y: 16 }"
     :enter="{ opacity: 1, y: 0 }"
     :duration="450"
@@ -38,5 +37,5 @@ defineProps<{
       <a v-if="project.github" :href="project.github" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">GitHub</a>
       <a v-if="project.url" :href="project.url" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">Live</a>
     </div>
-  </Motion>
+  </div>
 </template>

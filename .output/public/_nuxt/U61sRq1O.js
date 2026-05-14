@@ -1,0 +1,1 @@
+import{_ as s,z as t,A as a,B as n,R as o}from"./ysLdRPrH.js";const c={},r={class:"min-h-screen bg-slate-950 text-slate-100 antialiased"},l={class:"mx-auto w-[min(1120px,92vw)] py-10 sm:py-14"};function _(e,d){return t(),a("div",r,[n("main",l,[o(e.$slots,"default")])])}const m=s(c,[["render",_]]);export{m as default};

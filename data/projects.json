@@ -5,6 +5,7 @@
     "stack": ["Laravel", "Vue", "MySQL"],
     "url": "https://agcpadelacademy.com/",
     "github": "",
+    "type": "deployed",
     "featured": true
   },
   {
@@ -13,6 +14,7 @@
     "stack": ["Python", "LLMs", "Agent Orchestration"],
     "url": "",
     "github": "https://github.com/Josafe/TFM-Sistema-Chatbot-Multiagent",
+    "type": "github",
     "featured": true
   }
 ]

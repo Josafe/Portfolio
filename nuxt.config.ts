@@ -3,6 +3,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/css/main.css'],
+  components: [
+  '~/components',
+  '~/sections'
+  ],
   app: {
     head: {
       title: 'Josafe · Full Stack & AI Systems Engineer',

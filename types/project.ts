@@ -4,6 +4,7 @@ export interface Project {
   stack: string[]
   url?: string
   github?: string
+  type: 'deployed' | 'github'
   featured?: boolean
 }
 
