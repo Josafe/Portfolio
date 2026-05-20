@@ -16,7 +16,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns.',
     pdf: '/cv/fullstack.pdf',
-    preview: '/images/cv/fullstack-preview.svg',
+    preview: '/images/cv/fullstack-preview.jpg',
     tags: ['Vue', 'Nuxt', 'Laravel', 'Node.js']
   },
   {
@@ -26,7 +26,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats.',
     pdf: '/cv/ai-systems.pdf',
-    preview: '/images/cv/ai-systems-preview.svg',
+    preview: '/images/cv/ai-systems-preview.jpg',
     tags: ['LLM', 'Multi-Agent', 'Python', 'Automation']
   },
   {

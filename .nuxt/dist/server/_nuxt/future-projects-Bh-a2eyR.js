@@ -1,0 +1,54 @@
+import { _ as __nuxt_component_0 } from "./nuxt-link-ChSQVg0f.js";
+import { defineComponent, mergeProps, withCtx, createTextVNode, useSSRContext } from "vue";
+import { ssrRenderAttrs, ssrRenderComponent } from "vue/server-renderer";
+import { a as useSeoMeta } from "./v3-Bwa_H9bM.js";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/ufo/dist/index.mjs";
+import "../server.mjs";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/ofetch/dist/node.mjs";
+import "#internal/nuxt/paths";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/hookable/dist/index.mjs";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/unctx/dist/index.mjs";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/h3/dist/index.mjs";
+import "vue-router";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/defu/dist/defu.mjs";
+import "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/@unhead/vue/dist/index.mjs";
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "future-projects",
+  __ssrInlineRender: true,
+  setup(__props) {
+    useSeoMeta({
+      title: "Future Projects · Josafe.com",
+      description: "Idees i roadmap professional de Josafe: SaaS, automatitzacions IA i sistemes multiagent avançats."
+    });
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_0;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "grid gap-12" }, _attrs))}><div class="grid gap-4"><h1 class="text-4xl font-bold text-white">Projectes Futurs</h1><p class="text-slate-400"> Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents. </p></div><div class="grid gap-8"><section class="grid gap-6"><h2 class="text-2xl font-semibold text-white">Idees SaaS</h2><div class="grid gap-4 md:grid-cols-2"><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Plataforma d&#39;Automatització per Pimes</h3><p class="text-sm text-slate-400 mb-4"> SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Vue.js</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Laravel</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">AI Integration</span></div></div><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Marketplace de Serveis Digitals</h3><p class="text-sm text-slate-400 mb-4"> Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Next.js</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Stripe</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Real-time</span></div></div></div></section><section class="grid gap-6"><h2 class="text-2xl font-semibold text-white">Automatitzacions IA</h2><div class="grid gap-4 md:grid-cols-2"><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Agent de Gestió de Continguts</h3><p class="text-sm text-slate-400 mb-4"> Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Python</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">LLMs</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Multi-Agent</span></div></div><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Sistema d&#39;Anàlisi Predictiva</h3><p class="text-sm text-slate-400 mb-4"> IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Machine Learning</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Data Science</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">APIs</span></div></div></div></section><section class="grid gap-6"><h2 class="text-2xl font-semibold text-white">Sistemes Multiagent Avançats</h2><div class="grid gap-4 md:grid-cols-2"><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Framework de Coordinació d&#39;Agents</h3><p class="text-sm text-slate-400 mb-4"> Framework obert per desenvolupar i coordinar sistemes d&#39;agents IA en entorns complexos. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Python</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Distributed Systems</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Open Source</span></div></div><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Agent d&#39;Optimització Empresarial</h3><p class="text-sm text-slate-400 mb-4"> Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Reinforcement Learning</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Business Intelligence</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">APIs</span></div></div></div></section><section class="grid gap-6"><h2 class="text-2xl font-semibold text-white">Projectes d&#39;Investigació</h2><div class="grid gap-4 md:grid-cols-2"><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">IA per a Sostenibilitat</h3><p class="text-sm text-slate-400 mb-4"> Recerca en aplicacions d&#39;IA per a la transició energètica i sostenibilitat ambiental. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Research</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Sustainability</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">IoT</span></div></div><div class="rounded-lg border border-slate-800 p-6"><h3 class="text-lg font-semibold text-white mb-2">Interfícies Humà-Agent</h3><p class="text-sm text-slate-400 mb-4"> Disseny d&#39;interfícies intuïtives per a la interacció amb sistemes d&#39;agents complexos. </p><div class="flex flex-wrap gap-2"><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">UX Research</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">HCI</span><span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Frontend</span></div></div></div></section></div><div class="rounded-lg border border-slate-800 p-6 text-center"><h3 class="text-lg font-semibold text-white mb-2">Interessat en Col·laborar?</h3><p class="text-slate-400 mb-4"> Si alguna d&#39;aquestes idees t&#39;interessa o tens un projecte similar en ment, m&#39;encantaria parlar-ne. </p>`);
+      _push(ssrRenderComponent(_component_NuxtLink, {
+        to: "/about",
+        class: "inline-block rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(` Contacta&#39;m `);
+          } else {
+            return [
+              createTextVNode(" Contacta'm ")
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(`</div></div>`);
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/future-projects.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+export {
+  _sfc_main as default
+};
+//# sourceMappingURL=future-projects-Bh-a2eyR.js.map
