@@ -17,6 +17,7 @@ interface _GlobalComponents {
   Navbar: typeof import("../../components/Navbar.vue")['default']
   ProjectCard: typeof import("../../components/ProjectCard.vue")['default']
   SocialLinks: typeof import("../../components/SocialLinks.vue")['default']
+  CVCard: typeof import("../../components/cv/CVCard.vue")['default']
   AboutSection: typeof import("../../sections/AboutSection.vue")['default']
   ContactSection: typeof import("../../sections/ContactSection.vue")['default']
   HeroSection: typeof import("../../sections/HeroSection.vue")['default']
@@ -47,6 +48,7 @@ interface _GlobalComponents {
   LazyNavbar: LazyComponent<typeof import("../../components/Navbar.vue")['default']>
   LazyProjectCard: LazyComponent<typeof import("../../components/ProjectCard.vue")['default']>
   LazySocialLinks: LazyComponent<typeof import("../../components/SocialLinks.vue")['default']>
+  LazyCVCard: LazyComponent<typeof import("../../components/cv/CVCard.vue")['default']>
   LazyAboutSection: LazyComponent<typeof import("../../sections/AboutSection.vue")['default']>
   LazyContactSection: LazyComponent<typeof import("../../sections/ContactSection.vue")['default']>
   LazyHeroSection: LazyComponent<typeof import("../../sections/HeroSection.vue")['default']>

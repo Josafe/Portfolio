@@ -20,7 +20,7 @@ useSeoMeta({
       <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">Josafe.com</p>
 
       <h1 class="mx-auto max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
-        Desenvolupador Full Stack i AI Systems Engineer.
+        Desenvolupador Full Stack i AI Systems Engineer. 
       </h1>
 
       <p class="mx-auto max-w-3xl text-base leading-relaxed text-slate-300 md:text-lg">

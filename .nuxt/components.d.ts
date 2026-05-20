@@ -17,6 +17,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 export const Navbar: typeof import("../components/Navbar.vue")['default']
 export const ProjectCard: typeof import("../components/ProjectCard.vue")['default']
 export const SocialLinks: typeof import("../components/SocialLinks.vue")['default']
+export const CVCard: typeof import("../components/cv/CVCard.vue")['default']
 export const AboutSection: typeof import("../sections/AboutSection.vue")['default']
 export const ContactSection: typeof import("../sections/ContactSection.vue")['default']
 export const HeroSection: typeof import("../sections/HeroSection.vue")['default']
@@ -47,6 +48,7 @@ export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components
 export const LazyNavbar: LazyComponent<typeof import("../components/Navbar.vue")['default']>
 export const LazyProjectCard: LazyComponent<typeof import("../components/ProjectCard.vue")['default']>
 export const LazySocialLinks: LazyComponent<typeof import("../components/SocialLinks.vue")['default']>
+export const LazyCVCard: LazyComponent<typeof import("../components/cv/CVCard.vue")['default']>
 export const LazyAboutSection: LazyComponent<typeof import("../sections/AboutSection.vue")['default']>
 export const LazyContactSection: LazyComponent<typeof import("../sections/ContactSection.vue")['default']>
 export const LazyHeroSection: LazyComponent<typeof import("../sections/HeroSection.vue")['default']>

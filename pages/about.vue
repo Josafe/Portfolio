@@ -10,6 +10,7 @@ useSeoMeta({
     <!-- Hero Section -->
     <section class="grid gap-7">
       <div class="grid gap-4">
+        <br> </br>
         <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">Sobre Mi</p>
         <h1 class="max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
           Desenvolupador Full Stack i AI Systems Engineer
@@ -82,7 +83,7 @@ useSeoMeta({
       </p>
       <div class="flex flex-wrap gap-4">
         <a
-          href="mailto:contact@josafe.com"
+          href="mailto:josafesf2@gmail.co"
           class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
         >
           contact@josafe.com
