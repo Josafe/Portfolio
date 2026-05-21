@@ -86,7 +86,7 @@ useSeoMeta({
           href="mailto:josafesf2@gmail.co"
           class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
         >
-          contact@josafe.com
+          josafesf2@gmail.com
         </a>
         <SocialLinks />
       </div>

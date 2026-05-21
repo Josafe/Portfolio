@@ -18,6 +18,12 @@ interface _GlobalComponents {
   ProjectCard: typeof import("../../components/ProjectCard.vue")['default']
   SocialLinks: typeof import("../../components/SocialLinks.vue")['default']
   CVCard: typeof import("../../components/cv/CVCard.vue")['default']
+  HomeBackgroundEffects: typeof import("../../components/home/BackgroundEffects.vue")['default']
+  HomeHeroSection: typeof import("../../components/home/HeroSection.vue")['default']
+  HomeHeroVisual: typeof import("../../components/home/HeroVisual.vue")['default']
+  HomeNavigationCards: typeof import("../../components/home/NavigationCards.vue")['default']
+  HomeSocialLinks: typeof import("../../components/home/SocialLinks.vue")['default']
+  HomeTechStack: typeof import("../../components/home/TechStack.vue")['default']
   AboutSection: typeof import("../../sections/AboutSection.vue")['default']
   ContactSection: typeof import("../../sections/ContactSection.vue")['default']
   HeroSection: typeof import("../../sections/HeroSection.vue")['default']
@@ -49,6 +55,12 @@ interface _GlobalComponents {
   LazyProjectCard: LazyComponent<typeof import("../../components/ProjectCard.vue")['default']>
   LazySocialLinks: LazyComponent<typeof import("../../components/SocialLinks.vue")['default']>
   LazyCVCard: LazyComponent<typeof import("../../components/cv/CVCard.vue")['default']>
+  LazyHomeBackgroundEffects: LazyComponent<typeof import("../../components/home/BackgroundEffects.vue")['default']>
+  LazyHomeHeroSection: LazyComponent<typeof import("../../components/home/HeroSection.vue")['default']>
+  LazyHomeHeroVisual: LazyComponent<typeof import("../../components/home/HeroVisual.vue")['default']>
+  LazyHomeNavigationCards: LazyComponent<typeof import("../../components/home/NavigationCards.vue")['default']>
+  LazyHomeSocialLinks: LazyComponent<typeof import("../../components/home/SocialLinks.vue")['default']>
+  LazyHomeTechStack: LazyComponent<typeof import("../../components/home/TechStack.vue")['default']>
   LazyAboutSection: LazyComponent<typeof import("../../sections/AboutSection.vue")['default']>
   LazyContactSection: LazyComponent<typeof import("../../sections/ContactSection.vue")['default']>
   LazyHeroSection: LazyComponent<typeof import("../../sections/HeroSection.vue")['default']>

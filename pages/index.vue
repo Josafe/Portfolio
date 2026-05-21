@@ -1,70 +1,48 @@
 <script setup lang="ts">
+import { useRuntimeConfig, useSeoMeta } from '#imports'
+
 const config = useRuntimeConfig()
 
 useSeoMeta({
   title: 'Josafe.com · Portfolio Full Stack & AI Systems',
   description:
-    'Portfolio modern de Josafe amb projectes web i intel·ligència artificial. Connexió directa amb GitHub, LinkedIn i Instagram.',
+    'Landing page premium de Josafe amb projectes Full Stack, AI Systems i arquitectura de software moderna.',
   ogTitle: 'Josafe.com · Portfolio Full Stack & AI Systems',
   ogDescription:
-    'Projectes destacats com AGC Padel Academy i Chatbot Multiagent System amb importació automàtica de repositoris GitHub.',
+    'Portfolio modern de Josafe: experiències digitals premium, sistemes intel·ligents i arquitectura de software escalable.',
   ogUrl: config.public.siteUrl,
   twitterCard: 'summary_large_image'
 })
 </script>
 
 <template>
-  <div class="grid gap-16">
-    <!-- Hero Section -->
-    <section class="grid gap-7 text-center">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">Josafe.com</p>
+  <div class="relative overflow-hidden bg-slate-950 text-white min-w-0">
+    <BackgroundEffects />
 
-      <h1 class="mx-auto max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
-        Desenvolupador Full Stack i AI Systems Engineer. 
-      </h1>
+    <main class="relative mx-auto w-full max-w-7xl px-4 pb-16 pt-20 sm:px-6 sm:pb-20 sm:pt-24 lg:px-8 lg:pt-28">
+      <HeroSection />
 
-      <p class="mx-auto max-w-3xl text-base leading-relaxed text-slate-300 md:text-lg">
-        Dissenyo experiències digitals modernes combinant enginyeria de software, arquitectura web i intel·ligència
-        artificial aplicada a producte real.
-      </p>
+      <section class="mt-16 grid gap-8 grid-cols-1 xl:grid-cols-[1fr_0.9fr]">
+        <div class="space-y-6 min-w-0">
+          <div class="w-full min-w-0 overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70 p-5 sm:p-6 shadow-soft backdrop-blur-xl">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div class="min-w-0">
+                <p class="text-sm uppercase tracking-[0.11em] sm:tracking-[0.14em] text-slate-400">Connect & collaborate</p>
+                <h2 class="mt-3 text-2xl font-semibold text-white break-words">Connect with the core systems that shape premium digital products.</h2>
+              </div>
+            </div>
+            <div class="mt-6">
+              <HomeSocialLinks />
+            </div>
+          </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <NuxtLink
-          to="/projects"
-          class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
-        >
-          Veure Projectes
-        </NuxtLink>
-        <NuxtLink
-          to="/about"
-          class="rounded-full border border-slate-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
-        >
-          Sobre Mi
-        </NuxtLink>
-      </div>
-    </section>
+          <HomeTechStack />
+        </div>
 
-    <!-- Quick Links -->
-    <section class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <NuxtLink to="/about" class="group rounded-lg border border-slate-800 p-6 hover:border-slate-700 transition-colors">
-        <h3 class="text-lg font-semibold text-white group-hover:text-slate-300">About Me</h3>
-        <p class="mt-2 text-sm text-slate-400">Presentació professional i especialitzacions</p>
-      </NuxtLink>
-
-      <NuxtLink to="/projects" class="group rounded-lg border border-slate-800 p-6 hover:border-slate-700 transition-colors">
-        <h3 class="text-lg font-semibold text-white group-hover:text-slate-300">Projects</h3>
-        <p class="mt-2 text-sm text-slate-400">Projectes desplegats i repositoris GitHub</p>
-      </NuxtLink>
-
-      <NuxtLink to="/curriculum" class="group rounded-lg border border-slate-800 p-6 hover:border-slate-700 transition-colors">
-        <h3 class="text-lg font-semibold text-white group-hover:text-slate-300">Curriculum</h3>
-        <p class="mt-2 text-sm text-slate-400">CVs professionals i descàrregues</p>
-      </NuxtLink>
-
-      <NuxtLink to="/future-projects" class="group rounded-lg border border-slate-800 p-6 hover:border-slate-700 transition-colors">
-        <h3 class="text-lg font-semibold text-white group-hover:text-slate-300">Future Projects</h3>
-        <p class="mt-2 text-sm text-slate-400">Idees i roadmap professional</p>
-      </NuxtLink>
-    </section>
+        <div class="min-w-0">
+          <NavigationCards />
+        </div>
+      </section>
+    </main>
   </div>
 </template>

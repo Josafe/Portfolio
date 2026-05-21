@@ -6,7 +6,7 @@ import { getContext, executeAsync } from "C:/Users/josaf/Desktop/Projectes/Portf
 import { sanitizeStatusCode, createError as createError$1 } from "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/h3/dist/index.mjs";
 import { START_LOCATION, createMemoryHistory, createRouter, useRoute as useRoute$1, RouterView } from "vue-router";
 import { defu } from "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/defu/dist/defu.mjs";
-import { hasProtocol, joinURL, withQuery, parseURL, encodePath, decodePath, isScriptProtocol } from "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/ufo/dist/index.mjs";
+import { hasProtocol, joinURL, parseURL, encodePath, decodePath, withQuery, isScriptProtocol } from "C:/Users/josaf/Desktop/Projectes/Portfolio/node_modules/ufo/dist/index.mjs";
 import { ssrRenderComponent, ssrRenderSuspense, ssrRenderVNode } from "vue/server-renderer";
 if (!globalThis.$fetch) {
   globalThis.$fetch = $fetch$1.create({
@@ -398,9 +398,29 @@ function getRouteRules(arg) {
 }
 const _routes = [
   {
+    name: "about",
+    path: "/about",
+    component: () => import("./_nuxt/about-DRUqhhMg.js")
+  },
+  {
     name: "index",
     path: "/",
-    component: () => import("./_nuxt/index-u67fxOAQ.js")
+    component: () => import("./_nuxt/index-DKLHCER6.js")
+  },
+  {
+    name: "projects",
+    path: "/projects",
+    component: () => import("./_nuxt/projects-Bdvr-ORd.js")
+  },
+  {
+    name: "curriculum",
+    path: "/curriculum",
+    component: () => import("./_nuxt/curriculum-DlLzZsI4.js")
+  },
+  {
+    name: "future-projects",
+    path: "/future-projects",
+    component: () => import("./_nuxt/future-projects-Bh-a2eyR.js")
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -781,7 +801,7 @@ const plugins = [
   components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import("./_nuxt/default-kgHM5Usp.js").then((m) => m.default || m))
+  default: defineAsyncComponent(() => import("./_nuxt/default-BbqIC_j-.js").then((m) => m.default || m))
 };
 const routeRulesMatcher = _routeRulesMatcher;
 const LayoutLoader = defineComponent({
@@ -1063,7 +1083,7 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-JxgJdyg7.js"));
+    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-CAtCZkMA.js"));
     const _Error = defineAsyncComponent(() => import("./_nuxt/error-500--GqD6KC9.js"));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
@@ -1157,14 +1177,14 @@ let entry;
 const entry_default = ((ssrContext) => entry(ssrContext));
 export {
   _export_sfc as _,
-  useNuxtApp as a,
-  useRuntimeConfig as b,
+  useRouter as a,
+  useNuxtApp as b,
   nuxtLinkDefaults as c,
   entry_default as default,
   encodeRoutePath as e,
   navigateTo as n,
   resolveRouteObject as r,
   tryUseNuxtApp as t,
-  useRouter as u
+  useRuntimeConfig as u
 };
 //# sourceMappingURL=server.mjs.map

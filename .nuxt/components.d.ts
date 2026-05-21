@@ -18,6 +18,12 @@ export const Navbar: typeof import("../components/Navbar.vue")['default']
 export const ProjectCard: typeof import("../components/ProjectCard.vue")['default']
 export const SocialLinks: typeof import("../components/SocialLinks.vue")['default']
 export const CVCard: typeof import("../components/cv/CVCard.vue")['default']
+export const HomeBackgroundEffects: typeof import("../components/home/BackgroundEffects.vue")['default']
+export const HomeHeroSection: typeof import("../components/home/HeroSection.vue")['default']
+export const HomeHeroVisual: typeof import("../components/home/HeroVisual.vue")['default']
+export const HomeNavigationCards: typeof import("../components/home/NavigationCards.vue")['default']
+export const HomeSocialLinks: typeof import("../components/home/SocialLinks.vue")['default']
+export const HomeTechStack: typeof import("../components/home/TechStack.vue")['default']
 export const AboutSection: typeof import("../sections/AboutSection.vue")['default']
 export const ContactSection: typeof import("../sections/ContactSection.vue")['default']
 export const HeroSection: typeof import("../sections/HeroSection.vue")['default']
@@ -49,6 +55,12 @@ export const LazyNavbar: LazyComponent<typeof import("../components/Navbar.vue")
 export const LazyProjectCard: LazyComponent<typeof import("../components/ProjectCard.vue")['default']>
 export const LazySocialLinks: LazyComponent<typeof import("../components/SocialLinks.vue")['default']>
 export const LazyCVCard: LazyComponent<typeof import("../components/cv/CVCard.vue")['default']>
+export const LazyHomeBackgroundEffects: LazyComponent<typeof import("../components/home/BackgroundEffects.vue")['default']>
+export const LazyHomeHeroSection: LazyComponent<typeof import("../components/home/HeroSection.vue")['default']>
+export const LazyHomeHeroVisual: LazyComponent<typeof import("../components/home/HeroVisual.vue")['default']>
+export const LazyHomeNavigationCards: LazyComponent<typeof import("../components/home/NavigationCards.vue")['default']>
+export const LazyHomeSocialLinks: LazyComponent<typeof import("../components/home/SocialLinks.vue")['default']>
+export const LazyHomeTechStack: LazyComponent<typeof import("../components/home/TechStack.vue")['default']>
 export const LazyAboutSection: LazyComponent<typeof import("../sections/AboutSection.vue")['default']>
 export const LazyContactSection: LazyComponent<typeof import("../sections/ContactSection.vue")['default']>
 export const LazyHeroSection: LazyComponent<typeof import("../sections/HeroSection.vue")['default']>

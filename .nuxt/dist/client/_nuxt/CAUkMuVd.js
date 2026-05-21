@@ -1,1 +1,0 @@
-import{L as s,M as u,N as r,O as o,P as c,Q as i}from"./ysLdRPrH.js";function a(t){const e=t||u();return e?.ssrContext?.head||e?.runWithContext(()=>{if(r())return o(c)})}function d(t,e={}){const n=a(e.nuxt);if(n)return i(t,{head:n,...e})}function f(t,e={}){const n=a(e.nuxt);if(n)return s(t,{head:n,...e})}export{f as a,d as u};

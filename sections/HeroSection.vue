@@ -10,17 +10,5 @@
       Dissenyo experiències digitals modernes combinant enginyeria de software, arquitectura web i intel·ligència
       artificial aplicada a producte real.
     </p>
-
-    <div class="flex flex-wrap items-center gap-4">
-      <a
-        href="https://github.com/Josafe"
-        target="_blank"
-        rel="noreferrer"
-        class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
-      >
-        Veure GitHub
-      </a>
-      <SocialLinks />
-    </div>
   </section>
 </template>
