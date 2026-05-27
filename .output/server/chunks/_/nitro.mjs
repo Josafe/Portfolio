@@ -2,10 +2,11 @@ import process from 'node:process';globalThis._importMeta_=globalThis._importMet
 import https from 'node:https';
 import { EventEmitter } from 'node:events';
 import { Buffer as Buffer$1 } from 'node:buffer';
+import { createRouterMatcher } from 'vue-router';
 import { promises, existsSync } from 'node:fs';
 import { resolve as resolve$1, dirname as dirname$1, join } from 'node:path';
-import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const suspectProtoRx = /"(?:_|\\u0{2}5[Ff]){2}(?:p|\\u0{2}70)(?:r|\\u0{2}72)(?:o|\\u0{2}6[Ff])(?:t|\\u0{2}74)(?:o|\\u0{2}6[Ff])(?:_|\\u0{2}5[Ff]){2}"\s*:/;
 const suspectConstructorRx = /"(?:c|\\u0063)(?:o|\\u006[Ff])(?:n|\\u006[Ee])(?:s|\\u0073)(?:t|\\u0074)(?:r|\\u0072)(?:u|\\u0075)(?:c|\\u0063)(?:t|\\u0074)(?:o|\\u006[Ff])(?:r|\\u0072)"\s*:/;
@@ -99,7 +100,7 @@ function encodeQueryKey(text) {
 function encodePath(text) {
   return encode(text).replace(HASH_RE, "%23").replace(IM_RE, "%3F").replace(ENC_ENC_SLASH_RE, "%2F").replace(AMPERSAND_RE, "%26").replace(PLUS_RE, "%2B");
 }
-function decode(text = "") {
+function decode$1(text = "") {
   try {
     return decodeURIComponent("" + text);
   } catch {
@@ -107,13 +108,13 @@ function decode(text = "") {
   }
 }
 function decodePath(text) {
-  return decode(text.replace(ENC_SLASH_RE, "%252F"));
+  return decode$1(text.replace(ENC_SLASH_RE, "%252F"));
 }
 function decodeQueryKey(text) {
-  return decode(text.replace(PLUS_RE, " "));
+  return decode$1(text.replace(PLUS_RE, " "));
 }
 function decodeQueryValue(text) {
-  return decode(text.replace(PLUS_RE, " "));
+  return decode$1(text.replace(PLUS_RE, " "));
 }
 
 function parseQuery(parametersString = "") {
@@ -326,6 +327,21 @@ function joinRelativeURL(..._input) {
   }
   return url;
 }
+function isEqual$1(a, b, options = {}) {
+  if (!options.trailingSlash) {
+    a = withTrailingSlash(a);
+    b = withTrailingSlash(b);
+  }
+  if (!options.leadingSlash) {
+    a = withLeadingSlash(a);
+    b = withLeadingSlash(b);
+  }
+  if (!options.encoding) {
+    a = decode$1(a);
+    b = decode$1(b);
+  }
+  return a === b;
+}
 
 const protocolRelative = Symbol.for("ufo:protocolRelative");
 function parseURL(input = "", defaultProto) {
@@ -379,6 +395,217 @@ function stringifyParsedURL(parsed) {
   const host = parsed.host || "";
   const proto = parsed.protocol || parsed[protocolRelative] ? (parsed.protocol || "") + "//" : "";
   return proto + auth + host + pathname + search + hash;
+}
+
+const NullObject = /* @__PURE__ */ (() => {
+  const C = function() {
+  };
+  C.prototype = /* @__PURE__ */ Object.create(null);
+  return C;
+})();
+function parse(str, options) {
+  if (typeof str !== "string") {
+    throw new TypeError("argument str must be a string");
+  }
+  const obj = new NullObject();
+  const opt = {};
+  const dec = opt.decode || decode;
+  let index = 0;
+  while (index < str.length) {
+    const eqIdx = str.indexOf("=", index);
+    if (eqIdx === -1) {
+      break;
+    }
+    let endIdx = str.indexOf(";", index);
+    if (endIdx === -1) {
+      endIdx = str.length;
+    } else if (endIdx < eqIdx) {
+      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+      continue;
+    }
+    const key = str.slice(index, eqIdx).trim();
+    if (opt?.filter && !opt?.filter(key)) {
+      index = endIdx + 1;
+      continue;
+    }
+    if (void 0 === obj[key]) {
+      let val = str.slice(eqIdx + 1, endIdx).trim();
+      if (val.codePointAt(0) === 34) {
+        val = val.slice(1, -1);
+      }
+      obj[key] = tryDecode(val, dec);
+    }
+    index = endIdx + 1;
+  }
+  return obj;
+}
+function decode(str) {
+  return str.includes("%") ? decodeURIComponent(str) : str;
+}
+function tryDecode(str, decode2) {
+  try {
+    return decode2(str);
+  } catch {
+    return str;
+  }
+}
+
+const fieldContentRegExp = /^[\u0009\u0020-\u007E\u0080-\u00FF]+$/;
+function serialize$2(name, value, options) {
+  const opt = options || {};
+  const enc = opt.encode || encodeURIComponent;
+  if (typeof enc !== "function") {
+    throw new TypeError("option encode is invalid");
+  }
+  if (!fieldContentRegExp.test(name)) {
+    throw new TypeError("argument name is invalid");
+  }
+  const encodedValue = enc(value);
+  if (encodedValue && !fieldContentRegExp.test(encodedValue)) {
+    throw new TypeError("argument val is invalid");
+  }
+  let str = name + "=" + encodedValue;
+  if (void 0 !== opt.maxAge && opt.maxAge !== null) {
+    const maxAge = opt.maxAge - 0;
+    if (Number.isNaN(maxAge) || !Number.isFinite(maxAge)) {
+      throw new TypeError("option maxAge is invalid");
+    }
+    str += "; Max-Age=" + Math.floor(maxAge);
+  }
+  if (opt.domain) {
+    if (!fieldContentRegExp.test(opt.domain)) {
+      throw new TypeError("option domain is invalid");
+    }
+    str += "; Domain=" + opt.domain;
+  }
+  if (opt.path) {
+    if (!fieldContentRegExp.test(opt.path)) {
+      throw new TypeError("option path is invalid");
+    }
+    str += "; Path=" + opt.path;
+  }
+  if (opt.expires) {
+    if (!isDate(opt.expires) || Number.isNaN(opt.expires.valueOf())) {
+      throw new TypeError("option expires is invalid");
+    }
+    str += "; Expires=" + opt.expires.toUTCString();
+  }
+  if (opt.httpOnly) {
+    str += "; HttpOnly";
+  }
+  if (opt.secure) {
+    str += "; Secure";
+  }
+  if (opt.priority) {
+    const priority = typeof opt.priority === "string" ? opt.priority.toLowerCase() : opt.priority;
+    switch (priority) {
+      case "low": {
+        str += "; Priority=Low";
+        break;
+      }
+      case "medium": {
+        str += "; Priority=Medium";
+        break;
+      }
+      case "high": {
+        str += "; Priority=High";
+        break;
+      }
+      default: {
+        throw new TypeError("option priority is invalid");
+      }
+    }
+  }
+  if (opt.sameSite) {
+    const sameSite = typeof opt.sameSite === "string" ? opt.sameSite.toLowerCase() : opt.sameSite;
+    switch (sameSite) {
+      case true: {
+        str += "; SameSite=Strict";
+        break;
+      }
+      case "lax": {
+        str += "; SameSite=Lax";
+        break;
+      }
+      case "strict": {
+        str += "; SameSite=Strict";
+        break;
+      }
+      case "none": {
+        str += "; SameSite=None";
+        break;
+      }
+      default: {
+        throw new TypeError("option sameSite is invalid");
+      }
+    }
+  }
+  if (opt.partitioned) {
+    str += "; Partitioned";
+  }
+  return str;
+}
+function isDate(val) {
+  return Object.prototype.toString.call(val) === "[object Date]" || val instanceof Date;
+}
+
+function parseSetCookie(setCookieValue, options) {
+  const parts = (setCookieValue || "").split(";").filter((str) => typeof str === "string" && !!str.trim());
+  const nameValuePairStr = parts.shift() || "";
+  const parsed = _parseNameValuePair(nameValuePairStr);
+  const name = parsed.name;
+  let value = parsed.value;
+  try {
+    value = options?.decode === false ? value : (options?.decode || decodeURIComponent)(value);
+  } catch {
+  }
+  const cookie = {
+    name,
+    value
+  };
+  for (const part of parts) {
+    const sides = part.split("=");
+    const partKey = (sides.shift() || "").trimStart().toLowerCase();
+    const partValue = sides.join("=");
+    switch (partKey) {
+      case "expires": {
+        cookie.expires = new Date(partValue);
+        break;
+      }
+      case "max-age": {
+        cookie.maxAge = Number.parseInt(partValue, 10);
+        break;
+      }
+      case "secure": {
+        cookie.secure = true;
+        break;
+      }
+      case "httponly": {
+        cookie.httpOnly = true;
+        break;
+      }
+      case "samesite": {
+        cookie.sameSite = partValue;
+        break;
+      }
+      default: {
+        cookie[partKey] = partValue;
+      }
+    }
+  }
+  return cookie;
+}
+function _parseNameValuePair(nameValuePairStr) {
+  let name = "";
+  let value = "";
+  const nameValueArr = nameValuePairStr.split("=");
+  if (nameValueArr.length > 1) {
+    name = nameValueArr.shift();
+    value = nameValueArr.join("=");
+  } else {
+    value = nameValuePairStr;
+  }
+  return { name, value };
 }
 
 const NODE_TYPES = {
@@ -672,7 +899,7 @@ const defuFn = createDefu((object, key, currentValue) => {
   }
 });
 
-function o(n){throw new Error(`${n} is not implemented yet!`)}let i$1 = class i extends EventEmitter{__unenv__={};readableEncoding=null;readableEnded=true;readableFlowing=false;readableHighWaterMark=0;readableLength=0;readableObjectMode=false;readableAborted=false;readableDidRead=false;closed=false;errored=null;readable=false;destroyed=false;static from(e,t){return new i(t)}constructor(e){super();}_read(e){}read(e){}setEncoding(e){return this}pause(){return this}resume(){return this}isPaused(){return  true}unpipe(e){return this}unshift(e,t){}wrap(e){return this}push(e,t){return  false}_destroy(e,t){this.removeAllListeners();}destroy(e){return this.destroyed=true,this._destroy(e),this}pipe(e,t){return {}}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return this.destroy(),Promise.resolve()}async*[Symbol.asyncIterator](){throw o("Readable.asyncIterator")}iterator(e){throw o("Readable.iterator")}map(e,t){throw o("Readable.map")}filter(e,t){throw o("Readable.filter")}forEach(e,t){throw o("Readable.forEach")}reduce(e,t,r){throw o("Readable.reduce")}find(e,t){throw o("Readable.find")}findIndex(e,t){throw o("Readable.findIndex")}some(e,t){throw o("Readable.some")}toArray(e){throw o("Readable.toArray")}every(e,t){throw o("Readable.every")}flatMap(e,t){throw o("Readable.flatMap")}drop(e,t){throw o("Readable.drop")}take(e,t){throw o("Readable.take")}asIndexedPairs(e){throw o("Readable.asIndexedPairs")}};let l$1 = class l extends EventEmitter{__unenv__={};writable=true;writableEnded=false;writableFinished=false;writableHighWaterMark=0;writableLength=0;writableObjectMode=false;writableCorked=0;closed=false;errored=null;writableNeedDrain=false;writableAborted=false;destroyed=false;_data;_encoding="utf8";constructor(e){super();}pipe(e,t){return {}}_write(e,t,r){if(this.writableEnded){r&&r();return}if(this._data===void 0)this._data=e;else {const s=typeof this._data=="string"?Buffer$1.from(this._data,this._encoding||t||"utf8"):this._data,a=typeof e=="string"?Buffer$1.from(e,t||this._encoding||"utf8"):e;this._data=Buffer$1.concat([s,a]);}this._encoding=t,r&&r();}_writev(e,t){}_destroy(e,t){}_final(e){}write(e,t,r){const s=typeof t=="string"?this._encoding:"utf8",a=typeof t=="function"?t:typeof r=="function"?r:void 0;return this._write(e,s,a),true}setDefaultEncoding(e){return this}end(e,t,r){const s=typeof e=="function"?e:typeof t=="function"?t:typeof r=="function"?r:void 0;if(this.writableEnded)return s&&s(),this;const a=e===s?void 0:e;if(a){const u=t===s?void 0:t;this.write(a,u,s);}return this.writableEnded=true,this.writableFinished=true,this.emit("close"),this.emit("finish"),this}cork(){}uncork(){}destroy(e){return this.destroyed=true,delete this._data,this.removeAllListeners(),this}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return Promise.resolve()}};const c=class{allowHalfOpen=true;_destroy;constructor(e=new i$1,t=new l$1){Object.assign(this,e),Object.assign(this,t),this._destroy=m(e._destroy,t._destroy);}};function _(){return Object.assign(c.prototype,i$1.prototype),Object.assign(c.prototype,l$1.prototype),c}function m(...n){return function(...e){for(const t of n)t(...e);}}const g=_();class A extends g{__unenv__={};bufferSize=0;bytesRead=0;bytesWritten=0;connecting=false;destroyed=false;pending=false;localAddress="";localPort=0;remoteAddress="";remoteFamily="";remotePort=0;autoSelectFamilyAttemptedAddresses=[];readyState="readOnly";constructor(e){super();}write(e,t,r){return  false}connect(e,t,r){return this}end(e,t,r){return this}setEncoding(e){return this}pause(){return this}resume(){return this}setTimeout(e,t){return this}setNoDelay(e){return this}setKeepAlive(e,t){return this}address(){return {}}unref(){return this}ref(){return this}destroySoon(){this.destroy();}resetAndDestroy(){const e=new Error("ERR_SOCKET_CLOSED");return e.code="ERR_SOCKET_CLOSED",this.destroy(e),this}}class y extends i$1{aborted=false;httpVersion="1.1";httpVersionMajor=1;httpVersionMinor=1;complete=true;connection;socket;headers={};trailers={};method="GET";url="/";statusCode=200;statusMessage="";closed=false;errored=null;readable=false;constructor(e){super(),this.socket=this.connection=e||new A;}get rawHeaders(){const e=this.headers,t=[];for(const r in e)if(Array.isArray(e[r]))for(const s of e[r])t.push(r,s);else t.push(r,e[r]);return t}get rawTrailers(){return []}setTimeout(e,t){return this}get headersDistinct(){return p(this.headers)}get trailersDistinct(){return p(this.trailers)}}function p(n){const e={};for(const[t,r]of Object.entries(n))t&&(e[t]=(Array.isArray(r)?r:[r]).filter(Boolean));return e}class w extends l$1{statusCode=200;statusMessage="";upgrading=false;chunkedEncoding=false;shouldKeepAlive=false;useChunkedEncodingByDefault=false;sendDate=false;finished=false;headersSent=false;strictContentLength=false;connection=null;socket=null;req;_headers={};constructor(e){super(),this.req=e;}assignSocket(e){e._httpMessage=this,this.socket=e,this.connection=e,this.emit("socket",e),this._flush();}_flush(){this.flushHeaders();}detachSocket(e){}writeContinue(e){}writeHead(e,t,r){e&&(this.statusCode=e),typeof t=="string"&&(this.statusMessage=t,t=void 0);const s=r||t;if(s&&!Array.isArray(s))for(const a in s)this.setHeader(a,s[a]);return this.headersSent=true,this}writeProcessing(){}setTimeout(e,t){return this}appendHeader(e,t){e=e.toLowerCase();const r=this._headers[e],s=[...Array.isArray(r)?r:[r],...Array.isArray(t)?t:[t]].filter(Boolean);return this._headers[e]=s.length>1?s:s[0],this}setHeader(e,t){return this._headers[e.toLowerCase()]=t,this}setHeaders(e){for(const[t,r]of Object.entries(e))this.setHeader(t,r);return this}getHeader(e){return this._headers[e.toLowerCase()]}getHeaders(){return this._headers}getHeaderNames(){return Object.keys(this._headers)}hasHeader(e){return e.toLowerCase()in this._headers}removeHeader(e){delete this._headers[e.toLowerCase()];}addTrailers(e){}flushHeaders(){}writeEarlyHints(e,t){typeof t=="function"&&t();}}const E=(()=>{const n=function(){};return n.prototype=Object.create(null),n})();function R(n={}){const e=new E,t=Array.isArray(n)||H(n)?n:Object.entries(n);for(const[r,s]of t)if(s){if(e[r]===void 0){e[r]=s;continue}e[r]=[...Array.isArray(e[r])?e[r]:[e[r]],...Array.isArray(s)?s:[s]];}return e}function H(n){return typeof n?.entries=="function"}function v(n={}){if(n instanceof Headers)return n;const e=new Headers;for(const[t,r]of Object.entries(n))if(r!==void 0){if(Array.isArray(r)){for(const s of r)e.append(t,String(s));continue}e.set(t,String(r));}return e}const S=new Set([101,204,205,304]);async function b(n,e){const t=new y,r=new w(t);t.url=e.url?.toString()||"/";let s;if(!t.url.startsWith("/")){const d=new URL(t.url);s=d.host,t.url=d.pathname+d.search+d.hash;}t.method=e.method||"GET",t.headers=R(e.headers||{}),t.headers.host||(t.headers.host=e.host||s||"localhost"),t.connection.encrypted=t.connection.encrypted||e.protocol==="https",t.body=e.body||null,t.__unenv__=e.context,await n(t,r);let a=r._data;(S.has(r.statusCode)||t.method.toUpperCase()==="HEAD")&&(a=null,delete r._headers["content-length"]);const u={status:r.statusCode,statusText:r.statusMessage,headers:r._headers,body:a};return t.destroy(),r.destroy(),u}async function C(n,e,t={}){try{const r=await b(n,{url:e,...t});return new Response(r.body,{status:r.status,statusText:r.statusText,headers:v(r.headers)})}catch(r){return new Response(r.toString(),{status:Number.parseInt(r.statusCode||r.code)||500,statusText:r.statusText})}}
+function o(n){throw new Error(`${n} is not implemented yet!`)}let i$1 = class i extends EventEmitter{__unenv__={};readableEncoding=null;readableEnded=true;readableFlowing=false;readableHighWaterMark=0;readableLength=0;readableObjectMode=false;readableAborted=false;readableDidRead=false;closed=false;errored=null;readable=false;destroyed=false;static from(e,t){return new i(t)}constructor(e){super();}_read(e){}read(e){}setEncoding(e){return this}pause(){return this}resume(){return this}isPaused(){return  true}unpipe(e){return this}unshift(e,t){}wrap(e){return this}push(e,t){return  false}_destroy(e,t){this.removeAllListeners();}destroy(e){return this.destroyed=true,this._destroy(e),this}pipe(e,t){return {}}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return this.destroy(),Promise.resolve()}async*[Symbol.asyncIterator](){throw o("Readable.asyncIterator")}iterator(e){throw o("Readable.iterator")}map(e,t){throw o("Readable.map")}filter(e,t){throw o("Readable.filter")}forEach(e,t){throw o("Readable.forEach")}reduce(e,t,r){throw o("Readable.reduce")}find(e,t){throw o("Readable.find")}findIndex(e,t){throw o("Readable.findIndex")}some(e,t){throw o("Readable.some")}toArray(e){throw o("Readable.toArray")}every(e,t){throw o("Readable.every")}flatMap(e,t){throw o("Readable.flatMap")}drop(e,t){throw o("Readable.drop")}take(e,t){throw o("Readable.take")}asIndexedPairs(e){throw o("Readable.asIndexedPairs")}};let l$1 = class l extends EventEmitter{__unenv__={};writable=true;writableEnded=false;writableFinished=false;writableHighWaterMark=0;writableLength=0;writableObjectMode=false;writableCorked=0;closed=false;errored=null;writableNeedDrain=false;writableAborted=false;destroyed=false;_data;_encoding="utf8";constructor(e){super();}pipe(e,t){return {}}_write(e,t,r){if(this.writableEnded){r&&r();return}if(this._data===void 0)this._data=e;else {const s=typeof this._data=="string"?Buffer$1.from(this._data,this._encoding||t||"utf8"):this._data,a=typeof e=="string"?Buffer$1.from(e,t||this._encoding||"utf8"):e;this._data=Buffer$1.concat([s,a]);}this._encoding=t,r&&r();}_writev(e,t){}_destroy(e,t){}_final(e){}write(e,t,r){const s=typeof t=="string"?this._encoding:"utf8",a=typeof t=="function"?t:typeof r=="function"?r:void 0;return this._write(e,s,a),true}setDefaultEncoding(e){return this}end(e,t,r){const s=typeof e=="function"?e:typeof t=="function"?t:typeof r=="function"?r:void 0;if(this.writableEnded)return s&&s(),this;const a=e===s?void 0:e;if(a){const u=t===s?void 0:t;this.write(a,u,s);}return this.writableEnded=true,this.writableFinished=true,this.emit("close"),this.emit("finish"),this}cork(){}uncork(){}destroy(e){return this.destroyed=true,delete this._data,this.removeAllListeners(),this}compose(e,t){throw new Error("Method not implemented.")}[Symbol.asyncDispose](){return Promise.resolve()}};const c$1=class c{allowHalfOpen=true;_destroy;constructor(e=new i$1,t=new l$1){Object.assign(this,e),Object.assign(this,t),this._destroy=m(e._destroy,t._destroy);}};function _(){return Object.assign(c$1.prototype,i$1.prototype),Object.assign(c$1.prototype,l$1.prototype),c$1}function m(...n){return function(...e){for(const t of n)t(...e);}}const g=_();class A extends g{__unenv__={};bufferSize=0;bytesRead=0;bytesWritten=0;connecting=false;destroyed=false;pending=false;localAddress="";localPort=0;remoteAddress="";remoteFamily="";remotePort=0;autoSelectFamilyAttemptedAddresses=[];readyState="readOnly";constructor(e){super();}write(e,t,r){return  false}connect(e,t,r){return this}end(e,t,r){return this}setEncoding(e){return this}pause(){return this}resume(){return this}setTimeout(e,t){return this}setNoDelay(e){return this}setKeepAlive(e,t){return this}address(){return {}}unref(){return this}ref(){return this}destroySoon(){this.destroy();}resetAndDestroy(){const e=new Error("ERR_SOCKET_CLOSED");return e.code="ERR_SOCKET_CLOSED",this.destroy(e),this}}class y extends i$1{aborted=false;httpVersion="1.1";httpVersionMajor=1;httpVersionMinor=1;complete=true;connection;socket;headers={};trailers={};method="GET";url="/";statusCode=200;statusMessage="";closed=false;errored=null;readable=false;constructor(e){super(),this.socket=this.connection=e||new A;}get rawHeaders(){const e=this.headers,t=[];for(const r in e)if(Array.isArray(e[r]))for(const s of e[r])t.push(r,s);else t.push(r,e[r]);return t}get rawTrailers(){return []}setTimeout(e,t){return this}get headersDistinct(){return p(this.headers)}get trailersDistinct(){return p(this.trailers)}}function p(n){const e={};for(const[t,r]of Object.entries(n))t&&(e[t]=(Array.isArray(r)?r:[r]).filter(Boolean));return e}class w extends l$1{statusCode=200;statusMessage="";upgrading=false;chunkedEncoding=false;shouldKeepAlive=false;useChunkedEncodingByDefault=false;sendDate=false;finished=false;headersSent=false;strictContentLength=false;connection=null;socket=null;req;_headers={};constructor(e){super(),this.req=e;}assignSocket(e){e._httpMessage=this,this.socket=e,this.connection=e,this.emit("socket",e),this._flush();}_flush(){this.flushHeaders();}detachSocket(e){}writeContinue(e){}writeHead(e,t,r){e&&(this.statusCode=e),typeof t=="string"&&(this.statusMessage=t,t=void 0);const s=r||t;if(s&&!Array.isArray(s))for(const a in s)this.setHeader(a,s[a]);return this.headersSent=true,this}writeProcessing(){}setTimeout(e,t){return this}appendHeader(e,t){e=e.toLowerCase();const r=this._headers[e],s=[...Array.isArray(r)?r:[r],...Array.isArray(t)?t:[t]].filter(Boolean);return this._headers[e]=s.length>1?s:s[0],this}setHeader(e,t){return this._headers[e.toLowerCase()]=t,this}setHeaders(e){for(const[t,r]of Object.entries(e))this.setHeader(t,r);return this}getHeader(e){return this._headers[e.toLowerCase()]}getHeaders(){return this._headers}getHeaderNames(){return Object.keys(this._headers)}hasHeader(e){return e.toLowerCase()in this._headers}removeHeader(e){delete this._headers[e.toLowerCase()];}addTrailers(e){}flushHeaders(){}writeEarlyHints(e,t){typeof t=="function"&&t();}}const E=(()=>{const n=function(){};return n.prototype=Object.create(null),n})();function R(n={}){const e=new E,t=Array.isArray(n)||H(n)?n:Object.entries(n);for(const[r,s]of t)if(s){if(e[r]===void 0){e[r]=s;continue}e[r]=[...Array.isArray(e[r])?e[r]:[e[r]],...Array.isArray(s)?s:[s]];}return e}function H(n){return typeof n?.entries=="function"}function v(n={}){if(n instanceof Headers)return n;const e=new Headers;for(const[t,r]of Object.entries(n))if(r!==void 0){if(Array.isArray(r)){for(const s of r)e.append(t,String(s));continue}e.set(t,String(r));}return e}const S=new Set([101,204,205,304]);async function b(n,e){const t=new y,r=new w(t);t.url=e.url?.toString()||"/";let s;if(!t.url.startsWith("/")){const d=new URL(t.url);s=d.host,t.url=d.pathname+d.search+d.hash;}t.method=e.method||"GET",t.headers=R(e.headers||{}),t.headers.host||(t.headers.host=e.host||s||"localhost"),t.connection.encrypted=t.connection.encrypted||e.protocol==="https",t.body=e.body||null,t.__unenv__=e.context,await n(t,r);let a=r._data;(S.has(r.statusCode)||t.method.toUpperCase()==="HEAD")&&(a=null,delete r._headers["content-length"]);const u={status:r.statusCode,statusText:r.statusMessage,headers:r._headers,body:a};return t.destroy(),r.destroy(),u}async function C(n,e,t={}){try{const r=await b(n,{url:e,...t});return new Response(r.body,{status:r.status,statusText:r.statusText,headers:v(r.headers)})}catch(r){return new Response(r.toString(),{status:Number.parseInt(r.statusCode||r.code)||500,statusText:r.statusText})}}
 
 function hasProp(obj, prop) {
   try {
@@ -792,6 +1019,20 @@ function isError(input) {
 
 function getQuery(event) {
   return getQuery$1(event.path || "");
+}
+function getRouterParams(event, opts = {}) {
+  let params = event.context.params || {};
+  if (opts.decode) {
+    params = { ...params };
+    for (const key in params) {
+      params[key] = decode$1(params[key]);
+    }
+  }
+  return params;
+}
+function getRouterParam(event, name, opts = {}) {
+  const params = getRouterParams(event, opts);
+  return params[name];
 }
 function isMethod(event, expected, allowHead) {
   if (typeof expected === "string") {
@@ -1007,6 +1248,47 @@ function sanitizeStatusCode(statusCode, defaultStatusCode = 200) {
     return defaultStatusCode;
   }
   return statusCode;
+}
+
+function getDistinctCookieKey(name, opts) {
+  return [name, opts.domain || "", opts.path || "/"].join(";");
+}
+
+function parseCookies(event) {
+  return parse(event.node.req.headers.cookie || "");
+}
+function getCookie(event, name) {
+  return parseCookies(event)[name];
+}
+function setCookie(event, name, value, serializeOptions = {}) {
+  if (!serializeOptions.path) {
+    serializeOptions = { path: "/", ...serializeOptions };
+  }
+  const newCookie = serialize$2(name, value, serializeOptions);
+  const currentCookies = splitCookiesString(
+    event.node.res.getHeader("set-cookie")
+  );
+  if (currentCookies.length === 0) {
+    event.node.res.setHeader("set-cookie", newCookie);
+    return;
+  }
+  const newCookieKey = getDistinctCookieKey(name, serializeOptions);
+  event.node.res.removeHeader("set-cookie");
+  for (const cookie of currentCookies) {
+    const parsed = parseSetCookie(cookie);
+    const key = getDistinctCookieKey(parsed.name, parsed);
+    if (key === newCookieKey) {
+      continue;
+    }
+    event.node.res.appendHeader("set-cookie", cookie);
+  }
+  event.node.res.appendHeader("set-cookie", newCookie);
+}
+function deleteCookie(event, name, serializeOptions) {
+  setCookie(event, name, "", {
+    ...serializeOptions,
+    maxAge: 0
+  });
 }
 function splitCookiesString(cookiesString) {
   if (Array.isArray(cookiesString)) {
@@ -2530,7 +2812,7 @@ const fetch = globalThis.fetch ? (...args) => globalThis.fetch(...args) : create
 const Headers$1 = globalThis.Headers || s$1;
 const AbortController = globalThis.AbortController || i;
 const ofetch = createFetch({ fetch, Headers: Headers$1, AbortController });
-const $fetch = ofetch;
+const $fetch$1 = ofetch;
 
 function wrapToPromise(value) {
   if (!value || typeof value.then !== "function") {
@@ -3306,14 +3588,26 @@ const unstorage_47drivers_47fs_45lite = defineDriver((opts = {}) => {
   };
 });
 
-const storage = createStorage({});
+const storage$1 = createStorage({});
 
-storage.mount('/assets', assets$1);
+storage$1.mount('/assets', assets$1);
 
-storage.mount('data', unstorage_47drivers_47fs_45lite({"driver":"fsLite","base":"./.data/kv"}));
+storage$1.mount('data', unstorage_47drivers_47fs_45lite({"driver":"fsLite","base":"./.data/kv"}));
 
 function useStorage(base = "") {
-  return base ? prefixStorage(storage, base) : storage;
+  return base ? prefixStorage(storage$1, base) : storage$1;
+}
+
+function serialize$1(o){return typeof o=="string"?`'${o}'`:new c().serialize(o)}const c=/*@__PURE__*/function(){class o{#t=new Map;compare(t,r){const e=typeof t,n=typeof r;return e==="string"&&n==="string"?t.localeCompare(r):e==="number"&&n==="number"?t-r:String.prototype.localeCompare.call(this.serialize(t,true),this.serialize(r,true))}serialize(t,r){if(t===null)return "null";switch(typeof t){case "string":return r?t:`'${t}'`;case "bigint":return `${t}n`;case "object":return this.$object(t);case "function":return this.$function(t)}return String(t)}serializeObject(t){const r=Object.prototype.toString.call(t);if(r!=="[object Object]")return this.serializeBuiltInType(r.length<10?`unknown:${r}`:r.slice(8,-1),t);const e=t.constructor,n=e===Object||e===void 0?"":e.name;if(n!==""&&globalThis[n]===e)return this.serializeBuiltInType(n,t);if(typeof t.toJSON=="function"){const i=t.toJSON();return n+(i!==null&&typeof i=="object"?this.$object(i):`(${this.serialize(i)})`)}return this.serializeObjectEntries(n,Object.entries(t))}serializeBuiltInType(t,r){const e=this["$"+t];if(e)return e.call(this,r);if(typeof r?.entries=="function")return this.serializeObjectEntries(t,r.entries());throw new Error(`Cannot serialize ${t}`)}serializeObjectEntries(t,r){const e=Array.from(r).sort((i,a)=>this.compare(i[0],a[0]));let n=`${t}{`;for(let i=0;i<e.length;i++){const[a,l]=e[i];n+=`${this.serialize(a,true)}:${this.serialize(l)}`,i<e.length-1&&(n+=",");}return n+"}"}$object(t){let r=this.#t.get(t);return r===void 0&&(this.#t.set(t,`#${this.#t.size}`),r=this.serializeObject(t),this.#t.set(t,r)),r}$function(t){const r=Function.prototype.toString.call(t);return r.slice(-15)==="[native code] }"?`${t.name||""}()[native]`:`${t.name}(${t.length})${r.replace(/\s*\n\s*/g,"")}`}$Array(t){let r="[";for(let e=0;e<t.length;e++)r+=this.serialize(t[e]),e<t.length-1&&(r+=",");return r+"]"}$Date(t){try{return `Date(${t.toISOString()})`}catch{return "Date(null)"}}$ArrayBuffer(t){return `ArrayBuffer[${new Uint8Array(t).join(",")}]`}$Set(t){return `Set${this.$Array(Array.from(t).sort((r,e)=>this.compare(r,e)))}`}$Map(t){return this.serializeObjectEntries("Map",t.entries())}}for(const s of ["Error","RegExp","URL"])o.prototype["$"+s]=function(t){return `${s}(${t})`};for(const s of ["Int8Array","Uint8Array","Uint8ClampedArray","Int16Array","Uint16Array","Int32Array","Uint32Array","Float32Array","Float64Array"])o.prototype["$"+s]=function(t){return `${s}[${t.join(",")}]`};for(const s of ["BigInt64Array","BigUint64Array"])o.prototype["$"+s]=function(t){return `${s}[${t.join("n,")}${t.length>0?"n":""}]`};return o}();
+
+function isEqual(object1, object2) {
+  if (object1 === object2) {
+    return true;
+  }
+  if (serialize$1(object1) === serialize$1(object2)) {
+    return true;
+  }
+  return false;
 }
 
 const e=globalThis.process?.getBuiltinModule?.("crypto")?.hash,r="sha256",s="base64url";function digest(t){if(e)return e(r,t,s);const o=createHash(r).update(t);return globalThis.process?.versions?.webcontainer?o.digest().toString(s):o.digest(s)}
@@ -4022,7 +4316,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "0fee059c-b4d9-4760-8388-dd6605d83013",
+    "buildId": "033ee793-4455-4309-9c91-ecf718b3be4d",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4051,7 +4345,61 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "siteUrl": "https://josafe.com",
-    "githubUser": "Josafe"
+    "githubUser": "Josafe",
+    "i18n": {
+      "baseUrl": "",
+      "defaultLocale": "ca",
+      "rootRedirect": "",
+      "redirectStatusCode": 302,
+      "skipSettingLocaleOnNavigate": false,
+      "locales": [
+        {
+          "code": "ca",
+          "iso": "ca-ES",
+          "name": "Català",
+          "language": ""
+        },
+        {
+          "code": "es",
+          "iso": "es-ES",
+          "name": "Español",
+          "language": ""
+        },
+        {
+          "code": "en",
+          "iso": "en-US",
+          "name": "English",
+          "language": ""
+        }
+      ],
+      "detectBrowserLanguage": false,
+      "experimental": {
+        "localeDetector": "",
+        "typedPages": true,
+        "typedOptionsAndMessages": false,
+        "alternateLinkCanonicalQueries": true,
+        "devCache": false,
+        "cacheLifetime": "",
+        "stripMessagesPayload": false,
+        "preload": false,
+        "strictSeo": false,
+        "nitroContextDetection": true,
+        "httpCacheDuration": 10,
+        "compactRoutes": false,
+        "prerenderMessages": false
+      },
+      "domainLocales": {
+        "ca": {
+          "domain": ""
+        },
+        "es": {
+          "domain": ""
+        },
+        "en": {
+          "domain": ""
+        }
+      }
+    }
   },
   "githubToken": ""
 };
@@ -4381,7 +4729,11 @@ const errorHandler$0 = (async function errorhandler(error, event, { defaultHandl
 	
 	const reqHeaders = getRequestHeaders(event);
 	
-	const isRenderingError = event.path.startsWith("/__nuxt_error") || !!reqHeaders["x-nuxt-error"];
+	const isRenderingError = event.path.startsWith("/__nuxt_error") || !!reqHeaders["x-nuxt-error"] || !!event.context.nuxt?.["~rendering-error"];
+	if (!isRenderingError) {
+		event.context.nuxt ||= {};
+		event.context.nuxt["~rendering-error"] = true;
+	}
 	
 	const res = isRenderingError ? null : await useNitroApp().localFetch(withQuery(joinURL(useRuntimeConfig(event).app.baseURL, "/__nuxt_error"), errorObject), {
 		headers: {
@@ -4493,17 +4845,1653 @@ async function errorHandler(error, event) {
   // H3 will handle fallback
 }
 
+/*!
+  * shared v11.4.4
+  * (c) 2026 kazuya kawaguchi
+  * Released under the MIT License.
+  */
+const _create = Object.create;
+const create = (obj = null) => _create(obj);
+/* eslint-enable */
+/**
+ * Useful Utilities By Evan you
+ * Modified by kazuya kawaguchi
+ * MIT License
+ * https://github.com/vuejs/vue-next/blob/master/packages/shared/src/index.ts
+ * https://github.com/vuejs/vue-next/blob/master/packages/shared/src/codeframe.ts
+ */
+const isArray = Array.isArray;
+const isFunction = (val) => typeof val === 'function';
+const isString = (val) => typeof val === 'string';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isObject = (val) => val !== null && typeof val === 'object';
+const objectToString = Object.prototype.toString;
+const toTypeString = (value) => objectToString.call(value);
+
+const isNotObjectOrIsArray = (val) => !isObject(val) || isArray(val);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function deepCopy(src, des) {
+    // src and des should both be objects, and none of them can be a array
+    if (isNotObjectOrIsArray(src) || isNotObjectOrIsArray(des)) {
+        throw new Error('Invalid value');
+    }
+    const stack = [{ src, des }];
+    while (stack.length) {
+        const { src, des } = stack.pop();
+        // using `Object.keys` which skips prototype properties
+        Object.keys(src).forEach(key => {
+            if (key === '__proto__') {
+                return;
+            }
+            // if src[key] is an object/array, set des[key]
+            // to empty object/array to prevent setting by reference
+            if (isObject(src[key]) && !isObject(des[key])) {
+                des[key] = Array.isArray(src[key]) ? [] : create();
+            }
+            if (isNotObjectOrIsArray(des[key]) || isNotObjectOrIsArray(src[key])) {
+                // replace with src[key] when:
+                // src[key] or des[key] is not an object, or
+                // src[key] or des[key] is an array
+                des[key] = src[key];
+            }
+            else {
+                // src[key] and des[key] are both objects, merge them
+                stack.push({ src: src[key], des: des[key] });
+            }
+        });
+    }
+}
+
+const __nuxtMock = { runWithContext: async (fn) => await fn() };
+const merger = createDefu((obj, key, value) => {
+  if (key === "messages" || key === "datetimeFormats" || key === "numberFormats") {
+    obj[key] ??= create(null);
+    deepCopy(value, obj[key]);
+    return true;
+  }
+});
+async function loadVueI18nOptions(vueI18nConfigs) {
+  const nuxtApp = __nuxtMock;
+  let vueI18nOptions = { messages: create(null) };
+  for (const configFile of vueI18nConfigs) {
+    const resolver = await configFile().then((x) => isModule(x) ? x.default : x);
+    const resolved = isFunction(resolver) ? await nuxtApp.runWithContext(() => resolver()) : resolver;
+    vueI18nOptions = merger(create(null), resolved, vueI18nOptions);
+  }
+  vueI18nOptions.fallbackLocale ??= false;
+  return vueI18nOptions;
+}
+const isModule = (val) => toTypeString(val) === "[object Module]";
+async function getLocaleMessages(locale, loader) {
+  const nuxtApp = __nuxtMock;
+  try {
+    const getter = await nuxtApp.runWithContext(loader.load).then((x) => isModule(x) ? x.default : x);
+    return isFunction(getter) ? await nuxtApp.runWithContext(() => getter(locale)) : getter;
+  } catch (e) {
+    throw new Error(`Failed loading locale (${locale}): ` + e.message);
+  }
+}
+async function getLocaleMessagesMerged(locale, loaders = []) {
+  const nuxtApp = __nuxtMock;
+  const messages = await Promise.all(
+    loaders.map((loader) => nuxtApp.runWithContext(() => getLocaleMessages(locale, loader)))
+  );
+  const merged = {};
+  for (const message of messages) {
+    deepCopy(message, merged);
+  }
+  return merged;
+}
+
+var nav$2 = {
+	home: "Home",
+	about: "About",
+	projects: "Projects",
+	curriculum: "Curriculum",
+	future: "Future"
+};
+var language$2 = {
+	label: "Idioma",
+	ca: "Català",
+	es: "Español",
+	en: "English"
+};
+var meta$2 = {
+	index: {
+		title: "Josafe.com · Portfolio Full Stack & AI Systems",
+		description: "Landing page premium de Josafe amb projectes Full Stack, AI Systems i arquitectura de software moderna.",
+		ogTitle: "Josafe.com · Portfolio Full Stack & AI Systems",
+		ogDescription: "Portfolio modern de Josafe: experiències digitals premium, sistemes intel·ligents i arquitectura de software escalable."
+	},
+	about: {
+		title: "About Me · Josafe.com",
+		description: "Presentació professional de Josafe: Desenvolupador Full Stack i AI Systems Engineer especialitzat en solucions escalables i intel·ligència artificial."
+	},
+	projects: {
+		title: "Projects · Josafe.com",
+		description: "Projectes desplegats i repositoris GitHub de Josafe: desenvolupament web, sistemes AI i multi-agent."
+	},
+	future: {
+		title: "Future Projects · Josafe.com",
+		description: "Idees i roadmap professional de Josafe: SaaS, automatitzacions IA i sistemes multiagent avançats."
+	},
+	curriculum: {
+		title: "Curriculum Vitae · Josafe.com",
+		description: "Versions especialitzades del currículum de Josafe per rols professionals i descarregables en PDF."
+	}
+};
+var index$2 = {
+	hero: {
+		badge: "Premium engineering portfolio",
+		heading: "Building modern Full Stack experiences and AI Systems for product-led digital products.",
+		paragraph: "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
+		projects: "View Projects",
+		about: "About Me",
+		stats: {
+			projects: "Projects",
+			ai: "Architect",
+			fullStack: "Apps",
+			cloud: "DevOps"
+		},
+		platformsLabel: "Platforms",
+		platformsText: "Scalable web experiences for product-led growth.",
+		systemsLabel: "Systems",
+		systemsText: "Multi-agent automation, monitoring and cloud-native deployment.",
+		featuredStackLabel: "Featured stack",
+		featuredStackText: "Vue · Nuxt · TypeScript · Docker",
+		liveConceptLabel: "Live concept",
+		liveConceptText: "Modern landing page design with subtle motion.",
+		visualTitle: "AI Systems Architect",
+		visualDescription: "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+	},
+	connect: {
+		label: "Connect & collaborate",
+		title: "Connect with the core systems that shape premium digital products."
+	},
+	tech: {
+		title: "Engineering Stack",
+		subtitle: "Modern architecture across every layer."
+	},
+	navigation: {
+		about: {
+			title: "About Me",
+			description: "Discover my story, values and how I build digital products.",
+			href: "/about"
+		},
+		projects: {
+			title: "Projects",
+			description: "Explore purpose-driven builds, SaaS and AI systems in production.",
+			href: "/projects"
+		},
+		curriculum: {
+			title: "Curriculum",
+			description: "Get the CV details, skills matrix and downloadable resume.",
+			href: "/curriculum"
+		},
+		future: {
+			title: "Future Projects",
+			description: "See the roadmap, new product ideas and next-generation systems.",
+			href: "/future-projects"
+		}
+	}
+};
+var about$2 = {
+	hero: {
+		label: "Sobre Mi",
+		heading: "Desenvolupador Full Stack i AI Systems Engineer",
+		text: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	specializations: {
+		title: "Especialitzacions",
+		fullStack: {
+			title: "Full Stack Development",
+			description: "Laravel, Vue.js, Node.js, bases de dades relacionals i NoSQL"
+		},
+		ai: {
+			title: "AI Systems & Multi-Agent",
+			description: "Sistemes d'intel·ligència artificial, agents multiagent, automatització"
+		},
+		architecture: {
+			title: "Arquitectura Escalable",
+			description: "Disseny de sistemes escalables, microserveis, integracions cloud"
+		}
+	},
+	interests: {
+		title: "Interessos Professionals",
+		impact: {
+			title: "Projectes d'Impacte",
+			description: "Aplicacions web modernes, SaaS, productes digitals escalables"
+		},
+		innovation: {
+			title: "Innovació AI",
+			description: "Sistemes intel·ligents, automatitzacions, agents conversacionals"
+		},
+		collaboration: {
+			title: "Col·laboracions Tècniques",
+			description: "Equips multidisciplinars, consultoria, mentorització"
+		}
+	},
+	philosophy: {
+		title: "Filosofia de Treball",
+		text: "Crec en el poder de la tecnologia per transformar negocis i millorar vides. El meu enfocament combina enginyeria de software sòlida amb innovació en IA, sempre prioritzant la qualitat del codi, l'experiència d'usuari i l'impacte real. Treballo amb metodologies àgils, enfocades en resultats mesurables i solucions sostenibles a llarg termini."
+	},
+	contact: {
+		title: "Contacte",
+		text: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques.",
+		email: "josafesf2\\@gmail.com"
+	}
+};
+var projects$2 = {
+	title: "Projectes",
+	description: "Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.",
+	tabs: {
+		deployed: "Projectes Desplegats",
+		github: "Repositoris GitHub"
+	},
+	filter: {
+		all: "Tots"
+	},
+	empty: "No s'han trobat projectes amb aquest filtre."
+};
+var future$2 = {
+	header: {
+		title: "Projectes Futurs",
+		description: "Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents."
+	},
+	saas: {
+		title: "Idees SaaS",
+		item1: {
+			title: "Plataforma d'Automatització per Pimes",
+			description: "SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.",
+			tags: [
+				"Vue.js",
+				"Laravel",
+				"AI Integration"
+			]
+		},
+		item2: {
+			title: "Marketplace de Serveis Digitals",
+			description: "Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.",
+			tags: [
+				"Next.js",
+				"Stripe",
+				"Real-time"
+			]
+		}
+	},
+	automation: {
+		title: "Automatitzacions IA",
+		item1: {
+			title: "Agent de Gestió de Continguts",
+			description: "Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.",
+			tags: [
+				"Python",
+				"LLMs",
+				"Multi-Agent"
+			]
+		},
+		item2: {
+			title: "Sistema d'Anàlisi Predictiva",
+			description: "IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.",
+			tags: [
+				"Machine Learning",
+				"Data Science",
+				"APIs"
+			]
+		}
+	},
+	multiAgent: {
+		title: "Sistemes Multiagent Avançats",
+		item1: {
+			title: "Framework de Coordinació d'Agents",
+			description: "Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.",
+			tags: [
+				"Python",
+				"Distributed Systems",
+				"Open Source"
+			]
+		},
+		item2: {
+			title: "Agent d'Optimització Empresarial",
+			description: "Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.",
+			tags: [
+				"Reinforcement Learning",
+				"Business Intelligence",
+				"APIs"
+			]
+		}
+	},
+	research: {
+		title: "Projectes d'Investigació",
+		item1: {
+			title: "IA per a Sostenibilitat",
+			description: "Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.",
+			tags: [
+				"Research",
+				"Sustainability",
+				"IoT"
+			]
+		},
+		item2: {
+			title: "Interfícies Humà-Agent",
+			description: "Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.",
+			tags: [
+				"UX Research",
+				"HCI",
+				"Frontend"
+			]
+		}
+	},
+	cta: {
+		title: "Interessat en Col·laborar?",
+		description: "Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.",
+		cta: "Contacta'm"
+	}
+};
+var curriculum$2 = {
+	header: {
+		title: "Curriculum Vitae",
+		description: "Versions especialitzades del meu currículum per diferents rols professionals."
+	},
+	additional: {
+		title: "Informació Addicional",
+		line1: "Els currículums inclouen experiència professional detallada, projectes destacats, tecnologies dominades i certificacions rellevants.",
+		line2: "Disponible per a versions personalitzades segons requisits específics de posició o empresa."
+	},
+	cards: {
+		fullstack: {
+			title: "Full Stack Developer",
+			subtitle: "Frontend + Backend + APIs + arquitectura moderna",
+			description: "Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns."
+		},
+		"ai-systems": {
+			title: "AI Systems Engineer",
+			subtitle: "LLMs, Multi-Agent Systems i automatització IA",
+			description: "Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats."
+		},
+		"database-admin": {
+			title: "Database Administrator",
+			subtitle: "SQL, PostgreSQL, MySQL i optimització de dades",
+			description: "Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció."
+		},
+		"systems-admin": {
+			title: "Systems Administrator",
+			subtitle: "Linux, Docker, networking i infraestructura",
+			description: "Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat."
+		},
+		"it-technician": {
+			title: "IT Technician",
+			subtitle: "Suport tècnic, hardware, software i manteniment",
+			description: "Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris."
+		}
+	},
+	card: {
+		label: "Currículum",
+		viewPdf: "Veure CV",
+		downloadPdf: "Descarregar PDF",
+		alt: "Preview del CV"
+	}
+};
+var projectCard$2 = {
+	featured: "Featured",
+	github: "GitHub",
+	live: "Live"
+};
+var sections$2 = {
+	about: {
+		title: "About me",
+		description: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	projects: {
+		title: "Projectes",
+		subtitle: "Importació automàtica de GitHub + projectes manuals en JSON"
+	},
+	contact: {
+		title: "Contacte",
+		description: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques."
+	}
+};
+const locale_ca_46json_40ab4272 = {
+	nav: nav$2,
+	language: language$2,
+	meta: meta$2,
+	index: index$2,
+	about: about$2,
+	projects: projects$2,
+	future: future$2,
+	curriculum: curriculum$2,
+	projectCard: projectCard$2,
+	sections: sections$2
+};
+
+var nav$1 = {
+	home: "Home",
+	about: "About",
+	projects: "Projects",
+	curriculum: "Curriculum",
+	future: "Future"
+};
+var language$1 = {
+	label: "Idioma",
+	ca: "Català",
+	es: "Español",
+	en: "English"
+};
+var meta$1 = {
+	index: {
+		title: "Josafe.com · Portfolio Full Stack & AI Systems",
+		description: "Landing page premium de Josafe con proyectos Full Stack, AI Systems y arquitectura de software moderna.",
+		ogTitle: "Josafe.com · Portfolio Full Stack & AI Systems",
+		ogDescription: "Portfolio moderno de Josafe: experiencias digitales premium, sistemas inteligentes y arquitectura de software escalable."
+	},
+	about: {
+		title: "About Me · Josafe.com",
+		description: "Presentación profesional de Josafe: Desarrollador Full Stack y AI Systems Engineer especializado en soluciones escalables e inteligencia artificial."
+	},
+	projects: {
+		title: "Projects · Josafe.com",
+		description: "Proyectos desplegados y repositorios GitHub de Josafe: desarrollo web, sistemas AI y multi-agent."
+	},
+	future: {
+		title: "Future Projects · Josafe.com",
+		description: "Ideas y roadmap profesional de Josafe: SaaS, automatizaciones IA y sistemas multiagent avanzados."
+	},
+	curriculum: {
+		title: "Curriculum Vitae · Josafe.com",
+		description: "Versiones especializadas del currículum de Josafe para roles profesionales y descargables en PDF."
+	}
+};
+var index$1 = {
+	hero: {
+		badge: "Premium engineering portfolio",
+		heading: "Building modern Full Stack experiences and AI Systems for product-led digital products.",
+		paragraph: "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
+		projects: "View Projects",
+		about: "About Me",
+		stats: {
+			projects: "Projects",
+			ai: "Architect",
+			fullStack: "Apps",
+			cloud: "DevOps"
+		},
+		platformsLabel: "Platforms",
+		platformsText: "Scalable web experiences for product-led growth.",
+		systemsLabel: "Systems",
+		systemsText: "Multi-agent automation, monitoring and cloud-native deployment.",
+		featuredStackLabel: "Featured stack",
+		featuredStackText: "Vue · Nuxt · TypeScript · Docker",
+		liveConceptLabel: "Live concept",
+		liveConceptText: "Modern landing page design with subtle motion.",
+		visualTitle: "AI Systems Architect",
+		visualDescription: "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+	},
+	connect: {
+		label: "Connect & collaborate",
+		title: "Connect with the core systems that shape premium digital products."
+	},
+	tech: {
+		title: "Engineering Stack",
+		subtitle: "Modern architecture across every layer."
+	},
+	navigation: {
+		about: {
+			title: "About Me",
+			description: "Discover my story, values and how I build digital products.",
+			href: "/about"
+		},
+		projects: {
+			title: "Projects",
+			description: "Explore purpose-driven builds, SaaS and AI systems in production.",
+			href: "/projects"
+		},
+		curriculum: {
+			title: "Curriculum",
+			description: "Get the CV details, skills matrix and downloadable resume.",
+			href: "/curriculum"
+		},
+		future: {
+			title: "Future Projects",
+			description: "See the roadmap, new product ideas and next-generation systems.",
+			href: "/future-projects"
+		}
+	}
+};
+var about$1 = {
+	hero: {
+		label: "Sobre Mi",
+		heading: "Desenvolupador Full Stack i AI Systems Engineer",
+		text: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	specializations: {
+		title: "Especialitzacions",
+		fullStack: {
+			title: "Full Stack Development",
+			description: "Laravel, Vue.js, Node.js, bases de dades relacionals i NoSQL"
+		},
+		ai: {
+			title: "AI Systems & Multi-Agent",
+			description: "Sistemes d'intel·ligència artificial, agents multiagent, automatització"
+		},
+		architecture: {
+			title: "Arquitectura Escalable",
+			description: "Disseny de sistemes escalables, microserveis, integracions cloud"
+		}
+	},
+	interests: {
+		title: "Interessos Professionals",
+		impact: {
+			title: "Projectes d'Impacte",
+			description: "Aplicacions web modernes, SaaS, productes digitals escalables"
+		},
+		innovation: {
+			title: "Innovació AI",
+			description: "Sistemes intel·ligents, automatitzacions, agents conversacionals"
+		},
+		collaboration: {
+			title: "Col·laboracions Tècniques",
+			description: "Equips multidisciplinars, consultoria, mentorització"
+		}
+	},
+	philosophy: {
+		title: "Filosofia de Treball",
+		text: "Crec en el poder de la tecnologia per transformar negocis i millorar vides. El meu enfocament combina enginyeria de software sòlida amb innovació en IA, sempre prioritzant la qualitat del codi, l'experiència d'usuari i l'impacte real. Treballo amb metodologies àgils, enfocades en resultats mesurables i solucions sostenibles a llarg termini."
+	},
+	contact: {
+		title: "Contacte",
+		text: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques.",
+		email: "josafesf2\\@gmail.com"
+	}
+};
+var projects$1 = {
+	title: "Projectes",
+	description: "Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.",
+	tabs: {
+		deployed: "Projectes Desplegats",
+		github: "Repositoris GitHub"
+	},
+	filter: {
+		all: "Tots"
+	},
+	empty: "No s'han trobat projectes amb aquest filtre."
+};
+var future$1 = {
+	header: {
+		title: "Projectes Futurs",
+		description: "Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents."
+	},
+	saas: {
+		title: "Idees SaaS",
+		item1: {
+			title: "Plataforma d'Automatització per Pimes",
+			description: "SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.",
+			tags: [
+				"Vue.js",
+				"Laravel",
+				"AI Integration"
+			]
+		},
+		item2: {
+			title: "Marketplace de Serveis Digitals",
+			description: "Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.",
+			tags: [
+				"Next.js",
+				"Stripe",
+				"Real-time"
+			]
+		}
+	},
+	automation: {
+		title: "Automatitzacions IA",
+		item1: {
+			title: "Agent de Gestió de Continguts",
+			description: "Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.",
+			tags: [
+				"Python",
+				"LLMs",
+				"Multi-Agent"
+			]
+		},
+		item2: {
+			title: "Sistema d'Anàlisi Predictiva",
+			description: "IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.",
+			tags: [
+				"Machine Learning",
+				"Data Science",
+				"APIs"
+			]
+		}
+	},
+	multiAgent: {
+		title: "Sistemes Multiagent Avançats",
+		item1: {
+			title: "Framework de Coordinació d'Agents",
+			description: "Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.",
+			tags: [
+				"Python",
+				"Distributed Systems",
+				"Open Source"
+			]
+		},
+		item2: {
+			title: "Agent d'Optimització Empresarial",
+			description: "Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.",
+			tags: [
+				"Reinforcement Learning",
+				"Business Intelligence",
+				"APIs"
+			]
+		}
+	},
+	research: {
+		title: "Projectes d'Investigació",
+		item1: {
+			title: "IA per a Sostenibilitat",
+			description: "Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.",
+			tags: [
+				"Research",
+				"Sustainability",
+				"IoT"
+			]
+		},
+		item2: {
+			title: "Interfícies Humà-Agent",
+			description: "Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.",
+			tags: [
+				"UX Research",
+				"HCI",
+				"Frontend"
+			]
+		}
+	},
+	cta: {
+		title: "Interessat en Col·laborar?",
+		description: "Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.",
+		cta: "Contacta'm"
+	}
+};
+var curriculum$1 = {
+	header: {
+		title: "Curriculum Vitae",
+		description: "Versions especialitzades del meu currículum per diferents rols professionals."
+	},
+	additional: {
+		title: "Informació Addicional",
+		line1: "Els currículums inclouen experiència professional detallada, projectes destacats, tecnologies dominades i certificacions rellevants.",
+		line2: "Disponible per a versions personalitzades segons requisits específics de posició o empresa."
+	},
+	cards: {
+		fullstack: {
+			title: "Full Stack Developer",
+			subtitle: "Frontend + Backend + APIs + arquitectura moderna",
+			description: "Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns."
+		},
+		"ai-systems": {
+			title: "AI Systems Engineer",
+			subtitle: "LLMs, Multi-Agent Systems i automatització IA",
+			description: "Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats."
+		},
+		"database-admin": {
+			title: "Database Administrator",
+			subtitle: "SQL, PostgreSQL, MySQL i optimització de dades",
+			description: "Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció."
+		},
+		"systems-admin": {
+			title: "Systems Administrator",
+			subtitle: "Linux, Docker, networking i infraestructura",
+			description: "Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat."
+		},
+		"it-technician": {
+			title: "IT Technician",
+			subtitle: "Suport tècnic, hardware, software i manteniment",
+			description: "Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris."
+		}
+	},
+	card: {
+		label: "Currículum",
+		viewPdf: "Veure CV",
+		downloadPdf: "Descarregar PDF",
+		alt: "Preview del CV"
+	}
+};
+var projectCard$1 = {
+	featured: "Featured",
+	github: "GitHub",
+	live: "Live"
+};
+var sections$1 = {
+	about: {
+		title: "About me",
+		description: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	projects: {
+		title: "Projectes",
+		subtitle: "Importació automàtica de GitHub + projectes manuals en JSON"
+	},
+	contact: {
+		title: "Contacte",
+		description: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques."
+	}
+};
+const locale_es_46json_a5ba01c4 = {
+	nav: nav$1,
+	language: language$1,
+	meta: meta$1,
+	index: index$1,
+	about: about$1,
+	projects: projects$1,
+	future: future$1,
+	curriculum: curriculum$1,
+	projectCard: projectCard$1,
+	sections: sections$1
+};
+
+var nav = {
+	home: "Home",
+	about: "About",
+	projects: "Projects",
+	curriculum: "Curriculum",
+	future: "Future"
+};
+var language = {
+	label: "Language",
+	ca: "Català",
+	es: "Español",
+	en: "English"
+};
+var meta = {
+	index: {
+		title: "Josafe.com · Portfolio Full Stack & AI Systems",
+		description: "Josafe premium portfolio with Full Stack, AI Systems and modern software architecture projects.",
+		ogTitle: "Josafe.com · Portfolio Full Stack & AI Systems",
+		ogDescription: "Josafe portfolio: premium digital experiences, intelligent systems and scalable software architecture."
+	},
+	about: {
+		title: "About Me · Josafe.com",
+		description: "Professional overview of Josafe: Full Stack Developer and AI Systems Engineer specialized in scalable solutions and artificial intelligence."
+	},
+	projects: {
+		title: "Projects · Josafe.com",
+		description: "Live projects and GitHub repositories by Josafe: web development, AI systems and multi-agent engineering."
+	},
+	future: {
+		title: "Future Projects · Josafe.com",
+		description: "Josafe professional roadmap: SaaS ideas, AI automations and advanced multi-agent systems."
+	},
+	curriculum: {
+		title: "Curriculum Vitae · Josafe.com",
+		description: "Specialized curriculum versions for professional roles, available as downloadable PDFs."
+	}
+};
+var index = {
+	hero: {
+		badge: "Premium engineering portfolio",
+		heading: "Building modern Full Stack experiences and AI Systems for product-led digital products.",
+		paragraph: "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
+		projects: "View Projects",
+		about: "About Me",
+		stats: {
+			projects: "Projects",
+			ai: "Architect",
+			fullStack: "Apps",
+			cloud: "DevOps"
+		},
+		platformsLabel: "Platforms",
+		platformsText: "Scalable web experiences for product-led growth.",
+		systemsLabel: "Systems",
+		systemsText: "Multi-agent automation, monitoring and cloud-native deployment.",
+		featuredStackLabel: "Featured stack",
+		featuredStackText: "Vue · Nuxt · TypeScript · Docker",
+		liveConceptLabel: "Live concept",
+		liveConceptText: "Modern landing page design with subtle motion.",
+		visualTitle: "AI Systems Architect",
+		visualDescription: "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+	},
+	connect: {
+		label: "Connect & collaborate",
+		title: "Connect with the core systems that shape premium digital products."
+	},
+	tech: {
+		title: "Engineering Stack",
+		subtitle: "Modern architecture across every layer."
+	},
+	navigation: {
+		about: {
+			title: "About Me",
+			description: "Discover my story, values and how I build digital products.",
+			href: "/about"
+		},
+		projects: {
+			title: "Projects",
+			description: "Explore purpose-driven builds, SaaS and AI systems in production.",
+			href: "/projects"
+		},
+		curriculum: {
+			title: "Curriculum",
+			description: "Get the CV details, skills matrix and downloadable resume.",
+			href: "/curriculum"
+		},
+		future: {
+			title: "Future Projects",
+			description: "See the roadmap, new product ideas and next-generation systems.",
+			href: "/future-projects"
+		}
+	}
+};
+var about = {
+	hero: {
+		label: "Sobre Mi",
+		heading: "Desenvolupador Full Stack i AI Systems Engineer",
+		text: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	specializations: {
+		title: "Especialitzacions",
+		fullStack: {
+			title: "Full Stack Development",
+			description: "Laravel, Vue.js, Node.js, bases de dades relacionals i NoSQL"
+		},
+		ai: {
+			title: "AI Systems & Multi-Agent",
+			description: "Sistemes d'intel·ligència artificial, agents multiagent, automatització"
+		},
+		architecture: {
+			title: "Arquitectura Escalable",
+			description: "Disseny de sistemes escalables, microserveis, integracions cloud"
+		}
+	},
+	interests: {
+		title: "Interessos Professionals",
+		impact: {
+			title: "Projectes d'Impacte",
+			description: "Aplicacions web modernes, SaaS, productes digitals escalables"
+		},
+		innovation: {
+			title: "Innovació AI",
+			description: "Sistemes intel·ligents, automatitzacions, agents conversacionals"
+		},
+		collaboration: {
+			title: "Col·laboracions Tècniques",
+			description: "Equips multidisciplinars, consultoria, mentorització"
+		}
+	},
+	philosophy: {
+		title: "Filosofia de Treball",
+		text: "Crec en el poder de la tecnologia per transformar negocis i millorar vides. El meu enfocament combina enginyeria de software sòlida amb innovació en IA, sempre prioritzant la qualitat del codi, l'experiència d'usuari i l'impacte real. Treballo amb metodologies àgils, enfocades en resultats mesurables i solucions sostenibles a llarg termini."
+	},
+	contact: {
+		title: "Contacte",
+		text: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques.",
+		email: "josafesf2\\@gmail.com"
+	}
+};
+var projects = {
+	title: "Projectes",
+	description: "Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.",
+	tabs: {
+		deployed: "Projectes Desplegats",
+		github: "Repositoris GitHub"
+	},
+	filter: {
+		all: "Tots"
+	},
+	empty: "No s'han trobat projectes amb aquest filtre."
+};
+var future = {
+	header: {
+		title: "Projectes Futurs",
+		description: "Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents."
+	},
+	saas: {
+		title: "Idees SaaS",
+		item1: {
+			title: "Plataforma d'Automatització per Pimes",
+			description: "SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.",
+			tags: [
+				"Vue.js",
+				"Laravel",
+				"AI Integration"
+			]
+		},
+		item2: {
+			title: "Marketplace de Serveis Digitals",
+			description: "Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.",
+			tags: [
+				"Next.js",
+				"Stripe",
+				"Real-time"
+			]
+		}
+	},
+	automation: {
+		title: "Automatitzacions IA",
+		item1: {
+			title: "Agent de Gestió de Continguts",
+			description: "Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.",
+			tags: [
+				"Python",
+				"LLMs",
+				"Multi-Agent"
+			]
+		},
+		item2: {
+			title: "Sistema d'Anàlisi Predictiva",
+			description: "IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.",
+			tags: [
+				"Machine Learning",
+				"Data Science",
+				"APIs"
+			]
+		}
+	},
+	multiAgent: {
+		title: "Sistemes Multiagent Avançats",
+		item1: {
+			title: "Framework de Coordinació d'Agents",
+			description: "Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.",
+			tags: [
+				"Python",
+				"Distributed Systems",
+				"Open Source"
+			]
+		},
+		item2: {
+			title: "Agent d'Optimització Empresarial",
+			description: "Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.",
+			tags: [
+				"Reinforcement Learning",
+				"Business Intelligence",
+				"APIs"
+			]
+		}
+	},
+	research: {
+		title: "Projectes d'Investigació",
+		item1: {
+			title: "IA per a Sostenibilitat",
+			description: "Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.",
+			tags: [
+				"Research",
+				"Sustainability",
+				"IoT"
+			]
+		},
+		item2: {
+			title: "Interfícies Humà-Agent",
+			description: "Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.",
+			tags: [
+				"UX Research",
+				"HCI",
+				"Frontend"
+			]
+		}
+	},
+	cta: {
+		title: "Interessat en Col·laborar?",
+		description: "Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.",
+		cta: "Contacta'm"
+	}
+};
+var curriculum = {
+	header: {
+		title: "Curriculum Vitae",
+		description: "Versions especialitzades del meu currículum per diferents rols professionals."
+	},
+	additional: {
+		title: "Informació Addicional",
+		line1: "Els currículums inclouen experiència professional detallada, projectes destacats, tecnologies dominades i certificacions rellevants.",
+		line2: "Disponible per a versions personalitzades segons requisits específics de posició o empresa."
+	},
+	cards: {
+		fullstack: {
+			title: "Full Stack Developer",
+			subtitle: "Frontend + Backend + APIs + arquitectura moderna",
+			description: "Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns."
+		},
+		"ai-systems": {
+			title: "AI Systems Engineer",
+			subtitle: "LLMs, Multi-Agent Systems i automatització IA",
+			description: "Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats."
+		},
+		"database-admin": {
+			title: "Database Administrator",
+			subtitle: "SQL, PostgreSQL, MySQL i optimització de dades",
+			description: "Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció."
+		},
+		"systems-admin": {
+			title: "Systems Administrator",
+			subtitle: "Linux, Docker, networking i infraestructura",
+			description: "Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat."
+		},
+		"it-technician": {
+			title: "IT Technician",
+			subtitle: "Suport tècnic, hardware, software i manteniment",
+			description: "Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris."
+		}
+	},
+	card: {
+		label: "Currículum",
+		viewPdf: "Veure CV",
+		downloadPdf: "Descarregar PDF",
+		alt: "Preview del CV"
+	}
+};
+var projectCard = {
+	featured: "Featured",
+	github: "GitHub",
+	live: "Live"
+};
+var sections = {
+	about: {
+		title: "About me",
+		description: "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+	},
+	projects: {
+		title: "Projectes",
+		subtitle: "Importació automàtica de GitHub + projectes manuals en JSON"
+	},
+	contact: {
+		title: "Contacte",
+		description: "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques."
+	}
+};
+const locale_en_46json_3d8c5d26 = {
+	nav: nav,
+	language: language,
+	meta: meta,
+	index: index,
+	about: about,
+	projects: projects,
+	future: future,
+	curriculum: curriculum,
+	projectCard: projectCard,
+	sections: sections
+};
+
+const config_i18n_46config_46ts_34062747 = () => ({
+  default: {
+    legacy: false,
+    locale: "ca",
+    fallbackLocale: "ca",
+    availableLocales: ["ca", "es", "en"]
+  }
+});
+
+// @ts-nocheck
+const localeCodes =  [
+  "ca",
+  "es",
+  "en"
+];
+const localeLoaders = {
+  ca: [
+    {
+      key: "locale_ca_46json_40ab4272",
+      load: () => Promise.resolve(locale_ca_46json_40ab4272),
+      cache: true
+    }
+  ],
+  es: [
+    {
+      key: "locale_es_46json_a5ba01c4",
+      load: () => Promise.resolve(locale_es_46json_a5ba01c4),
+      cache: true
+    }
+  ],
+  en: [
+    {
+      key: "locale_en_46json_3d8c5d26",
+      load: () => Promise.resolve(locale_en_46json_3d8c5d26),
+      cache: true
+    }
+  ]
+};
+const vueI18nConfigs = [
+  () => Promise.resolve(config_i18n_46config_46ts_34062747)
+];
+const normalizedLocales = [
+  {
+    code: "ca",
+    iso: "ca-ES",
+    name: "Català",
+    language: undefined
+  },
+  {
+    code: "es",
+    iso: "es-ES",
+    name: "Español",
+    language: undefined
+  },
+  {
+    code: "en",
+    iso: "en-US",
+    name: "English",
+    language: undefined
+  }
+];
+
+const setupVueI18nOptions = async (defaultLocale) => {
+  const options = await loadVueI18nOptions(vueI18nConfigs);
+  options.locale = defaultLocale || options.locale || "en-US";
+  options.defaultLocale = defaultLocale;
+  options.fallbackLocale ??= false;
+  options.messages ??= {};
+  for (const locale of localeCodes) {
+    options.messages[locale] ??= {};
+  }
+  return options;
+};
+
+function defineNitroPlugin(def) {
+  return def;
+}
+
+function defineRenderHandler(render) {
+  const runtimeConfig = useRuntimeConfig();
+  return eventHandler(async (event) => {
+    const nitroApp = useNitroApp();
+    const ctx = { event, render, response: void 0 };
+    await nitroApp.hooks.callHook("render:before", ctx);
+    if (!ctx.response) {
+      if (event.path === `${runtimeConfig.app.baseURL}favicon.ico`) {
+        setResponseHeader(event, "Content-Type", "image/x-icon");
+        return send(
+          event,
+          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+        );
+      }
+      ctx.response = await ctx.render(event);
+      if (!ctx.response) {
+        const _currentStatus = getResponseStatus(event);
+        setResponseStatus(event, _currentStatus === 200 ? 500 : _currentStatus);
+        return send(
+          event,
+          "No response returned from render handler: " + event.path
+        );
+      }
+    }
+    await nitroApp.hooks.callHook("render:response", ctx.response, ctx);
+    if (ctx.response.headers) {
+      setResponseHeaders(event, ctx.response.headers);
+    }
+    if (ctx.response.statusCode || ctx.response.statusMessage) {
+      setResponseStatus(
+        event,
+        ctx.response.statusCode,
+        ctx.response.statusMessage
+      );
+    }
+    return ctx.response.body;
+  });
+}
+
+function baseURL() {
+	
+	return useRuntimeConfig().app.baseURL;
+}
+function buildAssetsDir() {
+	
+	return useRuntimeConfig().app.buildAssetsDir;
+}
+function buildAssetsURL(...path) {
+	return joinRelativeURL(publicAssetsURL(), buildAssetsDir(), ...path);
+}
+function publicAssetsURL(...path) {
+	
+	const app = useRuntimeConfig().app;
+	const publicBase = app.cdnURL || app.baseURL;
+	return path.length ? joinRelativeURL(publicBase, ...path) : publicBase;
+}
+
+function parseAcceptLanguage(value) {
+  return value.split(",").map((tag) => tag.split(";")[0]).filter(
+    (tag) => !(tag === "*" || tag === "")
+  );
+}
+function createPathIndexLanguageParser(index = 0) {
+  return (path) => {
+    const rawPath = typeof path === "string" ? path : path.pathname;
+    const normalizedPath = rawPath.split("?")[0];
+    const parts = normalizedPath.split("/");
+    if (parts[0] === "") {
+      parts.shift();
+    }
+    return parts.length > index ? parts[index] || "" : "";
+  };
+}
+
+function useRuntimeI18n(nuxtApp, event) {
+  {
+    return useRuntimeConfig(event).public.i18n;
+  }
+}
+function useI18nDetection(nuxtApp) {
+  const detectBrowserLanguage = useRuntimeI18n().detectBrowserLanguage;
+  const detect = detectBrowserLanguage || {};
+  return {
+    ...detect,
+    enabled: !!detectBrowserLanguage,
+    cookieKey: detect.cookieKey || "i18n_redirected"
+  };
+}
+function resolveRootRedirect(config) {
+  if (!config) {
+    return void 0;
+  }
+  return {
+    path: "/" + (isString(config) ? config : config.path).replace(/^\//, ""),
+    code: !isString(config) && config.statusCode || 302
+  };
+}
+function toArray(value) {
+  return Array.isArray(value) ? value : [value];
+}
+
+function createLocaleConfigs(fallbackLocale) {
+  const localeConfigs = {};
+  for (const locale of localeCodes) {
+    const fallbacks = getFallbackLocaleCodes(fallbackLocale, [locale]);
+    const cacheable = isLocaleWithFallbacksCacheable(locale, fallbacks);
+    localeConfigs[locale] = { fallbacks, cacheable };
+  }
+  return localeConfigs;
+}
+function getFallbackLocaleCodes(fallback, locales) {
+  if (fallback === false) {
+    return [];
+  }
+  if (isArray(fallback)) {
+    return fallback;
+  }
+  let fallbackLocales = [];
+  if (isString(fallback)) {
+    if (locales.every((locale) => locale !== fallback)) {
+      fallbackLocales.push(fallback);
+    }
+    return fallbackLocales;
+  }
+  const targets = [...locales, "default"];
+  for (const locale of targets) {
+    if (locale in fallback == false) {
+      continue;
+    }
+    fallbackLocales = [...fallbackLocales, ...fallback[locale].filter(Boolean)];
+  }
+  return fallbackLocales;
+}
+function isLocaleCacheable(locale) {
+  return localeLoaders[locale] != null && localeLoaders[locale].every((loader) => loader.cache !== false);
+}
+function isLocaleWithFallbacksCacheable(locale, fallbackLocales) {
+  return isLocaleCacheable(locale) && fallbackLocales.every((fallbackLocale) => isLocaleCacheable(fallbackLocale));
+}
+function getDefaultLocaleForDomain(host) {
+  return normalizedLocales.find((l) => !!l.defaultForDomains?.includes(host))?.code;
+}
+const isSupportedLocale = (locale) => localeCodes.includes(locale || "");
+
+function useI18nContext(event) {
+  if (event.context.nuxtI18n == null) {
+    throw new Error("Nuxt I18n server context has not been set up yet.");
+  }
+  return event.context.nuxtI18n;
+}
+function tryUseI18nContext(event) {
+  return event.context.nuxtI18n;
+}
+const getHost = (event) => getRequestURL(event, { xForwardedHost: true }).host;
+async function initializeI18nContext(event) {
+  const runtimeI18n = useRuntimeI18n(void 0, event);
+  const defaultLocale = runtimeI18n.defaultLocale || "";
+  const options = await setupVueI18nOptions(getDefaultLocaleForDomain(getHost(event)) || defaultLocale);
+  const localeConfigs = createLocaleConfigs(options.fallbackLocale);
+  const ctx = createI18nContext();
+  ctx.vueI18nOptions = options;
+  ctx.localeConfigs = localeConfigs;
+  event.context.nuxtI18n = ctx;
+  return ctx;
+}
+function createI18nContext() {
+  return {
+    messages: {},
+    slp: {},
+    localeConfigs: {},
+    trackMap: {},
+    vueI18nOptions: void 0,
+    trackKey(key, locale) {
+      this.trackMap[locale] ??= /* @__PURE__ */ new Set();
+      this.trackMap[locale].add(key);
+    }
+  };
+}
+
+function matchBrowserLocale(locales, browserLocales) {
+  const matchedLocales = [];
+  for (const [index, browserCode] of browserLocales.entries()) {
+    const matchedLocale = locales.find((l) => l.language?.toLowerCase() === browserCode.toLowerCase());
+    if (matchedLocale) {
+      matchedLocales.push({ code: matchedLocale.code, score: 1 - index / browserLocales.length });
+      break;
+    }
+  }
+  for (const [index, browserCode] of browserLocales.entries()) {
+    const languageCode = browserCode.split("-")[0].toLowerCase();
+    const matchedLocale = locales.find((l) => l.language?.split("-")[0].toLowerCase() === languageCode);
+    if (matchedLocale) {
+      matchedLocales.push({ code: matchedLocale.code, score: 0.999 - index / browserLocales.length });
+      break;
+    }
+  }
+  return matchedLocales;
+}
+function compareBrowserLocale(a, b) {
+  if (a.score === b.score) {
+    return b.code.length - a.code.length;
+  }
+  return b.score - a.score;
+}
+function findBrowserLocale(locales, browserLocales) {
+  const matchedLocales = matchBrowserLocale(
+    locales.map((l) => ({ code: l.code, language: l.language || l.code })),
+    browserLocales
+  );
+  return matchedLocales.sort(compareBrowserLocale).at(0)?.code ?? "";
+}
+
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"Portfolio professional de Josafe amb projectes full stack i d'enginyeria de sistemes AI."}],"link":[],"style":[],"script":[],"noscript":[],"title":"Josafe · Full Stack & AI Systems Engineer","htmlAttrs":{"lang":"ca"}};
+
+const appRootTag = "div";
+
+const appRootAttrs = {"id":"__nuxt"};
+
+const appTeleportTag = "div";
+
+const appTeleportAttrs = {"id":"teleports"};
+
+const appId = "nuxt-app";
+
+const separator = "___";
+const pathLanguageParser = createPathIndexLanguageParser(0);
+const getLocaleFromRoutePath = (path) => pathLanguageParser(path);
+const getLocaleFromRouteName = (name) => name.split(separator).at(1) ?? "";
+function normalizeInput(input) {
+  return typeof input !== "object" ? String(input) : String(input?.name || input?.path || "");
+}
+function getLocaleFromRoute(route) {
+  const input = normalizeInput(route);
+  if (input[0] === "/") {
+    return getLocaleFromRoutePath(input);
+  }
+  const fromName = getLocaleFromRouteName(input);
+  if (fromName) {
+    return fromName;
+  }
+  if (typeof route === "object" && route?.path) {
+    return getLocaleFromRoutePath(String(route.path));
+  }
+  return "";
+}
+
+function matchDomainLocale(locales, host, pathLocale) {
+  const normalizeDomain = (domain = "") => domain.replace(/https?:\/\//, "");
+  const matches = locales.filter(
+    (locale) => normalizeDomain(locale.domain) === host || toArray(locale.domains).includes(host)
+  );
+  if (matches.length <= 1) {
+    return matches[0]?.code;
+  }
+  return (
+    // match by current path locale
+    matches.find((l) => l.code === pathLocale)?.code || matches.find((l) => l.defaultForDomains?.includes(host) ?? l.domainDefault)?.code
+  );
+}
+
+const getCookieLocale = (event, cookieName) => (getCookie(event, cookieName)) || void 0;
+const getRouteLocale = (event, route) => getLocaleFromRoute(route);
+const getHeaderLocale = (event) => findBrowserLocale(normalizedLocales, parseAcceptLanguage(getRequestHeader(event, "accept-language") || ""));
+const getHostLocale = (event, path, domainLocales) => {
+  const host = getRequestURL(event, { xForwardedHost: true }).host;
+  const locales = normalizedLocales.map((l) => ({
+    ...l,
+    domain: domainLocales[l.code]?.domain ?? l.domain
+  }));
+  return matchDomainLocale(locales, host, getLocaleFromRoutePath(path));
+};
+const useDetectors = (event, config, nuxtApp) => {
+  if (!event) {
+    throw new Error("H3Event is required for server-side locale detection");
+  }
+  const runtimeI18n = useRuntimeI18n();
+  return {
+    cookie: () => getCookieLocale(event, config.cookieKey),
+    header: () => getHeaderLocale(event) ,
+    navigator: () => void 0,
+    host: (path) => getHostLocale(event, path, runtimeI18n.domainLocales),
+    route: (path) => getRouteLocale(event, path)
+  };
+};
+
+// Generated by @nuxtjs/i18n
+const pathToI18nConfig = {
+  "/about": {
+    "ca": "/about",
+    "es": "/about",
+    "en": "/about"
+  },
+  "/": {
+    "ca": "/",
+    "es": "/",
+    "en": "/"
+  },
+  "/projects": {
+    "ca": "/projects",
+    "es": "/projects",
+    "en": "/projects"
+  },
+  "/curriculum": {
+    "ca": "/curriculum",
+    "es": "/curriculum",
+    "en": "/curriculum"
+  },
+  "/future-projects": {
+    "ca": "/future-projects",
+    "es": "/future-projects",
+    "en": "/future-projects"
+  }
+};
+const i18nPathToPath = {
+  "/about": "/about",
+  "/": "/",
+  "/projects": "/projects",
+  "/curriculum": "/curriculum",
+  "/future-projects": "/future-projects"
+};
+const disabledI18nPathToPath = {};
+
+const formatTrailingSlash = withoutTrailingSlash;
+const matcher = createRouterMatcher([], {});
+for (const path of Object.keys(i18nPathToPath)) {
+  matcher.addRoute({ path, component: () => "", meta: {} });
+}
+const disabledI18nMatcher = createRouterMatcher([], {});
+for (const path of Object.keys(disabledI18nPathToPath)) {
+  disabledI18nMatcher.addRoute({ path, component: () => "", meta: {} });
+}
+const getI18nPathToI18nPath = (path, locale) => {
+  if (!path || !locale) {
+    return;
+  }
+  const plainPath = i18nPathToPath[path];
+  const i18nConfig = pathToI18nConfig[plainPath];
+  if (i18nConfig && i18nConfig[locale]) {
+    return i18nConfig[locale] === true ? plainPath : i18nConfig[locale];
+  }
+};
+function isExistingNuxtRoute(path) {
+  if (path === "") {
+    return;
+  }
+  if (path.endsWith("/__nuxt_error")) {
+    return;
+  }
+  const disabledI18nResolvedMatch = disabledI18nMatcher.resolve({ path }, { path: "/", name: "", matched: [], params: {}, meta: {} });
+  if (disabledI18nResolvedMatch.matched.length > 0) {
+    return;
+  }
+  const resolvedMatch = matcher.resolve({ path }, { path: "/", name: "", matched: [], params: {}, meta: {} });
+  return resolvedMatch.matched.length > 0 ? resolvedMatch : void 0;
+}
+function matchLocalized(path, locale, defaultLocale) {
+  if (path === "") {
+    return;
+  }
+  const parsed = parsePath(path);
+  const resolvedMatch = matcher.resolve(
+    { path: parsed.pathname || "/" },
+    { path: "/", name: "", matched: [], params: {}, meta: {} }
+  );
+  if (resolvedMatch.matched.length > 0) {
+    const alternate = getI18nPathToI18nPath(resolvedMatch.matched[0].path, locale);
+    const match = matcher.resolve(
+      { params: resolvedMatch.params },
+      { path: alternate || "/", name: "", matched: [], params: {}, meta: {} }
+    );
+    return formatTrailingSlash(withLeadingSlash(joinURL(locale , match.path)), true);
+  }
+}
+
+function* detect(detectors, detection, path) {
+  if (detection.enabled) {
+    yield { locale: detectors.cookie(), source: "cookie" };
+    yield { locale: detectors.header(), source: "header" };
+  }
+  {
+    yield { locale: detectors.route(path), source: "route" };
+  }
+  yield { locale: detection.fallbackLocale, source: "fallback" };
+}
+function createRedirectResponse(event, dest, code) {
+  event.node.res.setHeader("location", dest);
+  event.node.res.statusCode = sanitizeStatusCode(code, event.node.res.statusCode);
+  return {
+    headers: event.node.res.getHeaders(),
+    statusCode: event.node.res.statusCode,
+    body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=${dest.replace(/"/g, "%22")}"></head></html>`
+  };
+}
+const _klsVoc7ZPsFYSA3eAJNjR2yb9p3vKpPHWRLxnmpX1aw = defineNitroPlugin(async (nitro) => {
+  const runtimeI18n = useRuntimeI18n();
+  const rootRedirect = resolveRootRedirect(runtimeI18n.rootRedirect);
+  runtimeI18n.defaultLocale || "";
+  try {
+    const cacheStorage = useStorage("cache");
+    const cachedKeys = await cacheStorage.getKeys("nitro:handlers:i18n");
+    await Promise.all(cachedKeys.map((key) => cacheStorage.removeItem(key)));
+  } catch {
+  }
+  const detection = useI18nDetection();
+  const cookieOptions = {
+    path: "/",
+    domain: detection.cookieDomain || void 0,
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: "lax",
+    secure: detection.cookieSecure
+  };
+  const createBaseUrlGetter = () => {
+    isFunction(runtimeI18n.baseUrl) ? "" : runtimeI18n.baseUrl || "";
+    if (isFunction(runtimeI18n.baseUrl)) {
+      return () => "";
+    }
+    return (event, defaultLocale) => {
+      return "";
+    };
+  };
+  function resolveRedirectPath(event, path, pathLocale, defaultLocale, detector) {
+    let locale = "";
+    for (const detected of detect(detector, detection, event.path)) {
+      if (detected.locale && isSupportedLocale(detected.locale)) {
+        locale = detected.locale;
+        break;
+      }
+    }
+    locale ||= defaultLocale;
+    function getLocalizedMatch(locale2) {
+      const res = matchLocalized(path || "/", locale2);
+      if (res && res !== event.path) {
+        return res;
+      }
+    }
+    let resolvedPath = void 0;
+    let redirectCode = 302;
+    const requestURL = getRequestURL(event);
+    if (rootRedirect && requestURL.pathname === "/") {
+      locale = detection.enabled && locale || defaultLocale;
+      resolvedPath = isSupportedLocale(detector.route(rootRedirect.path)) && rootRedirect.path || matchLocalized(rootRedirect.path, locale);
+      redirectCode = rootRedirect.code;
+    } else if (runtimeI18n.redirectStatusCode) {
+      redirectCode = runtimeI18n.redirectStatusCode;
+    }
+    switch (detection.redirectOn) {
+      case "root":
+        if (requestURL.pathname !== "/") {
+          break;
+        }
+      // fallthrough (root has no prefix)
+      case "no prefix":
+        if (pathLocale) {
+          break;
+        }
+      // fallthrough to resolve
+      case "all":
+        resolvedPath ??= getLocalizedMatch(locale);
+        break;
+    }
+    if (requestURL.pathname === "/" && "prefix" === "prefix") {
+      resolvedPath ??= getLocalizedMatch(defaultLocale);
+    }
+    return { path: resolvedPath, code: redirectCode, locale };
+  }
+  const baseUrlGetter = createBaseUrlGetter();
+  nitro.hooks.hook("request", async (event) => {
+    await initializeI18nContext(event);
+  });
+  nitro.hooks.hook("render:before", async (context) => {
+    const { event } = context;
+    const ctx = useI18nContext(event);
+    const url = getRequestURL(event);
+    const detector = useDetectors(event, detection);
+    const localeSegment = detector.route(event.path);
+    const pathLocale = isSupportedLocale(localeSegment) && localeSegment || void 0;
+    const path = (pathLocale && url.pathname.slice(pathLocale.length + 1)) ?? url.pathname;
+    if (!url.pathname.includes("/_i18n") && !isExistingNuxtRoute(path)) {
+      return;
+    }
+    const resolved = resolveRedirectPath(event, path, pathLocale, ctx.vueI18nOptions.defaultLocale, detector);
+    if (resolved.path && resolved.path !== url.pathname) {
+      ctx.detectLocale = resolved.locale;
+      detection.useCookie && setCookie(event, detection.cookieKey, resolved.locale, cookieOptions);
+      context.response = createRedirectResponse(
+        event,
+        joinURL(baseUrlGetter(event, ctx.vueI18nOptions.defaultLocale), resolved.path + url.search),
+        resolved.code
+      );
+      return;
+    }
+  });
+  nitro.hooks.hook("render:html", (htmlContext, { event }) => {
+    tryUseI18nContext(event);
+  });
+});
+
 const plugins = [
-  
+  _klsVoc7ZPsFYSA3eAJNjR2yb9p3vKpPHWRLxnmpX1aw
 ];
 
 const assets = {
-  "/cv/ai-systems.pdf": {
-    "type": "application/pdf",
-    "etag": "\"289-Wf/UDOsT8c1mkumMwIfux6VDrNQ\"",
-    "mtime": "2026-05-20T07:56:17.099Z",
-    "size": 649,
-    "path": "../public/cv/ai-systems.pdf"
+  "/index.html": {
+    "type": "text/html; charset=utf-8",
+    "etag": "\"59-QUXoSqWZE5lLKszE3TY/n1sELEg\"",
+    "mtime": "2026-05-26T09:07:05.364Z",
+    "size": 89,
+    "path": "../public/index.html"
   },
   "/cv/database-administrator.pdf": {
     "type": "application/pdf",
@@ -4512,21 +6500,6 @@ const assets = {
     "size": 652,
     "path": "../public/cv/database-administrator.pdf"
   },
-  "/cv/systems-administrator.pdf": {
-    "type": "application/pdf",
-    "etag": "\"28b-2Yd12NKZ0DgeqazxxfEPooQUiys\"",
-    "mtime": "2026-05-20T07:56:17.100Z",
-    "size": 651,
-    "path": "../public/cv/systems-administrator.pdf"
-  },
-  "/_nuxt/-Wqpohoy.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"111a-fsiVVHR0gQvbhBVShAoeOK0wexY\"",
-    "mtime": "2026-05-21T08:59:17.692Z",
-    "size": 4378,
-    "path": "../public/_nuxt/-Wqpohoy.js"
-  },
   "/cv/it-technician.pdf": {
     "type": "application/pdf",
     "etag": "\"283-XEn8+ufszU0vkw95xzIQq1+sLok\"",
@@ -4534,117 +6507,154 @@ const assets = {
     "size": 643,
     "path": "../public/cv/it-technician.pdf"
   },
-  "/_nuxt/B-oJaGJR.js": {
+  "/cv/ai-systems.pdf": {
+    "type": "application/pdf",
+    "etag": "\"289-Wf/UDOsT8c1mkumMwIfux6VDrNQ\"",
+    "mtime": "2026-05-20T07:56:17.099Z",
+    "size": 649,
+    "path": "../public/cv/ai-systems.pdf"
+  },
+  "/_nuxt/B7tyl_T1.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"d40-2ogZPu4rpP+l6OQgL1/Gqct2Jb8\"",
-    "mtime": "2026-05-21T08:59:17.692Z",
-    "size": 3392,
-    "path": "../public/_nuxt/B-oJaGJR.js"
+    "etag": "\"e9c-agui2WQYJWX9EH09/7ilyK+tHQY\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 3740,
+    "path": "../public/_nuxt/B7tyl_T1.js"
   },
-  "/_nuxt/-Wqpohoy.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"6ac-34OfmRp2x2t4Ga+e/HtNNREy2Ng\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1708,
-    "path": "../public/_nuxt/-Wqpohoy.js.gz"
-  },
-  "/_nuxt/B-oJaGJR.js.br": {
+  "/_nuxt/B7tyl_T1.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"526-I/OrRbKOsfjscl0gKAKM9RaPtWs\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1318,
-    "path": "../public/_nuxt/B-oJaGJR.js.br"
+    "etag": "\"5c0-i8avs31fZ4kq6iRVdDbAMaTniFo\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 1472,
+    "path": "../public/_nuxt/B7tyl_T1.js.br"
   },
-  "/_nuxt/B-oJaGJR.js.gz": {
+  "/_nuxt/B7tyl_T1.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"5fb-kKR3XWaPsl2o1ErIphOifcNtAfc\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1531,
-    "path": "../public/_nuxt/B-oJaGJR.js.gz"
+    "etag": "\"6a5-HUFPrm11Vd8Cq1t+Z8STZTl5ToU\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 1701,
+    "path": "../public/_nuxt/B7tyl_T1.js.gz"
   },
-  "/_nuxt/BHEgqm80.js": {
+  "/_nuxt/BmeDfxbg.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"419-vsrjjL3tDTMD+8/HberKzoY1/Gg\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 1049,
+    "path": "../public/_nuxt/BmeDfxbg.js.gz"
+  },
+  "/_nuxt/BmeDfxbg.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"13bf-CgCsh9Slnn8gEz2EGquuPV8KCpQ\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
-    "size": 5055,
-    "path": "../public/_nuxt/BHEgqm80.js"
+    "etag": "\"c3f-OTlqWxtEyaIJgovVav4UInmjZ7I\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 3135,
+    "path": "../public/_nuxt/BmeDfxbg.js"
   },
-  "/_nuxt/BHEgqm80.js.br": {
+  "/_nuxt/BmeDfxbg.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"795-LD4V/XQLNSjBGMRbWt5LcnhTZco\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1941,
-    "path": "../public/_nuxt/BHEgqm80.js.br"
+    "etag": "\"392-rUnevupda0jlAK/XKMyEE5PPihc\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 914,
+    "path": "../public/_nuxt/BmeDfxbg.js.br"
   },
-  "/_nuxt/BHEgqm80.js.gz": {
+  "/_nuxt/C4dsf97x.js": {
     "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"89a-syYwCVlVbDdqXGbcpQ9Rjm68whU\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 2202,
-    "path": "../public/_nuxt/BHEgqm80.js.gz"
+    "etag": "\"7c-uDy/XsxQG21hgsKYIucIU+p89II\"",
+    "mtime": "2026-05-26T09:07:02.021Z",
+    "size": 124,
+    "path": "../public/_nuxt/C4dsf97x.js"
   },
-  "/_nuxt/BMCSiobB.js": {
+  "/_nuxt/Cd5UfhWB.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"1336-XYIt4O8a40Uju2HvBj3ar4FWH+Y\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
-    "size": 4918,
-    "path": "../public/_nuxt/BMCSiobB.js"
+    "etag": "\"d2a-1lrUJA0krSl5kTw4VEYJ13bF4yY\"",
+    "mtime": "2026-05-26T09:07:02.019Z",
+    "size": 3370,
+    "path": "../public/_nuxt/Cd5UfhWB.js"
   },
-  "/_nuxt/BMCSiobB.js.br": {
+  "/_nuxt/Cd5UfhWB.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"5f4-GHWNSVmVHdSBx4tMWI2C3JYMN0U\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 1524,
+    "path": "../public/_nuxt/Cd5UfhWB.js.gz"
+  },
+  "/_nuxt/CoRmll1l.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"35a3-/p3UFgjBAwdQpMesehVpvNMKdvI\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 13731,
+    "path": "../public/_nuxt/CoRmll1l.js"
+  },
+  "/_nuxt/Cd5UfhWB.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"769-Sn87hiyK9gVg7H/f4tyWj/bJl9g\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1897,
-    "path": "../public/_nuxt/BMCSiobB.js.br"
+    "etag": "\"512-26GnswRfjPzVAttcCVKvul6kQ9M\"",
+    "mtime": "2026-05-26T09:07:05.442Z",
+    "size": 1298,
+    "path": "../public/_nuxt/Cd5UfhWB.js.br"
   },
-  "/_nuxt/-Wqpohoy.js.br": {
+  "/_nuxt/CoRmll1l.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"5ea-diKudk3UBRz8QsQj0+XG1+mOEZY\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1514,
-    "path": "../public/_nuxt/-Wqpohoy.js.br"
+    "etag": "\"c8f-UX2SL8x+VNRYjuw0juimyCBRWQc\"",
+    "mtime": "2026-05-26T09:07:05.465Z",
+    "size": 3215,
+    "path": "../public/_nuxt/CoRmll1l.js.br"
   },
-  "/_nuxt/BMCSiobB.js.gz": {
+  "/_nuxt/CoRmll1l.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"84b-HEGJiYFZlTmgg2y1otrr9Zaj1NA\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 2123,
-    "path": "../public/_nuxt/BMCSiobB.js.gz"
+    "etag": "\"e4a-fHQ5J4zq7VGTeukjvm6c8RCHqCs\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 3658,
+    "path": "../public/_nuxt/CoRmll1l.js.gz"
   },
-  "/_nuxt/BTELpPQ2.js.gz": {
+  "/cv/systems-administrator.pdf": {
+    "type": "application/pdf",
+    "etag": "\"28b-2Yd12NKZ0DgeqazxxfEPooQUiys\"",
+    "mtime": "2026-05-20T07:56:17.100Z",
+    "size": 651,
+    "path": "../public/cv/systems-administrator.pdf"
+  },
+  "/_nuxt/Cpqh1vvX.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"35cf-Y+Io4HvFRbjrGrGdW5SzR/FKpCw\"",
+    "mtime": "2026-05-26T09:07:02.021Z",
+    "size": 13775,
+    "path": "../public/_nuxt/Cpqh1vvX.js"
+  },
+  "/_nuxt/Cpqh1vvX.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"cbd-D78bskeb5QAn5ElqxG+iObFwTN4\"",
+    "mtime": "2026-05-26T09:07:05.465Z",
+    "size": 3261,
+    "path": "../public/_nuxt/Cpqh1vvX.js.br"
+  },
+  "/_nuxt/Cpqh1vvX.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"40e-0RnhrPVBHY/Dsj4cm28O2wn4KOg\"",
-    "mtime": "2026-05-21T08:59:18.357Z",
-    "size": 1038,
-    "path": "../public/_nuxt/BTELpPQ2.js.gz"
+    "etag": "\"e74-V67V+KdUYqvtxyVRo2aP86ezWGE\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 3700,
+    "path": "../public/_nuxt/Cpqh1vvX.js.gz"
   },
-  "/_nuxt/CkhRd0hP.js": {
+  "/_nuxt/CX8aZVQ9.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"2c19a-2kYZKxQ4+sGgHlLD/8j0wuwFi+4\"",
-    "mtime": "2026-05-21T08:59:17.691Z",
-    "size": 180634,
-    "path": "../public/_nuxt/CkhRd0hP.js"
-  },
-  "/_nuxt/BTELpPQ2.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"c05-Vo0U3QW9uAx1nH1BPFiq+SFABgY\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
-    "size": 3077,
-    "path": "../public/_nuxt/BTELpPQ2.js"
+    "etag": "\"14e6-ptfPVDNwJi55qJttwsGzLDj9Hi8\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 5350,
+    "path": "../public/_nuxt/CX8aZVQ9.js"
   },
   "/cv/fullstack.pdf": {
     "type": "application/pdf",
@@ -4654,27 +6664,11 @@ const assets = {
     "size": 478424,
     "path": "../public/cv/fullstack.pdf"
   },
-  "/_nuxt/CkhRd0hP.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"eac0-bv5xZbPSskbQdmzaTzK8BkiBIkw\"",
-    "mtime": "2026-05-21T08:59:18.530Z",
-    "size": 60096,
-    "path": "../public/_nuxt/CkhRd0hP.js.br"
-  },
-  "/_nuxt/BTELpPQ2.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"384-2I2Tc71Cn4AGne5CUzz9ZXkP0JU\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
-    "size": 900,
-    "path": "../public/_nuxt/BTELpPQ2.js.br"
-  },
   "/cv/fullstack.pdf.br": {
     "type": "application/pdf",
     "encoding": "br",
     "etag": "\"69874-ry6alQP6P7o4pZ5FVMTlGvh82rc\"",
-    "mtime": "2026-05-21T08:59:18.960Z",
+    "mtime": "2026-05-26T09:07:06.574Z",
     "size": 432244,
     "path": "../public/cv/fullstack.pdf.br"
   },
@@ -4682,87 +6676,159 @@ const assets = {
     "type": "application/pdf",
     "encoding": "gzip",
     "etag": "\"6bc65-mzy95VHD1D1eT4CVwmfBuW52luI\"",
-    "mtime": "2026-05-21T08:59:18.382Z",
+    "mtime": "2026-05-26T09:07:05.517Z",
     "size": 441445,
     "path": "../public/cv/fullstack.pdf.gz"
   },
-  "/_nuxt/CkhRd0hP.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"10742-BJ1NnWbFokLu+DihtztqYUUfzTs\"",
-    "mtime": "2026-05-21T08:59:18.375Z",
-    "size": 67394,
-    "path": "../public/_nuxt/CkhRd0hP.js.gz"
-  },
-  "/_nuxt/Cuhs6LB_.js.br": {
+  "/_nuxt/CX8aZVQ9.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"5c1-JJsQCECommA/LM/3O5ochXmcln0\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
-    "size": 1473,
-    "path": "../public/_nuxt/Cuhs6LB_.js.br"
+    "etag": "\"76d-33r+lzYFmKbY0EavNeLtG8nIffc\"",
+    "mtime": "2026-05-26T09:07:05.465Z",
+    "size": 1901,
+    "path": "../public/_nuxt/CX8aZVQ9.js.br"
   },
-  "/_nuxt/CyNumbdu.js.br": {
+  "/_nuxt/CX8aZVQ9.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"843-q7eCedWWDCTC6aPCM8pOnP64ucM\"",
+    "mtime": "2026-05-26T09:07:05.465Z",
+    "size": 2115,
+    "path": "../public/_nuxt/CX8aZVQ9.js.gz"
+  },
+  "/_nuxt/D3Lj0GuJ.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"134d-RiafQHPRFDgJismRDjbDc12JgvE\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 4941,
+    "path": "../public/_nuxt/D3Lj0GuJ.js"
+  },
+  "/_nuxt/DBfv7vy4.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"5ac-DrBJmKY0KPDJeVkwBV+fEQrZGIU\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
-    "size": 1452,
-    "path": "../public/_nuxt/CyNumbdu.js.br"
+    "etag": "\"70f-87G5zTk/Mlo+2Z31cqMqdPnd4Q4\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 1807,
+    "path": "../public/_nuxt/DBfv7vy4.js.br"
   },
-  "/_nuxt/Cuhs6LB_.js": {
+  "/_nuxt/D3Lj0GuJ.js.br": {
     "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"eb2-BzKvSNUuAmrlhHs3YDroGxELb8g\"",
-    "mtime": "2026-05-21T08:59:17.692Z",
-    "size": 3762,
-    "path": "../public/_nuxt/Cuhs6LB_.js"
+    "encoding": "br",
+    "etag": "\"746-QGnoAyrfLodMoqfby3xLRy9M6BY\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 1862,
+    "path": "../public/_nuxt/D3Lj0GuJ.js.br"
   },
-  "/_nuxt/Cuhs6LB_.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"6aa-hMhWZZC3L4/xvy8ZdJS+yqBXXE4\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
-    "size": 1706,
-    "path": "../public/_nuxt/Cuhs6LB_.js.gz"
-  },
-  "/_nuxt/CyNumbdu.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"19f5-GRF10DdapKf+OGpt48v/4er7s7U\"",
-    "mtime": "2026-05-21T08:59:17.694Z",
-    "size": 6645,
-    "path": "../public/_nuxt/CyNumbdu.js"
-  },
-  "/_nuxt/error-404.DL_4WIao.css": {
-    "type": "text/css; charset=utf-8",
-    "encoding": null,
-    "etag": "\"dca-KnjyV0UbpsrliiJzZx69defY74k\"",
-    "mtime": "2026-05-21T08:59:17.692Z",
-    "size": 3530,
-    "path": "../public/_nuxt/error-404.DL_4WIao.css"
-  },
-  "/_nuxt/CyNumbdu.js.gz": {
+  "/_nuxt/D3Lj0GuJ.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"676-t9GqjaNPCNz8FIHl2MLMY42BHOI\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
-    "size": 1654,
-    "path": "../public/_nuxt/CyNumbdu.js.gz"
+    "etag": "\"833-0QgZt94+15C62Vuf/6vCbTLwPao\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 2099,
+    "path": "../public/_nuxt/D3Lj0GuJ.js.gz"
+  },
+  "/_nuxt/DBfv7vy4.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"12cf-c4aXAKw2MgBcvNShomdXaTAH2d4\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 4815,
+    "path": "../public/_nuxt/DBfv7vy4.js"
+  },
+  "/_nuxt/DBfv7vy4.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"7f3-GAORyM1tIM0cvPiZYhC/YNxEA1E\"",
+    "mtime": "2026-05-26T09:07:05.464Z",
+    "size": 2035,
+    "path": "../public/_nuxt/DBfv7vy4.js.gz"
+  },
+  "/_nuxt/DOr_z14K.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"3b0b-YE+6432ai8b20jF31kruPZtrudI\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 15115,
+    "path": "../public/_nuxt/DOr_z14K.js"
+  },
+  "/_nuxt/DOr_z14K.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"108c-d+rwO7IO+AJpkSQDVv/Ip4KcIaA\"",
+    "mtime": "2026-05-26T09:07:05.493Z",
+    "size": 4236,
+    "path": "../public/_nuxt/DOr_z14K.js.br"
+  },
+  "/_nuxt/DOr_z14K.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"131f-zV3acp7ScdJFeRKvlJxG8zs/N5g\"",
+    "mtime": "2026-05-26T09:07:05.465Z",
+    "size": 4895,
+    "path": "../public/_nuxt/DOr_z14K.js.gz"
+  },
+  "/_nuxt/DZn_2QhW.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"549-/jWgH3aRc50XM/rA1GfMwrYigxw\"",
+    "mtime": "2026-05-26T09:07:05.483Z",
+    "size": 1353,
+    "path": "../public/_nuxt/DZn_2QhW.js.br"
+  },
+  "/_nuxt/DZn_2QhW.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"1948-W2N/jhAtLF3tbBp4DFQXbAzDjnY\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 6472,
+    "path": "../public/_nuxt/DZn_2QhW.js"
+  },
+  "/_nuxt/DZn_2QhW.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"5ff-n5t+e9rjQeSUCvv1zu8JzTQpoOk\"",
+    "mtime": "2026-05-26T09:07:05.483Z",
+    "size": 1535,
+    "path": "../public/_nuxt/DZn_2QhW.js.gz"
+  },
+  "/_nuxt/Er7JCv40.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"16d9e-l7Z2YMcp7vOEpRwtAYVdxkhnTXk\"",
+    "mtime": "2026-05-26T09:07:05.504Z",
+    "size": 93598,
+    "path": "../public/_nuxt/Er7JCv40.js.gz"
+  },
+  "/_nuxt/Er7JCv40.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"14347-b+YO5bqTfC03xiRmCycx9R+iUTo\"",
+    "mtime": "2026-05-26T09:07:05.969Z",
+    "size": 82759,
+    "path": "../public/_nuxt/Er7JCv40.js.br"
   },
   "/_nuxt/error-404.DL_4WIao.css.br": {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
     "etag": "\"39d-nP/+crbzK9YvJ/QXYhvkEnbNsYI\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
+    "mtime": "2026-05-26T09:07:05.483Z",
     "size": 925,
     "path": "../public/_nuxt/error-404.DL_4WIao.css.br"
+  },
+  "/_nuxt/error-404.DL_4WIao.css": {
+    "type": "text/css; charset=utf-8",
+    "encoding": null,
+    "etag": "\"dca-KnjyV0UbpsrliiJzZx69defY74k\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 3530,
+    "path": "../public/_nuxt/error-404.DL_4WIao.css"
   },
   "/_nuxt/error-404.DL_4WIao.css.gz": {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"43c-dMNEkwMYZ//keMOyvXwwYF0SoQo\"",
-    "mtime": "2026-05-21T08:59:18.365Z",
+    "mtime": "2026-05-26T09:07:05.483Z",
     "size": 1084,
     "path": "../public/_nuxt/error-404.DL_4WIao.css.gz"
   },
@@ -4770,7 +6836,7 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": null,
     "etag": "\"75a-vEGyJqldBVJrnMfcLsrGaHcxYl0\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
+    "mtime": "2026-05-26T09:07:02.019Z",
     "size": 1882,
     "path": "../public/_nuxt/error-500.I1Dtv2V5.css"
   },
@@ -4778,72 +6844,73 @@ const assets = {
     "type": "text/css; charset=utf-8",
     "encoding": "br",
     "etag": "\"268-lJ+HRjM/VQxUTr3hO/2cBSuQSMY\"",
-    "mtime": "2026-05-21T08:59:18.373Z",
+    "mtime": "2026-05-26T09:07:05.500Z",
     "size": 616,
     "path": "../public/_nuxt/error-500.I1Dtv2V5.css.br"
+  },
+  "/_nuxt/Er7JCv40.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"3ed8c-IapZzVHcXS38+2aprqEfH0JozB8\"",
+    "mtime": "2026-05-26T09:07:02.017Z",
+    "size": 257420,
+    "path": "../public/_nuxt/Er7JCv40.js"
   },
   "/_nuxt/error-500.I1Dtv2V5.css.gz": {
     "type": "text/css; charset=utf-8",
     "encoding": "gzip",
     "etag": "\"2d0-18GBcUst37hn8EKkAQyuOv4Q6XI\"",
-    "mtime": "2026-05-21T08:59:18.372Z",
+    "mtime": "2026-05-26T09:07:05.498Z",
     "size": 720,
     "path": "../public/_nuxt/error-500.I1Dtv2V5.css.gz"
   },
-  "/_nuxt/NzTE75Ob.js.br": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "br",
-    "etag": "\"d97-w7QGWSNhXtaZOxpkeSJXGzIaCrg\"",
-    "mtime": "2026-05-21T08:59:18.376Z",
-    "size": 3479,
-    "path": "../public/_nuxt/NzTE75Ob.js.br"
-  },
-  "/_nuxt/NzTE75Ob.js": {
+  "/_nuxt/foXK-qO_.js": {
     "type": "text/javascript; charset=utf-8",
     "encoding": null,
-    "etag": "\"24c1-WR3Lk2NrlplWtHgx61DUw5kx5vw\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
-    "size": 9409,
-    "path": "../public/_nuxt/NzTE75Ob.js"
+    "etag": "\"35d8-/sgxTH5psdWzDHdkxaLLiuxIYdE\"",
+    "mtime": "2026-05-26T09:07:02.021Z",
+    "size": 13784,
+    "path": "../public/_nuxt/foXK-qO_.js"
   },
-  "/_nuxt/NzTE75Ob.js.gz": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": "gzip",
-    "etag": "\"fc2-Qef0fHbVMKRIKYurTbmgnsQCv9Q\"",
-    "mtime": "2026-05-21T08:59:18.373Z",
-    "size": 4034,
-    "path": "../public/_nuxt/NzTE75Ob.js.gz"
-  },
-  "/_nuxt/rK9ercXy.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"149-ruAiw0kmFkTcxeVtA2Gw5WEsHr0\"",
-    "mtime": "2026-05-21T08:59:17.693Z",
-    "size": 329,
-    "path": "../public/_nuxt/rK9ercXy.js"
-  },
-  "/_nuxt/w_lvnYGW.js": {
-    "type": "text/javascript; charset=utf-8",
-    "encoding": null,
-    "etag": "\"14e1-yAkhWEGhc9XHw0gl/SJE7rp8l84\"",
-    "mtime": "2026-05-21T08:59:17.694Z",
-    "size": 5345,
-    "path": "../public/_nuxt/w_lvnYGW.js"
-  },
-  "/_nuxt/w_lvnYGW.js.br": {
+  "/_nuxt/foXK-qO_.js.br": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "br",
-    "etag": "\"76e-axvpSF01x9fcqM0PxxcTTOPhSZA\"",
-    "mtime": "2026-05-21T08:59:18.373Z",
-    "size": 1902,
-    "path": "../public/_nuxt/w_lvnYGW.js.br"
+    "etag": "\"c8f-rGj4k5lH7EZ6tv65mrit7J7Xrl8\"",
+    "mtime": "2026-05-26T09:07:05.503Z",
+    "size": 3215,
+    "path": "../public/_nuxt/foXK-qO_.js.br"
   },
-  "/_nuxt/w_lvnYGW.js.gz": {
+  "/_nuxt/foXK-qO_.js.gz": {
     "type": "text/javascript; charset=utf-8",
     "encoding": "gzip",
-    "etag": "\"83f-GvSwqgyPcy+BL+tKNxA0IFI2DN8\"",
-    "mtime": "2026-05-21T08:59:18.373Z",
-    "size": 2111,
-    "path": "../public/_nuxt/w_lvnYGW.js.gz"
+    "etag": "\"e2f-G9IPGZ444XezMZuUIDhjClCcSMs\"",
+    "mtime": "2026-05-26T09:07:05.501Z",
+    "size": 3631,
+    "path": "../public/_nuxt/foXK-qO_.js.gz"
+  },
+  "/_nuxt/Q2erPKUq.js": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": null,
+    "etag": "\"109e-SJVvyogmITY4JN42GfssJOflgmY\"",
+    "mtime": "2026-05-26T09:07:02.020Z",
+    "size": 4254,
+    "path": "../public/_nuxt/Q2erPKUq.js"
+  },
+  "/_nuxt/Q2erPKUq.js.br": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "br",
+    "etag": "\"4b0-/bVPOKpHY5a6aibz6IlOLLrdQas\"",
+    "mtime": "2026-05-26T09:07:05.500Z",
+    "size": 1200,
+    "path": "../public/_nuxt/Q2erPKUq.js.br"
+  },
+  "/images/cv/ai-systems-preview.svg.br": {
+    "type": "image/svg+xml",
+    "encoding": "br",
+    "etag": "\"22f-v6sdP1HaJwmlzEX/LPzWCi0ZIJE\"",
+    "mtime": "2026-05-26T09:07:05.502Z",
+    "size": 559,
+    "path": "../public/images/cv/ai-systems-preview.svg.br"
   },
   "/images/cv/ai-systems-preview.svg": {
     "type": "image/svg+xml",
@@ -4853,21 +6920,21 @@ const assets = {
     "size": 1665,
     "path": "../public/images/cv/ai-systems-preview.svg"
   },
-  "/images/cv/ai-systems-preview.svg.br": {
-    "type": "image/svg+xml",
-    "encoding": "br",
-    "etag": "\"22f-v6sdP1HaJwmlzEX/LPzWCi0ZIJE\"",
-    "mtime": "2026-05-21T08:59:18.376Z",
-    "size": 559,
-    "path": "../public/images/cv/ai-systems-preview.svg.br"
-  },
   "/images/cv/ai-systems-preview.svg.gz": {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"297-1yean5lwPq9puqgepyhe4P/KTBs\"",
-    "mtime": "2026-05-21T08:59:18.376Z",
+    "mtime": "2026-05-26T09:07:05.502Z",
     "size": 663,
     "path": "../public/images/cv/ai-systems-preview.svg.gz"
+  },
+  "/_nuxt/Q2erPKUq.js.gz": {
+    "type": "text/javascript; charset=utf-8",
+    "encoding": "gzip",
+    "etag": "\"55f-uSPUYRjH0UnLpjGew8KzRUMsur4\"",
+    "mtime": "2026-05-26T09:07:05.500Z",
+    "size": 1375,
+    "path": "../public/_nuxt/Q2erPKUq.js.gz"
   },
   "/images/cv/database-admin-preview.svg": {
     "type": "image/svg+xml",
@@ -4877,18 +6944,11 @@ const assets = {
     "size": 1509,
     "path": "../public/images/cv/database-admin-preview.svg"
   },
-  "/images/cv/ai-systems-preview.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"3155d-fGjO51Tgd8aKCwp038mpG7/7TZo\"",
-    "mtime": "2026-05-20T08:58:07.426Z",
-    "size": 202077,
-    "path": "../public/images/cv/ai-systems-preview.jpg"
-  },
   "/images/cv/database-admin-preview.svg.br": {
     "type": "image/svg+xml",
     "encoding": "br",
     "etag": "\"1b1-LIEhTRXv/oZctmfDJVn9tYZEa/c\"",
-    "mtime": "2026-05-21T08:59:18.376Z",
+    "mtime": "2026-05-26T09:07:05.508Z",
     "size": 433,
     "path": "../public/images/cv/database-admin-preview.svg.br"
   },
@@ -4896,9 +6956,17 @@ const assets = {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"211-XPtgoN41oPGaRRonshyhjfb6+Hg\"",
-    "mtime": "2026-05-21T08:59:18.376Z",
+    "mtime": "2026-05-26T09:07:05.507Z",
     "size": 529,
     "path": "../public/images/cv/database-admin-preview.svg.gz"
+  },
+  "/images/cv/fullstack-preview.svg.br": {
+    "type": "image/svg+xml",
+    "encoding": "br",
+    "etag": "\"1b6-WvNv0OiQ8PI4bFCULQowpvy7yx4\"",
+    "mtime": "2026-05-26T09:07:05.512Z",
+    "size": 438,
+    "path": "../public/images/cv/fullstack-preview.svg.br"
   },
   "/images/cv/fullstack-preview.svg": {
     "type": "image/svg+xml",
@@ -4908,6 +6976,28 @@ const assets = {
     "size": 1495,
     "path": "../public/images/cv/fullstack-preview.svg"
   },
+  "/images/cv/ai-systems-preview.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"3155d-fGjO51Tgd8aKCwp038mpG7/7TZo\"",
+    "mtime": "2026-05-20T08:58:07.426Z",
+    "size": 202077,
+    "path": "../public/images/cv/ai-systems-preview.jpg"
+  },
+  "/images/cv/fullstack-preview.svg.gz": {
+    "type": "image/svg+xml",
+    "encoding": "gzip",
+    "etag": "\"20b-bknF1e34zhWoFXk1VNPd2FEexBk\"",
+    "mtime": "2026-05-26T09:07:05.508Z",
+    "size": 523,
+    "path": "../public/images/cv/fullstack-preview.svg.gz"
+  },
+  "/images/cv/it-technician-preview.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"75b6-Rvn6s2asgggdc2QCjZbh8KR1Ryo\"",
+    "mtime": "2026-05-25T08:43:34.796Z",
+    "size": 30134,
+    "path": "../public/images/cv/it-technician-preview.jpg"
+  },
   "/images/cv/it-technician-preview.svg": {
     "type": "image/svg+xml",
     "encoding": null,
@@ -4916,37 +7006,35 @@ const assets = {
     "size": 1488,
     "path": "../public/images/cv/it-technician-preview.svg"
   },
+  "/images/cv/fullstack-preview.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"37b8a-IsMIORQcvAVnKdfT3VQUsZ7Dzks\"",
+    "mtime": "2026-05-20T09:00:38.674Z",
+    "size": 228234,
+    "path": "../public/images/cv/fullstack-preview.jpg"
+  },
   "/images/cv/it-technician-preview.svg.br": {
     "type": "image/svg+xml",
     "encoding": "br",
     "etag": "\"1b6-wbl2okLVp0GIpccrlxwZLdH1Q84\"",
-    "mtime": "2026-05-21T08:59:18.379Z",
+    "mtime": "2026-05-26T09:07:05.513Z",
     "size": 438,
     "path": "../public/images/cv/it-technician-preview.svg.br"
-  },
-  "/images/cv/fullstack-preview.svg.br": {
-    "type": "image/svg+xml",
-    "encoding": "br",
-    "etag": "\"1b6-WvNv0OiQ8PI4bFCULQowpvy7yx4\"",
-    "mtime": "2026-05-21T08:59:18.379Z",
-    "size": 438,
-    "path": "../public/images/cv/fullstack-preview.svg.br"
   },
   "/images/cv/it-technician-preview.svg.gz": {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"206-S6GBXxkmMmpFzpkhiQJpgdrwbxI\"",
-    "mtime": "2026-05-21T08:59:18.379Z",
+    "mtime": "2026-05-26T09:07:05.512Z",
     "size": 518,
     "path": "../public/images/cv/it-technician-preview.svg.gz"
   },
-  "/images/cv/fullstack-preview.svg.gz": {
-    "type": "image/svg+xml",
-    "encoding": "gzip",
-    "etag": "\"20b-bknF1e34zhWoFXk1VNPd2FEexBk\"",
-    "mtime": "2026-05-21T08:59:18.377Z",
-    "size": 523,
-    "path": "../public/images/cv/fullstack-preview.svg.gz"
+  "/images/cv/systems-admin-preview.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"e894-HvotoQDNqgb9+ho/FAqOkd/Cjm4\"",
+    "mtime": "2026-05-25T08:42:16.478Z",
+    "size": 59540,
+    "path": "../public/images/cv/systems-admin-preview.jpg"
   },
   "/images/cv/systems-admin-preview.svg": {
     "type": "image/svg+xml",
@@ -4960,38 +7048,45 @@ const assets = {
     "type": "image/svg+xml",
     "encoding": "br",
     "etag": "\"1af-mmJeLYz0sAlJJG6osGBqtuLP8L4\"",
-    "mtime": "2026-05-21T08:59:18.379Z",
+    "mtime": "2026-05-26T09:07:05.513Z",
     "size": 431,
     "path": "../public/images/cv/systems-admin-preview.svg.br"
+  },
+  "/images/cv/fullstack-preview2.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"52103-kPyT3VevbOlylmJkYYEq/VVrW/A\"",
+    "mtime": "2026-05-25T08:46:13.841Z",
+    "size": 336131,
+    "path": "../public/images/cv/fullstack-preview2.jpg"
   },
   "/images/cv/systems-admin-preview.svg.gz": {
     "type": "image/svg+xml",
     "encoding": "gzip",
     "etag": "\"212-Iztwd5JaN95o7tUW0Ic9Rcho81s\"",
-    "mtime": "2026-05-21T08:59:18.379Z",
+    "mtime": "2026-05-26T09:07:05.513Z",
     "size": 530,
     "path": "../public/images/cv/systems-admin-preview.svg.gz"
   },
-  "/_nuxt/builds/meta/0fee059c-b4d9-4760-8388-dd6605d83013.json": {
-    "type": "application/json",
-    "etag": "\"58-rd3lZeCkdL6ETL/K7wwaIRRQLS8\"",
-    "mtime": "2026-05-21T08:59:18.329Z",
-    "size": 88,
-    "path": "../public/_nuxt/builds/meta/0fee059c-b4d9-4760-8388-dd6605d83013.json"
+  "/images/cv/database-admin-preview.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"128246-Ve3AN8nMV6RRlP8S4m5Fzme0nZg\"",
+    "mtime": "2026-05-25T08:30:18.806Z",
+    "size": 1212998,
+    "path": "../public/images/cv/database-admin-preview.jpg"
   },
   "/_nuxt/builds/latest.json": {
     "type": "application/json",
-    "etag": "\"47-Lns6JB4K5DPTURHjDXPlCW53mew\"",
-    "mtime": "2026-05-21T08:59:18.328Z",
+    "etag": "\"47-slW9a6xmWUC/5eOMr6j7eBf35xQ\"",
+    "mtime": "2026-05-26T09:07:05.390Z",
     "size": 71,
     "path": "../public/_nuxt/builds/latest.json"
   },
-  "/images/cv/fullstack-preview.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"37b8a-IsMIORQcvAVnKdfT3VQUsZ7Dzks\"",
-    "mtime": "2026-05-20T09:00:38.674Z",
-    "size": 228234,
-    "path": "../public/images/cv/fullstack-preview.jpg"
+  "/_nuxt/builds/meta/033ee793-4455-4309-9c91-ecf718b3be4d.json": {
+    "type": "application/json",
+    "etag": "\"58-88RShifxfIcEejGoJb4MLhk2Yd0\"",
+    "mtime": "2026-05-26T09:07:05.390Z",
+    "size": 88,
+    "path": "../public/_nuxt/builds/meta/033ee793-4455-4309-9c91-ecf718b3be4d.json"
   }
 };
 
@@ -5185,6 +7280,123 @@ const _lRiuN9 = eventHandler((event) => {
   return readAsset(id);
 });
 
+const storage = prefixStorage(useStorage(), "i18n");
+function cachedFunctionI18n(fn, opts) {
+  opts = { maxAge: 1, ...opts };
+  const pending = {};
+  async function get(key, resolver) {
+    const isPending = pending[key];
+    if (!isPending) {
+      pending[key] = Promise.resolve(resolver());
+    }
+    try {
+      return await pending[key];
+    } finally {
+      delete pending[key];
+    }
+  }
+  return async (...args) => {
+    const key = [opts.name, opts.getKey(...args)].join(":").replace(/:\/$/, ":index");
+    const maxAge = opts.maxAge ?? 1;
+    const isCacheable = !opts.shouldBypassCache(...args) && maxAge >= 0;
+    const cache = isCacheable && await storage.getItemRaw(key);
+    if (!cache || cache.ttl < Date.now()) {
+      pending[key] = Promise.resolve(fn(...args));
+      const value = await get(key, () => fn(...args));
+      if (isCacheable) {
+        await storage.setItemRaw(key, { ttl: Date.now() + maxAge * 1e3, value, mtime: Date.now() });
+      }
+      return value;
+    }
+    return cache.value;
+  };
+}
+
+const _getMessages = async (locale) => {
+  return { [locale]: await getLocaleMessagesMerged(locale, localeLoaders[locale]) };
+};
+const _getMessagesCached = cachedFunctionI18n(_getMessages, {
+  name: "messages",
+  maxAge: 60 * 60 * 24,
+  getKey: (locale) => locale,
+  shouldBypassCache: (locale) => !isLocaleCacheable(locale)
+});
+const getMessages = _getMessagesCached;
+const _getMergedMessages = async (locale, fallbackLocales) => {
+  const merged = {};
+  try {
+    if (fallbackLocales.length > 0) {
+      const messages = await Promise.all(fallbackLocales.map(getMessages));
+      for (const message2 of messages) {
+        deepCopy(message2, merged);
+      }
+    }
+    const message = await getMessages(locale);
+    deepCopy(message, merged);
+    return merged;
+  } catch (e) {
+    throw new Error("Failed to merge messages: " + e.message);
+  }
+};
+const getMergedMessages = cachedFunctionI18n(_getMergedMessages, {
+  name: "merged-single",
+  maxAge: 60 * 60 * 24,
+  getKey: (locale, fallbackLocales) => `${locale}-[${[...new Set(fallbackLocales)].sort().join("-")}]`,
+  shouldBypassCache: (locale, fallbackLocales) => !isLocaleWithFallbacksCacheable(locale, fallbackLocales)
+});
+const _getAllMergedMessages = async (locales) => {
+  const merged = {};
+  try {
+    const messages = await Promise.all(locales.map(getMessages));
+    for (const message of messages) {
+      deepCopy(message, merged);
+    }
+    return merged;
+  } catch (e) {
+    throw new Error("Failed to merge messages: " + e.message);
+  }
+};
+cachedFunctionI18n(_getAllMergedMessages, {
+  name: "merged-all",
+  maxAge: 60 * 60 * 24,
+  getKey: (locales) => locales.join("-"),
+  shouldBypassCache: (locales) => !locales.every((locale) => isLocaleCacheable(locale))
+});
+
+const _messagesHandler = defineEventHandler(async (event) => {
+  const locale = getRouterParam(event, "locale");
+  if (!locale) {
+    throw createError$1({ status: 400, message: "Locale not specified." });
+  }
+  const ctx = useI18nContext(event);
+  if (ctx.localeConfigs && locale in ctx.localeConfigs === false) {
+    throw createError$1({ status: 404, message: `Locale '${locale}' not found.` });
+  }
+  const messages = await getMergedMessages(locale, ctx.localeConfigs?.[locale]?.fallbacks ?? []);
+  deepCopy(messages, ctx.messages);
+  return ctx.messages;
+});
+const _cachedMessageLoader = defineCachedFunction(_messagesHandler, {
+  name: "i18n:messages-internal",
+  maxAge: 60 * 60 * 24,
+  getKey: (event) => [getRouterParam(event, "locale") ?? "null", getRouterParam(event, "hash") ?? "null"].join("-"),
+  async shouldBypassCache(event) {
+    const locale = getRouterParam(event, "locale");
+    if (locale == null) {
+      return false;
+    }
+    const ctx = tryUseI18nContext(event) || await initializeI18nContext(event);
+    return !ctx.localeConfigs?.[locale]?.cacheable;
+  }
+});
+const _messagesHandlerCached = defineCachedEventHandler(_cachedMessageLoader, {
+  name: "i18n:messages",
+  maxAge: 10,
+  swr: false,
+  getKey: (event) => [getRouterParam(event, "locale") ?? "null", getRouterParam(event, "hash") ?? "null"].join("-")
+});
+const _VzqLJ_ = _messagesHandlerCached;
+
 const _SxA8c9 = defineEventHandler(() => {});
 
 const _lazy_1pUTy3 = () => import('../routes/api/github-repos.get.mjs');
@@ -5194,6 +7406,7 @@ const handlers = [
   { route: '', handler: _lRiuN9, lazy: false, middleware: true, method: undefined },
   { route: '/api/github-repos', handler: _lazy_1pUTy3, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_OrXZZ4, lazy: true, middleware: false, method: undefined },
+  { route: '/_i18n/:hash/:locale/messages.json', handler: _VzqLJ_, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_OrXZZ4, lazy: true, middleware: false, method: undefined }
 ];
@@ -5338,45 +7551,6 @@ function useNitroApp() {
   return nitroApp;
 }
 runNitroPlugins(nitroApp);
-
-function defineRenderHandler(render) {
-  const runtimeConfig = useRuntimeConfig();
-  return eventHandler(async (event) => {
-    const nitroApp = useNitroApp();
-    const ctx = { event, render, response: void 0 };
-    await nitroApp.hooks.callHook("render:before", ctx);
-    if (!ctx.response) {
-      if (event.path === `${runtimeConfig.app.baseURL}favicon.ico`) {
-        setResponseHeader(event, "Content-Type", "image/x-icon");
-        return send(
-          event,
-          "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-        );
-      }
-      ctx.response = await ctx.render(event);
-      if (!ctx.response) {
-        const _currentStatus = getResponseStatus(event);
-        setResponseStatus(event, _currentStatus === 200 ? 500 : _currentStatus);
-        return send(
-          event,
-          "No response returned from render handler: " + event.path
-        );
-      }
-    }
-    await nitroApp.hooks.callHook("render:response", ctx.response, ctx);
-    if (ctx.response.headers) {
-      setResponseHeaders(event, ctx.response.headers);
-    }
-    if (ctx.response.statusCode || ctx.response.statusMessage) {
-      setResponseStatus(
-        event,
-        ctx.response.statusCode,
-        ctx.response.statusMessage
-      );
-    }
-    return ctx.response.body;
-  });
-}
 
 const debug = (...args) => {
 };
@@ -5624,5 +7798,5 @@ function setupGracefulShutdown(listener, nitroApp) {
   });
 }
 
-export { $fetch as $, parseQuery as A, withTrailingSlash as B, withoutTrailingSlash as C, trapUnhandledNodeErrors as a, useNitroApp as b, defineEventHandler as c, destr as d, getResponseStatus as e, encodePath as f, getResponseStatusText as g, defineRenderHandler as h, getQuery as i, joinRelativeURL as j, createError$1 as k, getRouteRules as l, joinURL as m, decodePath as n, hasProtocol as o, parseURL as p, isScriptProtocol as q, sanitizeStatusCode as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, getContext as v, withQuery as w, defu as x, createHooks as y, executeAsync as z };
+export { $fetch$1 as $, getRouteRules as A, hasProtocol as B, isEqual as C, isEqual$1 as D, isScriptProtocol as E, joinURL as F, klona as G, parsePath as H, parseQuery as I, parseURL as J, publicAssetsURL as K, sanitizeStatusCode as L, setCookie as M, setupGracefulShutdown as N, toNodeListener as O, trapUnhandledNodeErrors as P, useNitroApp as Q, useRuntimeConfig as R, withQuery as S, withTrailingSlash as T, withoutTrailingSlash as U, appHead as a, appId as b, appRootAttrs as c, appRootTag as d, appTeleportAttrs as e, appTeleportTag as f, baseURL as g, buildAssetsURL as h, createDefu as i, createError$1 as j, createHooks as k, decodePath as l, defineEventHandler as m, defineRenderHandler as n, defu as o, deleteCookie as p, destr as q, encodePath as r, executeAsync as s, getContext as t, getCookie as u, getQuery as v, getRequestHeader as w, getRequestURL as x, getResponseStatus as y, getResponseStatusText as z };
 //# sourceMappingURL=nitro.mjs.map

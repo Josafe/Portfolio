@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '#imports'
+
 interface StackCategory {
   title: string
   description: string
@@ -6,6 +8,8 @@ interface StackCategory {
   color: string
   items: string[]
 }
+
+const { t } = useI18n()
 
 const stackCategories: StackCategory[] = [
   {
@@ -58,8 +62,8 @@ const stackCategories: StackCategory[] = [
     <div class="rounded-[2rem] border border-white/10 bg-slate-900/80 p-5 sm:p-6 shadow-soft backdrop-blur-xl overflow-hidden">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0">
-          <p class="text-sm uppercase tracking-[0.11em] text-slate-400">Engineering Stack</p>
-          <h2 class="mt-3 text-lg font-semibold text-white">Modern architecture across every layer.</h2>
+          <p class="text-sm uppercase tracking-[0.11em] text-slate-400">{{ t('index.tech.title') }}</p>
+          <h2 class="mt-3 text-lg font-semibold text-white">{{ t('index.tech.subtitle') }}</h2>
         </div>
         <div class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-500/10 text-brand-200">
           <span class="text-sm font-semibold">→</span>

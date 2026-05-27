@@ -19,14 +19,11 @@ interface _GlobalComponents {
   SocialLinks: typeof import("../../components/SocialLinks.vue")['default']
   CVCard: typeof import("../../components/cv/CVCard.vue")['default']
   HomeBackgroundEffects: typeof import("../../components/home/BackgroundEffects.vue")['default']
-  HomeHeroSection: typeof import("../../components/home/HeroSection.vue")['default']
-  HomeHeroVisual: typeof import("../../components/home/HeroVisual.vue")['default']
   HomeNavigationCards: typeof import("../../components/home/NavigationCards.vue")['default']
   HomeSocialLinks: typeof import("../../components/home/SocialLinks.vue")['default']
   HomeTechStack: typeof import("../../components/home/TechStack.vue")['default']
-  AboutSection: typeof import("../../sections/AboutSection.vue")['default']
-  ContactSection: typeof import("../../sections/ContactSection.vue")['default']
   HeroSection: typeof import("../../sections/HeroSection.vue")['default']
+  HeroVisual: typeof import("../../sections/HeroVisual.vue")['default']
   ProjectsSection: typeof import("../../sections/ProjectsSection.vue")['default']
   NuxtWelcome: typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
   NuxtLayout: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
@@ -40,6 +37,8 @@ interface _GlobalComponents {
   NuxtRouteAnnouncer: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-route-announcer")['default']
   NuxtImg: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-stubs")['NuxtImg']
   NuxtPicture: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-stubs")['NuxtPicture']
+  NuxtLinkLocale: typeof import("../../node_modules/@nuxtjs/i18n/dist/runtime/components/NuxtLinkLocale")['default']
+  SwitchLocalePathLink: typeof import("../../node_modules/@nuxtjs/i18n/dist/runtime/components/SwitchLocalePathLink")['default']
   NuxtPage: typeof import("../../node_modules/nuxt/dist/pages/runtime/page")['default']
   NoScript: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['NoScript']
   Link: typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Link']
@@ -56,14 +55,11 @@ interface _GlobalComponents {
   LazySocialLinks: LazyComponent<typeof import("../../components/SocialLinks.vue")['default']>
   LazyCVCard: LazyComponent<typeof import("../../components/cv/CVCard.vue")['default']>
   LazyHomeBackgroundEffects: LazyComponent<typeof import("../../components/home/BackgroundEffects.vue")['default']>
-  LazyHomeHeroSection: LazyComponent<typeof import("../../components/home/HeroSection.vue")['default']>
-  LazyHomeHeroVisual: LazyComponent<typeof import("../../components/home/HeroVisual.vue")['default']>
   LazyHomeNavigationCards: LazyComponent<typeof import("../../components/home/NavigationCards.vue")['default']>
   LazyHomeSocialLinks: LazyComponent<typeof import("../../components/home/SocialLinks.vue")['default']>
   LazyHomeTechStack: LazyComponent<typeof import("../../components/home/TechStack.vue")['default']>
-  LazyAboutSection: LazyComponent<typeof import("../../sections/AboutSection.vue")['default']>
-  LazyContactSection: LazyComponent<typeof import("../../sections/ContactSection.vue")['default']>
   LazyHeroSection: LazyComponent<typeof import("../../sections/HeroSection.vue")['default']>
+  LazyHeroVisual: LazyComponent<typeof import("../../sections/HeroVisual.vue")['default']>
   LazyProjectsSection: LazyComponent<typeof import("../../sections/ProjectsSection.vue")['default']>
   LazyNuxtWelcome: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   LazyNuxtLayout: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
@@ -77,6 +73,8 @@ interface _GlobalComponents {
   LazyNuxtRouteAnnouncer: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-route-announcer")['default']>
   LazyNuxtImg: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-stubs")['NuxtImg']>
   LazyNuxtPicture: LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-stubs")['NuxtPicture']>
+  LazyNuxtLinkLocale: LazyComponent<typeof import("../../node_modules/@nuxtjs/i18n/dist/runtime/components/NuxtLinkLocale")['default']>
+  LazySwitchLocalePathLink: LazyComponent<typeof import("../../node_modules/@nuxtjs/i18n/dist/runtime/components/SwitchLocalePathLink")['default']>
   LazyNuxtPage: LazyComponent<typeof import("../../node_modules/nuxt/dist/pages/runtime/page")['default']>
   LazyNoScript: LazyComponent<typeof import("../../node_modules/nuxt/dist/head/runtime/components")['NoScript']>
   LazyLink: LazyComponent<typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Link']>

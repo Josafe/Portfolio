@@ -16,7 +16,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns.',
     pdf: '/cv/fullstack.pdf',
-    preview: '/images/cv/fullstack-preview.jpg',
+    preview: '/images/cv/fullstack-preview2.jpg',
     tags: ['Vue', 'Nuxt', 'Laravel', 'Node.js']
   },
   {
@@ -36,7 +36,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció.',
     pdf: '/cv/database-administrator.pdf',
-    preview: '/images/cv/database-admin-preview.svg',
+    preview: '/images/cv/database-admin-preview.jpg',
     tags: ['PostgreSQL', 'MySQL', 'SQL', 'Data Modeling']
   },
   {
@@ -46,7 +46,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat.',
     pdf: '/cv/systems-administrator.pdf',
-    preview: '/images/cv/systems-admin-preview.svg',
+    preview: '/images/cv/systems-admin-preview.jpg',
     tags: ['Linux', 'Docker', 'Kubernetes', 'DevOps']
   },
   {
@@ -56,7 +56,7 @@ export const curriculums: Curriculum[] = [
     description:
       'Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris.',
     pdf: '/cv/it-technician.pdf',
-    preview: '/images/cv/it-technician-preview.svg',
+    preview: '/images/cv/it-technician-preview.jpg',
     tags: ['Support', 'Hardware', 'Software', 'Maintenance']
   }
 ]

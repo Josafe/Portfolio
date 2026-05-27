@@ -1,5 +1,5 @@
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'vue-bundle-renderer/runtime';
-import { j as joinRelativeURL, u as useRuntimeConfig, g as getResponseStatusText, e as getResponseStatus, f as encodePath, h as defineRenderHandler, i as getQuery, k as createError, l as getRouteRules, m as joinURL, b as useNitroApp } from '../_/nitro.mjs';
+import { h as buildAssetsURL, K as publicAssetsURL, d as appRootTag, c as appRootAttrs, R as useRuntimeConfig, z as getResponseStatusText, y as getResponseStatus, b as appId, r as encodePath, n as defineRenderHandler, f as appTeleportTag, e as appTeleportAttrs, v as getQuery, j as createError, a as appHead, A as getRouteRules, F as joinURL, Q as useNitroApp } from '../_/nitro.mjs';
 import { renderToString } from 'vue/server-renderer';
 import { createHead as createHead$1, propsToString, renderSSRHead } from 'unhead/server';
 import { stringify, uneval } from 'devalue';
@@ -85,36 +85,6 @@ function createHead(options = {}) {
 }
 
 const NUXT_RUNTIME_PAYLOAD_EXTRACTION = false;
-
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"Portfolio professional de Josafe amb projectes full stack i d'enginyeria de sistemes AI."}],"link":[],"style":[],"script":[],"noscript":[],"title":"Josafe · Full Stack & AI Systems Engineer","htmlAttrs":{"lang":"ca"}};
-
-const appRootTag = "div";
-
-const appRootAttrs = {"id":"__nuxt"};
-
-const appTeleportTag = "div";
-
-const appTeleportAttrs = {"id":"teleports"};
-
-const appId = "nuxt-app";
-
-function baseURL() {
-	
-	return useRuntimeConfig().app.baseURL;
-}
-function buildAssetsDir() {
-	
-	return useRuntimeConfig().app.buildAssetsDir;
-}
-function buildAssetsURL(...path) {
-	return joinRelativeURL(publicAssetsURL(), buildAssetsDir(), ...path);
-}
-function publicAssetsURL(...path) {
-	
-	const app = useRuntimeConfig().app;
-	const publicBase = app.cdnURL || app.baseURL;
-	return path.length ? joinRelativeURL(publicBase, ...path) : publicBase;
-}
 
 // @ts-expect-error private property consumed by vite-generated url helpers
 globalThis.__buildAssetsURL = buildAssetsURL;
@@ -305,8 +275,7 @@ const APP_TELEPORT_OPEN_TAG = HAS_APP_TELEPORTS ? `<${appTeleportTag}${propsToSt
 const APP_TELEPORT_CLOSE_TAG = HAS_APP_TELEPORTS ? `</${appTeleportTag}>` : "";
 const PAYLOAD_URL_RE = /^[^?]*\/_payload.json(?:\?.*)?$/ ;
 const PAYLOAD_FILENAME = "_payload.json" ;
-const handler = defineRenderHandler(async (event) => {
-	const nitroApp = useNitroApp();
+const handler = defineRenderHandler((event) => {
 	
 	const ssrError = event.path.startsWith("/__nuxt_error") ? getQuery(event) : null;
 	if (ssrError && !("__unenv__" in event.node.req)) {
@@ -316,6 +285,10 @@ const handler = defineRenderHandler(async (event) => {
 			message: "Page Not Found: /__nuxt_error"
 		});
 	}
+	return renderRoute(event, ssrError);
+});
+async function renderRoute(event, ssrError) {
+	const nitroApp = useNitroApp();
 	
 	const ssrContext = createSSRContext(event);
 	
@@ -446,6 +419,7 @@ const handler = defineRenderHandler(async (event) => {
 			data: ssrContext.payload
 		})  }, {
 			...headEntryOptions,
+			
 			tagPosition: "bodyClose",
 			tagPriority: "high"
 		});
@@ -457,6 +431,8 @@ const handler = defineRenderHandler(async (event) => {
 			type: resource.module ? "module" : null,
 			src: renderer.rendererContext.buildAssetsURL(resource.file),
 			defer: resource.module ? null : true,
+			
+			
 			tagPosition,
 			crossorigin: ""
 		})) }, headEntryOptions);
@@ -483,7 +459,7 @@ const handler = defineRenderHandler(async (event) => {
 			"x-powered-by": "Nuxt"
 		}
 	};
-});
+}
 function normalizeChunks(chunks) {
 	const result = [];
 	for (const _chunk of chunks) {
@@ -512,5 +488,5 @@ const renderer = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: handler
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { useSeoMeta as a, baseURL as b, headSymbol as h, renderer as r, useHead as u };
+export { useSeoMeta as a, headSymbol as h, renderer as r, useHead as u };
 //# sourceMappingURL=renderer.mjs.map

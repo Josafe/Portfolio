@@ -1,12 +1,13 @@
-import { c as defineEventHandler, u as useRuntimeConfig } from '../../_/nitro.mjs';
+import { m as defineEventHandler, R as useRuntimeConfig } from '../../_/nitro.mjs';
 import 'node:http';
 import 'node:https';
 import 'node:events';
 import 'node:buffer';
+import 'vue-router';
 import 'node:fs';
 import 'node:path';
-import 'node:crypto';
 import 'node:url';
+import 'node:crypto';
 
 const githubRepos_get = defineEventHandler(async () => {
   const config = useRuntimeConfig();

@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from '#imports'
+const { t } = useI18n()
+
 useSeoMeta({
-  title: 'Future Projects · Josafe.com',
-  description: 'Idees i roadmap professional de Josafe: SaaS, automatitzacions IA i sistemes multiagent avançats.',
+  title: t('meta.future.title'),
+  description: t('meta.future.description')
 })
 </script>
 
@@ -9,10 +12,9 @@ useSeoMeta({
   <div class="grid gap-12">
     <!-- Header -->
     <div class="grid gap-4">
-      <h1 class="text-4xl font-bold text-white">Projectes Futurs</h1>
-      <p class="text-slate-400">
-        Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents.
-      </p>
+      <br> </br>
+      <h1 class="text-4xl font-bold text-white">{{ t('future.header.title') }}</h1>
+      <p class="text-slate-400">{{ t('future.header.description') }}</p>
     </div>
 
     <!-- Categories -->
@@ -140,15 +142,13 @@ useSeoMeta({
 
     <!-- Call to Action -->
     <div class="rounded-lg border border-slate-800 p-6 text-center">
-      <h3 class="text-lg font-semibold text-white mb-2">Interessat en Col·laborar?</h3>
-      <p class="text-slate-400 mb-4">
-        Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.
-      </p>
+      <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.cta.title') }}</h3>
+      <p class="text-slate-400 mb-4">{{ t('future.cta.description') }}</p>
       <NuxtLink
         to="/about"
         class="inline-block rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
       >
-        Contacta'm
+        {{ t('future.cta.cta') }}
       </NuxtLink>
     </div>
   </div>

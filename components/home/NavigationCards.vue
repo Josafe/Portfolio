@@ -1,28 +1,31 @@
 <script setup lang="ts">
+import { useI18n } from '#imports'
+const { t, localePath } = useI18n()
+
 const navCards = [
   {
-    title: 'About Me',
-    description: 'Discover my story, values and how I build digital products.',
+    title: t('index.navigation.about.title'),
+    description: t('index.navigation.about.description'),
     icon: 'M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z',
-    href: '/about'
+    href: localePath('/about')
   },
   {
-    title: 'Projects',
-    description: 'Explore purpose-driven builds, SaaS and AI systems in production.',
+    title: t('index.navigation.projects.title'),
+    description: t('index.navigation.projects.description'),
     icon: 'M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm2 3v10h10V7H7z',
-    href: '/projects'
+    href: localePath('/projects')
   },
   {
-    title: 'Curriculum',
-    description: 'Get the CV details, skills matrix and downloadable resume.',
+    title: t('index.navigation.curriculum.title'),
+    description: t('index.navigation.curriculum.description'),
     icon: 'M6 2h9l5 5v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm9 1.414L18.586 8H15V3.414z',
-    href: '/curriculum'
+    href: localePath('/curriculum')
   },
   {
-    title: 'Future Projects',
-    description: 'See the roadmap, new product ideas and next-generation systems.',
+    title: t('index.navigation.future.title'),
+    description: t('index.navigation.future.description'),
     icon: 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5V13h2.5a.5.5 0 0 0 .354-.854l-4-4a.5.5 0 0 0-.708 0l-4 4A.5.5 0 0 0 6.5 13H9V16.5a.5.5 0 0 0 .853.354L12 14.207l2.147 2.647A.5.5 0 0 0 15 16.5z',
-    href: '/future-projects'
+    href: localePath('/future-projects')
   }
 ]
 </script>

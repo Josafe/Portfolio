@@ -1,12 +1,9 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
-  components: [
-  '~/components',
-  '~/sections'
-  ],
+  components: ['~/components', '~/sections'],
   app: {
     head: {
       title: 'Josafe · Full Stack & AI Systems Engineer',
@@ -27,7 +24,23 @@ export default defineNuxtConfig({
       githubUser: 'Josafe'
     }
   },
+  i18n: {
+    locales: [
+      { code: 'ca', iso: 'ca-ES', name: 'Català', file: 'ca.json' },
+      { code: 'es', iso: 'es-ES', name: 'Español', file: 'es.json' },
+      { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' }
+    ],
+    defaultLocale: 'ca',
+    strategy: 'prefix',
+    detectBrowserLanguage: false,
+    restructureDir: '.',
+    langDir: 'locales',
+    vueI18n: 'i18n.config.ts'
+  },
   nitro: {
-    compressPublicAssets: true
+    compressPublicAssets: true,
+    prerender: {
+      crawlLinks: true
+    }
   }
 })

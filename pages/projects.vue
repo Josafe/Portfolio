@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { Project, GithubRepo } from '~/types/project'
+import { useI18n } from '#imports'
+
+const { t } = useI18n()
 
 useSeoMeta({
-  title: 'Projects · Josafe.com',
-  description: 'Projectes desplegats i repositoris GitHub de Josafe: desenvolupament web, sistemes AI i multi-agent.',
+  title: t('meta.projects.title'),
+  description: t('meta.projects.description')
 })
 
 const staticProjects = useProjects()
@@ -63,10 +66,9 @@ const filteredProjects = computed(() => {
   <div class="grid gap-8">
     <!-- Header -->
     <div class="grid gap-4">
-      <h1 class="text-4xl font-bold text-white">Projectes</h1>
-      <p class="text-slate-400">
-        Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.
-      </p>
+      <br> </br>
+      <h1 class="text-4xl font-bold text-white">{{ t('projects.title') }}</h1>
+      <p class="text-slate-400">{{ t('projects.description') }}</p>
     </div>
 
     <!-- Tabs -->
@@ -80,7 +82,7 @@ const filteredProjects = computed(() => {
             : 'text-slate-400 hover:text-white'
         ]"
       >
-        Projectes Desplegats ({{ deployedProjects.length }})
+        {{ t('projects.tabs.deployed') }} ({{ deployedProjects.length }})
       </button>
       <button
         @click="activeTab = 'github'"
@@ -91,7 +93,7 @@ const filteredProjects = computed(() => {
             : 'text-slate-400 hover:text-white'
         ]"
       >
-        Repositoris GitHub ({{ allGithubProjects.length }})
+        {{ t('projects.tabs.github') }} ({{ allGithubProjects.length }})
       </button>
     </div>
 
@@ -106,7 +108,7 @@ const filteredProjects = computed(() => {
             : 'border border-slate-700 text-slate-400 hover:text-white'
         ]"
       >
-        Tots
+        {{ t('projects.filter.all') }}
       </button>
       <button
         v-for="tech in availableTechs"
@@ -134,7 +136,7 @@ const filteredProjects = computed(() => {
 
     <!-- Empty State -->
     <div v-if="filteredProjects.length === 0" class="text-center py-12">
-      <p class="text-slate-400">No s'han trobat projectes amb aquest filtre.</p>
+      <p class="text-slate-400">{{ t('projects.empty') }}</p>
     </div>
   </div>
 </template>
