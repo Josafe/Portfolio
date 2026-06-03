@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import { useRuntimeConfig, useSeoMeta, useI18n } from '#imports'
+import BackgroundEffects from '~/components/home/BackgroundEffects.vue'
+import HeroSection from '~/components/home/HeroSection.vue'
+import HomeSocialLinks from '~/components/home/SocialLinks.vue'
+import HomeTechStack from '~/components/home/TechStack.vue'
+import NavigationCards from '~/components/home/NavigationCards.vue'
+
 const { t } = useI18n()
 const config = useRuntimeConfig()
 

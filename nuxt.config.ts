@@ -31,16 +31,17 @@ export default defineNuxtConfig({
       { code: 'en', iso: 'en-US', name: 'English', file: 'en.json' }
     ],
     defaultLocale: 'ca',
-    strategy: 'prefix',
-    detectBrowserLanguage: false,
-    restructureDir: '.',
-    langDir: 'locales',
-    vueI18n: 'i18n.config.ts'
+    strategy: 'prefix_except_default',
+    lazy: true,
+    langDir: './locales',
+    detectBrowserLanguage: false
   },
   nitro: {
+    preset: 'static',
     compressPublicAssets: true,
     prerender: {
-      crawlLinks: true
+      crawlLinks: true,
+      //routes: ['/ca', '/es', '/en', '/']
     }
   }
 })

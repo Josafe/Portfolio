@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from '#imports'
-const { t, localePath } = useI18n()
+const { t } = useI18n()
+const localePath = useLocalePath()
 
 const navCards = [
   {
