@@ -93,7 +93,7 @@
   },
   "about": {
     "hero": {
-      "label": "Sobre Mi",
+      "label": "Sobre Mi TEST DEPLOY 123",
       "heading": "Desenvolupador Full Stack i AI Systems Engineer",
       "text": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
     },
