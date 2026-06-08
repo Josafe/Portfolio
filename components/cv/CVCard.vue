@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useI18n } from '#imports'
+
 const props = defineProps<{
   title: string
   subtitle: string
@@ -7,6 +9,8 @@ const props = defineProps<{
   preview: string
   tags: string[]
 }>()
+
+const { t } = useI18n()
 
 const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
 </script>
@@ -17,7 +21,7 @@ const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
 
     <div class="flex flex-col gap-6">
       <div class="space-y-3">
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Currículum</p>
+        <p class="text-xs uppercase tracking-[0.3em] text-slate-500">{{ t('curriculum.card.label') }}</p>
         <h3 class="text-2xl font-semibold text-white">{{ props.title }}</h3>
         <p class="text-sm text-slate-400">{{ props.subtitle }}</p>
       </div>
@@ -25,7 +29,7 @@ const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
       <div class="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950/70">
         <img
           :src="props.preview"
-          :alt="`Preview del CV ${props.title}`"
+          :alt="`${t('curriculum.card.alt')} ${props.title}`"
           class="h-64 w-full object-cover object-center transition duration-500 group-hover:scale-105"
         />
       </div>
@@ -49,14 +53,14 @@ const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
           rel="noreferrer noopener"
           class="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/15"
         >
-          Veure CV
+          {{ t('curriculum.card.viewPdf') }}
         </a>
         <a
           :href="props.pdf"
           :download="downloadFilename"
           class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
         >
-          Descarregar PDF
+          {{ t('curriculum.card.downloadPdf') }}
         </a>
       </div>
     </div>

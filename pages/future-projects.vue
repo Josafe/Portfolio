@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from '#imports'
 const { t } = useI18n()
+</script>
+
+<script setup lang="ts">
+import { useI18n } from '#imports'
+const { t } = useI18n()
 
 useSeoMeta({
   title: t('meta.future.title'),
@@ -21,29 +26,21 @@ useSeoMeta({
     <div class="grid gap-8">
       <!-- SaaS Ideas -->
       <section class="grid gap-6">
-        <h2 class="text-2xl font-semibold text-white">Idees SaaS</h2>
+        <h2 class="text-2xl font-semibold text-white">{{ t('future.saas.title') }}</h2>
         <div class="grid gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Plataforma d'Automatització per Pimes</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.saas.item1.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.saas.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Vue.js</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Laravel</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">AI Integration</span>
+              <span v-for="tag in t('future.saas.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
 
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Marketplace de Serveis Digitals</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.saas.item2.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.saas.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Next.js</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Stripe</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Real-time</span>
+              <span v-for="tag in t('future.saas.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
         </div>
@@ -51,29 +48,21 @@ useSeoMeta({
 
       <!-- AI Automations -->
       <section class="grid gap-6">
-        <h2 class="text-2xl font-semibold text-white">Automatitzacions IA</h2>
+        <h2 class="text-2xl font-semibold text-white">{{ t('future.automation.title') }}</h2>
         <div class="grid gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Agent de Gestió de Continguts</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.automation.item1.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.automation.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Python</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">LLMs</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Multi-Agent</span>
+              <span v-for="tag in t('future.automation.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
 
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Sistema d'Anàlisi Predictiva</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.automation.item2.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.automation.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Machine Learning</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Data Science</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">APIs</span>
+              <span v-for="tag in t('future.automation.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
         </div>
@@ -81,29 +70,21 @@ useSeoMeta({
 
       <!-- Advanced Multi-Agent Systems -->
       <section class="grid gap-6">
-        <h2 class="text-2xl font-semibold text-white">Sistemes Multiagent Avançats</h2>
+        <h2 class="text-2xl font-semibold text-white">{{ t('future.multiAgent.title') }}</h2>
         <div class="grid gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Framework de Coordinació d'Agents</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.multiAgent.item1.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.multiAgent.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Python</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Distributed Systems</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Open Source</span>
+              <span v-for="tag in t('future.multiAgent.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
 
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Agent d'Optimització Empresarial</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.multiAgent.item2.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.multiAgent.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Reinforcement Learning</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Business Intelligence</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">APIs</span>
+              <span v-for="tag in t('future.multiAgent.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
         </div>
@@ -111,29 +92,21 @@ useSeoMeta({
 
       <!-- Research Projects -->
       <section class="grid gap-6">
-        <h2 class="text-2xl font-semibold text-white">Projectes d'Investigació</h2>
+        <h2 class="text-2xl font-semibold text-white">{{ t('future.research.title') }}</h2>
         <div class="grid gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">IA per a Sostenibilitat</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.research.item1.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.research.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Research</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Sustainability</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">IoT</span>
+              <span v-for="tag in t('future.research.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
 
           <div class="rounded-lg border border-slate-800 p-6">
-            <h3 class="text-lg font-semibold text-white mb-2">Interfícies Humà-Agent</h3>
-            <p class="text-sm text-slate-400 mb-4">
-              Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.
-            </p>
+            <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.research.item2.title') }}</h3>
+            <p class="text-sm text-slate-400 mb-4">{{ t('future.research.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">UX Research</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">HCI</span>
-              <span class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">Frontend</span>
+              <span v-for="tag in t('future.research.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
             </div>
           </div>
         </div>

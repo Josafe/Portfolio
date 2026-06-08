@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { Project } from '~/types/project'
+import { useI18n } from '#imports'
 
 defineProps<{
   project: Project
 }>()
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -17,7 +20,7 @@ defineProps<{
     <div class="mb-3 flex items-start justify-between gap-3">
       <h3 class="text-lg font-semibold text-white">{{ project.title }}</h3>
       <span v-if="project.featured" class="rounded-full border border-brand-500/40 bg-brand-500/10 px-2 py-1 text-xs text-brand-50">
-        Featured
+        {{ t('projectCard.featured') }}
       </span>
     </div>
 
@@ -34,8 +37,8 @@ defineProps<{
     </ul>
 
     <div class="flex gap-3 text-sm font-medium">
-      <a v-if="project.github" :href="project.github" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">GitHub</a>
-      <a v-if="project.url" :href="project.url" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">Live</a>
+      <a v-if="project.github" :href="project.github" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">{{ t('projectCard.github') }}</a>
+      <a v-if="project.url" :href="project.url" target="_blank" rel="noreferrer" class="text-brand-50 hover:text-white">{{ t('projectCard.live') }}</a>
     </div>
   </div>
 </template>

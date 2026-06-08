@@ -1,10 +1,10 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "About",
-    "projects": "Projects",
-    "curriculum": "Curriculum",
-    "future": "Future"
+    "home": "Inici",
+    "about": "Sobre Mi",
+    "projects": "Projectes",
+    "curriculum": "Currículum",
+    "future": "Projectes Futurs"
   },
   "language": {
     "label": "Idioma",
@@ -38,55 +38,55 @@
   },
   "index": {
     "hero": {
-      "badge": "Premium engineering portfolio",
-      "heading": "Building modern Full Stack experiences and AI Systems for product-led digital products.",
-      "paragraph": "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
-      "projects": "View Projects",
-      "about": "About Me",
+      "badge": "Portfolio professional d'Enginyeria",
+      "heading": "Construint experiències Full Stack modernes i Sistemes IA per a productes digitals orientats al producte.",
+      "paragraph": "Creant plataformes escalables, automatització intel·ligent i interfícies elegants amb un enfocament tècnic premium centrat en l'excel·lència del producte.",
+      "projects": "Veure Projectes",
+      "about": "Sobre Mi",
       "stats": {
-        "projects": "Projects",
-        "ai": "Architect",
+        "projects": "Projectes",
+        "ai": "Arquitecte",
         "fullStack": "Apps",
         "cloud": "DevOps"
       },
-      "platformsLabel": "Platforms",
-      "platformsText": "Scalable web experiences for product-led growth.",
-      "systemsLabel": "Systems",
-      "systemsText": "Multi-agent automation, monitoring and cloud-native deployment.",
-      "featuredStackLabel": "Featured stack",
+      "platformsLabel": "Plataformes",
+      "platformsText": "Experiències web escalables per a l'expansió guiada pel producte.",
+      "systemsLabel": "Sistemes",
+      "systemsText": "Automatització multiagent, monitoratge i desplegament cloud-native.",
+      "featuredStackLabel": "Stack destacat",
       "featuredStackText": "Vue · Nuxt · TypeScript · Docker",
-      "liveConceptLabel": "Live concept",
-      "liveConceptText": "Modern landing page design with subtle motion.",
-      "visualTitle": "AI Systems Architect",
-      "visualDescription": "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+      "liveConceptLabel": "Concepte en viu",
+      "liveConceptText": "Disseny modern de landing amb moviment subtil.",
+      "visualTitle": "Arquitecte de Sistemes IA",
+      "visualDescription": "Dissenyant experiències de producte premium amb infraestructura intel·ligent i interfícies elegants."
     },
     "connect": {
-      "label": "Connect & collaborate",
-      "title": "Connect with the core systems that shape premium digital products."
+      "label": "Connecta i col·labora",
+      "title": "Connecta't amb els sistemes centrals que modelen productes digitals premium."
     },
     "tech": {
-      "title": "Engineering Stack",
-      "subtitle": "Modern architecture across every layer."
+      "title": "Stack d'enginyeria",
+      "subtitle": "Arquitectura moderna a totes les capes."
     },
     "navigation": {
       "about": {
-        "title": "About Me",
-        "description": "Discover my story, values and how I build digital products.",
+        "title": "Sobre Mi",
+        "description": "Descobreix la meva trajectòria, valors i com construeixo productes digitals.",
         "href": "/about"
       },
       "projects": {
-        "title": "Projects",
-        "description": "Explore purpose-driven builds, SaaS and AI systems in production.",
+        "title": "Projectes",
+        "description": "Explora desenvolupaments orientats a producte, SaaS i sistemes IA en producció.",
         "href": "/projects"
       },
       "curriculum": {
-        "title": "Curriculum",
-        "description": "Get the CV details, skills matrix and downloadable resume.",
+        "title": "Currículum",
+        "description": "Obteniu els detalls del CV, la matriu de competències i el currículum descarregable.",
         "href": "/curriculum"
       },
       "future": {
-        "title": "Future Projects",
-        "description": "See the roadmap, new product ideas and next-generation systems.",
+        "title": "Projectes Futurs",
+        "description": "Consulta el roadmap, noves idees de productes i sistemes de nova generació.",
         "href": "/future-projects"
       }
     }
@@ -257,13 +257,13 @@
     }
   },
   "projectCard": {
-    "featured": "Featured",
+    "featured": "Destacat",
     "github": "GitHub",
-    "live": "Live"
+    "live": "En viu"
   },
   "sections": {
     "about": {
-      "title": "About me",
+      "title": "Sobre Mi",
       "description": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
     },
     "projects": {

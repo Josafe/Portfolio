@@ -7,20 +7,20 @@
         </NuxtLink>
 
         <div class="hidden space-x-8 md:flex items-center">
-          <NuxtLink to="/" class="text-slate-300 hover:text-white transition-colors">
-            Home
+          <NuxtLink :to="localePath('/')" class="text-slate-300 hover:text-white transition-colors">
+            {{ t('nav.home') }}
           </NuxtLink>
-          <NuxtLink to="/about" class="text-slate-300 hover:text-white transition-colors">
-            About
+          <NuxtLink :to="localePath('/about')" class="text-slate-300 hover:text-white transition-colors">
+            {{ t('nav.about') }}
           </NuxtLink>
-          <NuxtLink to="/projects" class="text-slate-300 hover:text-white transition-colors">
-            Projects
+          <NuxtLink :to="localePath('/projects')" class="text-slate-300 hover:text-white transition-colors">
+            {{ t('nav.projects') }}
           </NuxtLink>
-          <NuxtLink to="/curriculum" class="text-slate-300 hover:text-white transition-colors">
-            Curriculum
+          <NuxtLink :to="localePath('/curriculum')" class="text-slate-300 hover:text-white transition-colors">
+            {{ t('nav.curriculum') }}
           </NuxtLink>
-          <NuxtLink to="/future-projects" class="text-slate-300 hover:text-white transition-colors">
-            Future
+          <NuxtLink :to="localePath('/future-projects')" class="text-slate-300 hover:text-white transition-colors">
+            {{ t('nav.future') }}
           </NuxtLink>
 
           <!-- Language Selector Desktop -->
@@ -84,22 +84,22 @@
       </div>
 
       <div v-if="isOpen" class="mt-4 space-y-4 md:hidden">
-        <NuxtLink to="/" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
-          Home
+        <NuxtLink :to="localePath('/')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
+          {{ t('nav.home') }}
         </NuxtLink>
-        <NuxtLink to="/about" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
-          About
+        <NuxtLink :to="localePath('/about')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
+          {{ t('nav.about') }}
         </NuxtLink>
-        <NuxtLink to="/projects" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
-          Projects
+        <NuxtLink :to="localePath('/projects')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
+          {{ t('nav.projects') }}
         </NuxtLink>
-        <NuxtLink to="/curriculum" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
-          Curriculum
+        <NuxtLink :to="localePath('/curriculum')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
+          {{ t('nav.curriculum') }}
         </NuxtLink>
-        <NuxtLink to="/future-projects" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
-          Future
-        </NuxtLink> -->
-      </div> 
+        <NuxtLink :to="localePath('/future-projects')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
+          {{ t('nav.future') }}
+        </NuxtLink>
+      </div>
     </div>
   </nav>
 </template>
@@ -107,7 +107,8 @@
 <script setup lang="ts">
 import { useI18n } from '#imports'
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
+const localePath = useLocalePath()
 const router = useRouter()
 const route = useRoute()
 const isOpen = ref(false)
