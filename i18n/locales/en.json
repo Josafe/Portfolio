@@ -1,10 +1,10 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About",
+    "about": "About Me",
     "projects": "Projects",
-    "curriculum": "Curriculum",
-    "future": "Future"
+    "curriculum": "Resume",
+    "future": "Future Projects"
   },
   "language": {
     "label": "Language",
@@ -32,8 +32,8 @@
       "description": "Josafe professional roadmap: SaaS ideas, AI automations and advanced multi-agent systems."
     },
     "curriculum": {
-      "title": "Curriculum Vitae · Josafe.com",
-      "description": "Specialized curriculum versions for professional roles, available as downloadable PDFs."
+      "title": "Resume · Josafe.com",
+      "description": "Specialized resume versions for professional roles, available as downloadable PDFs."
     }
   },
   "index": {
@@ -80,8 +80,8 @@
         "href": "/projects"
       },
       "curriculum": {
-        "title": "Curriculum",
-        "description": "Get the CV details, skills matrix and downloadable resume.",
+        "title": "Resume",
+        "description": "Get the resume details, skills matrix and downloadable CV.",
         "href": "/curriculum"
       },
       "future": {
@@ -93,186 +93,186 @@
   },
   "about": {
     "hero": {
-      "label": "Sobre Mi",
-      "heading": "Desenvolupador Full Stack i AI Systems Engineer",
-      "text": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+      "label": "About Me",
+      "heading": "Full Stack Developer & AI Systems Engineer",
+      "text": "I'm an AI Systems Engineer and Full Stack Developer focused on building scalable, maintainable and business-oriented solutions. I have experience in Laravel/Vue ecosystems, cloud integrations and multi-agent systems."
     },
     "specializations": {
-      "title": "Especialitzacions",
+      "title": "Specializations",
       "fullStack": {
         "title": "Full Stack Development",
-        "description": "Laravel, Vue.js, Node.js, bases de dades relacionals i NoSQL"
+        "description": "Laravel, Vue.js, Node.js, relational and NoSQL databases"
       },
       "ai": {
         "title": "AI Systems & Multi-Agent",
-        "description": "Sistemes d'intel·ligència artificial, agents multiagent, automatització"
+        "description": "Artificial intelligence systems, multi-agent systems, automation"
       },
       "architecture": {
-        "title": "Arquitectura Escalable",
-        "description": "Disseny de sistemes escalables, microserveis, integracions cloud"
+        "title": "Scalable Architecture",
+        "description": "Design of scalable systems, microservices, cloud integrations"
       }
     },
     "interests": {
-      "title": "Interessos Professionals",
+      "title": "Professional Interests",
       "impact": {
-        "title": "Projectes d'Impacte",
-        "description": "Aplicacions web modernes, SaaS, productes digitals escalables"
+        "title": "Impact Projects",
+        "description": "Modern web applications, SaaS, scalable digital products"
       },
       "innovation": {
-        "title": "Innovació AI",
-        "description": "Sistemes intel·ligents, automatitzacions, agents conversacionals"
+        "title": "AI Innovation",
+        "description": "Intelligent systems, automations, conversational agents"
       },
       "collaboration": {
-        "title": "Col·laboracions Tècniques",
-        "description": "Equips multidisciplinars, consultoria, mentorització"
+        "title": "Technical Collaborations",
+        "description": "Multidisciplinary teams, consulting, mentoring"
       }
     },
     "philosophy": {
-      "title": "Filosofia de Treball",
-      "text": "Crec en el poder de la tecnologia per transformar negocis i millorar vides. El meu enfocament combina enginyeria de software sòlida amb innovació en IA, sempre prioritzant la qualitat del codi, l'experiència d'usuari i l'impacte real. Treballo amb metodologies àgils, enfocades en resultats mesurables i solucions sostenibles a llarg termini."
+      "title": "Work Philosophy",
+      "text": "I believe in the power of technology to transform businesses and improve lives. My approach combines solid software engineering with AI innovation, always prioritizing code quality, user experience and real impact. I work with agile methodologies, focused on measurable results and long-term sustainable solutions."
     },
     "contact": {
-      "title": "Contacte",
-      "text": "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques.",
+      "title": "Contact",
+      "text": "Available for web development projects, AI consulting and technical collaborations.",
       "email": "josafesf2\\@gmail.com"
     }
   },
   "projects": {
-    "title": "Projectes",
-    "description": "Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.",
+    "title": "Projects",
+    "description": "A collection of live projects and technical repositories showcasing my work in web development and AI systems.",
     "tabs": {
-      "deployed": "Projectes Desplegats",
-      "github": "Repositoris GitHub"
+      "deployed": "Live Projects",
+      "github": "GitHub Repositories"
     },
     "filter": {
-      "all": "Tots"
+      "all": "All"
     },
-    "empty": "No s'han trobat projectes amb aquest filtre."
+    "empty": "No projects found with this filter."
   },
   "future": {
     "header": {
-      "title": "Projectes Futurs",
-      "description": "Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents."
+      "title": "Future Projects",
+      "description": "A vision of my professional roadmap: innovative ideas, scalable products and emerging technologies."
     },
     "saas": {
-      "title": "Idees SaaS",
+      "title": "SaaS Ideas",
       "item1": {
-        "title": "Plataforma d'Automatització per Pimes",
-        "description": "SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.",
+        "title": "Automation Platform for SMEs",
+        "description": "SaaS combining AI and automation to help small businesses optimize internal processes.",
         "tags": ["Vue.js", "Laravel", "AI Integration"]
       },
       "item2": {
-        "title": "Marketplace de Serveis Digitals",
-        "description": "Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.",
+        "title": "Digital Services Marketplace",
+        "description": "Platform connecting digital professionals with companies needing specialized services.",
         "tags": ["Next.js", "Stripe", "Real-time"]
       }
     },
     "automation": {
-      "title": "Automatitzacions IA",
+      "title": "AI Automations",
       "item1": {
-        "title": "Agent de Gestió de Continguts",
-        "description": "Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.",
+        "title": "Content Management Agent",
+        "description": "Multi-agent system that generates, optimizes and distributes content for social networks and blogs.",
         "tags": ["Python", "LLMs", "Multi-Agent"]
       },
       "item2": {
-        "title": "Sistema d'Anàlisi Predictiva",
-        "description": "IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.",
+        "title": "Predictive Analytics System",
+        "description": "AI that analyzes business data to provide predictive insights and actionable recommendations.",
         "tags": ["Machine Learning", "Data Science", "APIs"]
       }
     },
     "multiAgent": {
-      "title": "Sistemes Multiagent Avançats",
+      "title": "Advanced Multi-Agent Systems",
       "item1": {
-        "title": "Framework de Coordinació d'Agents",
-        "description": "Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.",
+        "title": "Agent Coordination Framework",
+        "description": "Open framework for developing and coordinating AI agent systems in complex environments.",
         "tags": ["Python", "Distributed Systems", "Open Source"]
       },
       "item2": {
-        "title": "Agent d'Optimització Empresarial",
-        "description": "Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.",
+        "title": "Business Optimization Agent",
+        "description": "Intelligent agent that optimizes business processes through continuous learning and adaptation.",
         "tags": ["Reinforcement Learning", "Business Intelligence", "APIs"]
       }
     },
     "research": {
-      "title": "Projectes d'Investigació",
+      "title": "Research Projects",
       "item1": {
-        "title": "IA per a Sostenibilitat",
-        "description": "Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.",
+        "title": "AI for Sustainability",
+        "description": "Research in AI applications for energy transition and environmental sustainability.",
         "tags": ["Research", "Sustainability", "IoT"]
       },
       "item2": {
-        "title": "Interfícies Humà-Agent",
-        "description": "Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.",
+        "title": "Human-Agent Interfaces",
+        "description": "Design of intuitive interfaces for interaction with complex agent systems.",
         "tags": ["UX Research", "HCI", "Frontend"]
       }
     },
     "cta": {
-      "title": "Interessat en Col·laborar?",
-      "description": "Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.",
-      "cta": "Contacta'm"
+      "title": "Interested in Collaborating?",
+      "description": "If any of these ideas interests you or you have a similar project in mind, I'd love to talk about it.",
+      "cta": "Contact Me"
     }
   },
   "curriculum": {
     "header": {
-      "title": "Curriculum Vitae",
-      "description": "Versions especialitzades del meu currículum per diferents rols professionals."
+      "title": "Resume",
+      "description": "Specialized resume versions for different professional roles."
     },
     "additional": {
-      "title": "Informació Addicional",
-      "line1": "Els currículums inclouen experiència professional detallada, projectes destacats, tecnologies dominades i certificacions rellevants.",
-      "line2": "Disponible per a versions personalitzades segons requisits específics de posició o empresa."
+      "title": "Additional Information",
+      "line1": "Resumes include detailed professional experience, highlighted projects, mastered technologies and relevant certifications.",
+      "line2": "Available for customized versions according to specific position or company requirements."
     },
     "cards": {
       "fullstack": {
         "title": "Full Stack Developer",
-        "subtitle": "Frontend + Backend + APIs + arquitectura moderna",
-        "description": "Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns."
+        "subtitle": "Frontend + Backend + APIs + modern architecture",
+        "description": "Design and development of complete web applications, scalable architectures and optimized workflows for modern digital products."
       },
       "ai-systems": {
         "title": "AI Systems Engineer",
-        "subtitle": "LLMs, Multi-Agent Systems i automatització IA",
-        "description": "Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats."
+        "subtitle": "LLMs, Multi-Agent Systems and AI automation",
+        "description": "Creation of artificial intelligence systems oriented to product with collaborative agents, intelligent automation and advanced data flows."
       },
       "database-admin": {
         "title": "Database Administrator",
-        "subtitle": "SQL, PostgreSQL, MySQL i optimització de dades",
-        "description": "Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció."
+        "subtitle": "SQL, PostgreSQL, MySQL and data optimization",
+        "description": "Robust database administration, performance optimization and reliable data models for enterprise applications and production services."
       },
       "systems-admin": {
         "title": "Systems Administrator",
-        "subtitle": "Linux, Docker, networking i infraestructura",
-        "description": "Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat."
+        "subtitle": "Linux, Docker, networking and infrastructure",
+        "description": "Simple and secure infrastructure, automated deployments and system maintenance with focus on availability, scalability and reliability."
       },
       "it-technician": {
         "title": "IT Technician",
-        "subtitle": "Suport tècnic, hardware, software i manteniment",
-        "description": "Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris."
+        "subtitle": "Technical support, hardware, software and maintenance",
+        "description": "Team management, incident resolution and proactive monitoring to keep infrastructures and user experience operational."
       }
     },
     "card": {
-      "label": "Currículum",
-      "viewPdf": "Veure CV",
-      "downloadPdf": "Descarregar PDF",
+      "label": "Resume",
+      "viewPdf": "View Resume",
+      "downloadPdf": "Download PDF",
       "alt": "Preview del CV"
     }
   },
   "projectCard": {
     "featured": "Featured",
     "github": "GitHub",
-    "live": "Live"
+    "live": "Live Demo"
   },
   "sections": {
     "about": {
-      "title": "About me",
-      "description": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+      "title": "About Me",
+      "description": "I'm an AI Systems Engineer and Full Stack Developer focused on building scalable, maintainable and business-oriented solutions. I have experience in Laravel/Vue ecosystems, cloud integrations and multi-agent systems."
     },
     "projects": {
-      "title": "Projectes",
-      "subtitle": "Importació automàtica de GitHub + projectes manuals en JSON"
+      "title": "Projects",
+      "subtitle": "Automatic GitHub imports + manual projects in JSON"
     },
     "contact": {
-      "title": "Contacte",
-      "description": "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques."
+      "title": "Contact",
+      "description": "Available for web development projects, AI consulting and technical collaborations."
     }
   }
 }

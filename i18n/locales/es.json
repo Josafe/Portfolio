@@ -1,10 +1,10 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "About",
-    "projects": "Projects",
-    "curriculum": "Curriculum",
-    "future": "Future"
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "projects": "Proyectos",
+    "curriculum": "Currículum",
+    "future": "Futuros"
   },
   "language": {
     "label": "Idioma",
@@ -20,259 +20,259 @@
       "ogDescription": "Portfolio moderno de Josafe: experiencias digitales premium, sistemas inteligentes y arquitectura de software escalable."
     },
     "about": {
-      "title": "About Me · Josafe.com",
-      "description": "Presentación profesional de Josafe: Desarrollador Full Stack y AI Systems Engineer especializado en soluciones escalables e inteligencia artificial."
+      "title": "Sobre Mí · Josafe.com",
+      "description": "Presentación profesional de Josafe: Desarrollador Full Stack e Ingeniero de Sistemas IA especializado en soluciones escalables e inteligencia artificial."
     },
     "projects": {
-      "title": "Projects · Josafe.com",
-      "description": "Proyectos desplegados y repositorios GitHub de Josafe: desarrollo web, sistemas AI y multi-agent."
+      "title": "Proyectos · Josafe.com",
+      "description": "Proyectos desplegados y repositorios GitHub de Josafe: desarrollo web, sistemas IA y multi-agente."
     },
     "future": {
-      "title": "Future Projects · Josafe.com",
-      "description": "Ideas y roadmap profesional de Josafe: SaaS, automatizaciones IA y sistemas multiagent avanzados."
+      "title": "Proyectos Futuros · Josafe.com",
+      "description": "Ideas y roadmap profesional de Josafe: SaaS, automatizaciones IA y sistemas multi-agente avanzados."
     },
     "curriculum": {
-      "title": "Curriculum Vitae · Josafe.com",
+      "title": "Currículum Vitae · Josafe.com",
       "description": "Versiones especializadas del currículum de Josafe para roles profesionales y descargables en PDF."
     }
   },
   "index": {
     "hero": {
-      "badge": "Premium engineering portfolio",
-      "heading": "Building modern Full Stack experiences and AI Systems for product-led digital products.",
-      "paragraph": "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
-      "projects": "View Projects",
-      "about": "About Me",
+      "badge": "Portfolio de ingeniería premium",
+      "heading": "Construyendo experiencias Full Stack modernas y Sistemas IA para productos digitales orientados al producto.",
+      "paragraph": "Creando plataformas escalables, automatización inteligente e interfaces elegantes con un enfoque técnico premium enfocado en la excelencia del producto.",
+      "projects": "Ver Proyectos",
+      "about": "Sobre Mí",
       "stats": {
-        "projects": "Projects",
-        "ai": "Architect",
+        "projects": "Proyectos",
+        "ai": "Arquitecto",
         "fullStack": "Apps",
         "cloud": "DevOps"
       },
-      "platformsLabel": "Platforms",
-      "platformsText": "Scalable web experiences for product-led growth.",
-      "systemsLabel": "Systems",
-      "systemsText": "Multi-agent automation, monitoring and cloud-native deployment.",
-      "featuredStackLabel": "Featured stack",
-      "featuredStackText": "Vue · Nuxt · TypeScript · Docker",
-      "liveConceptLabel": "Live concept",
-      "liveConceptText": "Modern landing page design with subtle motion.",
-      "visualTitle": "AI Systems Architect",
-      "visualDescription": "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+      "platformsLabel": "Plataformas",
+        "platformsText": "Experiencias web escalables para crecimiento impulsado por productos.",
+        "systemsLabel": "Sistemas",
+        "systemsText": "Automatización multi-agente, monitoreo y despliegue nativo en la nube.",
+        "featuredStackLabel": "Stack destacado",
+        "featuredStackText": "Vue · Nuxt · TypeScript · Docker",
+        "liveConceptLabel": "Concepto en vivo",
+        "liveConceptText": "Diseño moderno de landing page con movimiento sutil.",
+        "visualTitle": "Arquitecto de Sistemas IA",
+        "visualDescription": "Diseñando experiencias de producto premium con infraestructura inteligente e interfaces elegantes."
     },
     "connect": {
-      "label": "Connect & collaborate",
-      "title": "Connect with the core systems that shape premium digital products."
+      "label": "Conectar y colaborar",
+      "title": "Conéctate con los sistemas centrales que moldean productos digitales premium."
     },
     "tech": {
-      "title": "Engineering Stack",
-      "subtitle": "Modern architecture across every layer."
+      "title": "Stack de Ingeniería",
+      "subtitle": "Arquitectura moderna en cada capa."
     },
     "navigation": {
       "about": {
-        "title": "About Me",
-        "description": "Discover my story, values and how I build digital products.",
+        "title": "Sobre Mí",
+        "description": "Descubre mi historia, valores y cómo construyo productos digitales.",
         "href": "/about"
       },
       "projects": {
-        "title": "Projects",
-        "description": "Explore purpose-driven builds, SaaS and AI systems in production.",
+        "title": "Proyectos",
+        "description": "Explora desarrollos orientados a resultados, SaaS y sistemas IA en producción.",
         "href": "/projects"
       },
       "curriculum": {
-        "title": "Curriculum",
-        "description": "Get the CV details, skills matrix and downloadable resume.",
+        "title": "Currículum",
+        "description": "Obtén detalles del CV, matriz de habilidades y currículum descargable.",
         "href": "/curriculum"
       },
       "future": {
-        "title": "Future Projects",
-        "description": "See the roadmap, new product ideas and next-generation systems.",
+        "title": "Proyectos Futuros",
+        "description": "Consulta el roadmap, nuevas ideas de productos y sistemas de próxima generación.",
         "href": "/future-projects"
       }
     }
   },
   "about": {
     "hero": {
-      "label": "Sobre Mi TEST DEPLOY",
-      "heading": "Desenvolupador Full Stack i AI Systems Engineer",
-      "text": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+      "label": "Sobre Mí",
+      "heading": "Desarrollador Full Stack e Ingeniero de Sistemas IA",
+      "text": "Soy ingeniero de sistemas IA y desarrollador full stack orientado a construir soluciones escalables, mantenibles y orientadas al negocio. Tengo experiencia en ecosistemas Laravel/Vue, integraciones cloud y sistemas multi-agente."
     },
     "specializations": {
-      "title": "Especialitzacions",
+      "title": "Especializaciones",
       "fullStack": {
-        "title": "Full Stack Development",
-        "description": "Laravel, Vue.js, Node.js, bases de dades relacionals i NoSQL"
+        "title": "Desarrollo Full Stack",
+        "description": "Laravel, Vue.js, Node.js, bases de datos relacionales y NoSQL"
       },
       "ai": {
-        "title": "AI Systems & Multi-Agent",
-        "description": "Sistemes d'intel·ligència artificial, agents multiagent, automatització"
+        "title": "Sistemas IA & Multi-Agente",
+        "description": "Sistemas de inteligencia artificial, agentes multi-agente, automatización"
       },
       "architecture": {
         "title": "Arquitectura Escalable",
-        "description": "Disseny de sistemes escalables, microserveis, integracions cloud"
+        "description": "Diseño de sistemas escalables, microservicios, integraciones cloud"
       }
     },
     "interests": {
-      "title": "Interessos Professionals",
+      "title": "Intereses Profesionales",
       "impact": {
-        "title": "Projectes d'Impacte",
-        "description": "Aplicacions web modernes, SaaS, productes digitals escalables"
+        "title": "Proyectos de Impacto",
+        "description": "Aplicaciones web modernas, SaaS, productos digitales escalables"
       },
       "innovation": {
-        "title": "Innovació AI",
-        "description": "Sistemes intel·ligents, automatitzacions, agents conversacionals"
+        "title": "Innovación IA",
+        "description": "Sistemas inteligentes, automatizaciones, agentes conversacionales"
       },
       "collaboration": {
-        "title": "Col·laboracions Tècniques",
-        "description": "Equips multidisciplinars, consultoria, mentorització"
+        "title": "Colaboraciones Técnicas",
+        "description": "Equipos multidisciplinares, consultoría, mentoría"
       }
     },
     "philosophy": {
-      "title": "Filosofia de Treball",
-      "text": "Crec en el poder de la tecnologia per transformar negocis i millorar vides. El meu enfocament combina enginyeria de software sòlida amb innovació en IA, sempre prioritzant la qualitat del codi, l'experiència d'usuari i l'impacte real. Treballo amb metodologies àgils, enfocades en resultats mesurables i solucions sostenibles a llarg termini."
+      "title": "Filosofía de Trabajo",
+      "text": "Creo en el poder de la tecnología para transformar negocios y mejorar vidas. Mi enfoque combina ingeniería de software sólida con innovación en IA, siempre priorizando la calidad del código, la experiencia del usuario y el impacto real. Trabajo con metodologías ágiles, enfocadas en resultados medibles y soluciones sostenibles a largo plazo."
     },
     "contact": {
-      "title": "Contacte",
-      "text": "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques.",
+      "title": "Contacto",
+      "text": "Disponible para proyectos de desarrollo web, consultoría IA y colaboraciones técnicas.",
       "email": "josafesf2\\@gmail.com"
     }
   },
   "projects": {
-    "title": "Projectes",
-    "description": "Una col·lecció de projectes desplegats i repositoris tècnics que mostren el meu treball en desenvolupament web i sistemes d'IA.",
+    "title": "Proyectos",
+    "description": "Una colección de proyectos desplegados y repositorios técnicos que muestran mi trabajo en desarrollo web y sistemas IA.",
     "tabs": {
-      "deployed": "Projectes Desplegats",
-      "github": "Repositoris GitHub"
+      "deployed": "Proyectos Desplegados",
+      "github": "Repositorios GitHub"
     },
     "filter": {
-      "all": "Tots"
+      "all": "Todos"
     },
-    "empty": "No s'han trobat projectes amb aquest filtre."
+    "empty": "No se han encontrado proyectos con este filtro."
   },
   "future": {
     "header": {
-      "title": "Projectes Futurs",
-      "description": "Una visió del meu roadmap professional: idees innovadores, productes escalables i tecnologies emergents."
+      "title": "Proyectos Futuros",
+      "description": "Una visión de mi roadmap profesional: ideas innovadoras, productos escalables y tecnologías emergentes."
     },
     "saas": {
-      "title": "Idees SaaS",
+      "title": "Ideas SaaS",
       "item1": {
-        "title": "Plataforma d'Automatització per Pimes",
-        "description": "SaaS que combina IA i automatització per ajudar petites empreses a optimitzar processos interns.",
+        "title": "Plataforma de Automatización para Pymes",
+        "description": "SaaS que combina IA y automatización para ayudar a pequeñas empresas a optimizar procesos internos.",
         "tags": ["Vue.js", "Laravel", "AI Integration"]
       },
       "item2": {
-        "title": "Marketplace de Serveis Digitals",
-        "description": "Plataforma que connecta professionals digitals amb empreses que necessiten serveis especialitzats.",
+        "title": "Marketplace de Servicios Digitales",
+        "description": "Plataforma que conecta profesionales digitales con empresas que necesitan servicios especializados.",
         "tags": ["Next.js", "Stripe", "Real-time"]
       }
     },
     "automation": {
-      "title": "Automatitzacions IA",
+      "title": "Automatizaciones IA",
       "item1": {
-        "title": "Agent de Gestió de Continguts",
-        "description": "Sistema multiagent que genera, optimitza i distribueix contingut per a xarxes socials i blogs.",
+        "title": "Agente de Gestión de Contenidos",
+        "description": "Sistema multi-agente que genera, optimiza y distribuye contenido para redes sociales y blogs.",
         "tags": ["Python", "LLMs", "Multi-Agent"]
       },
       "item2": {
-        "title": "Sistema d'Anàlisi Predictiva",
-        "description": "IA que analitza dades empresarials per proporcionar insights predictius i recomanacions accionables.",
+        "title": "Sistema de Análisis Predictivo",
+        "description": "IA que analiza datos empresariales para proporcionar insights predictivos y recomendaciones accionables.",
         "tags": ["Machine Learning", "Data Science", "APIs"]
       }
     },
     "multiAgent": {
-      "title": "Sistemes Multiagent Avançats",
+      "title": "Sistemas Multi-Agente Avanzados",
       "item1": {
-        "title": "Framework de Coordinació d'Agents",
-        "description": "Framework obert per desenvolupar i coordinar sistemes d'agents IA en entorns complexos.",
+        "title": "Framework de Coordinación de Agentes",
+        "description": "Framework abierto para desarrollar y coordinar sistemas de agentes IA en entornos complejos.",
         "tags": ["Python", "Distributed Systems", "Open Source"]
       },
       "item2": {
-        "title": "Agent d'Optimització Empresarial",
-        "description": "Agent intel·ligent que optimitza processos empresarials mitjançant aprenentatge continu i adaptació.",
+        "title": "Agente de Optimización Empresarial",
+        "description": "Agente inteligente que optimiza procesos empresariales mediante aprendizaje continuo y adaptación.",
         "tags": ["Reinforcement Learning", "Business Intelligence", "APIs"]
       }
     },
     "research": {
-      "title": "Projectes d'Investigació",
+      "title": "Proyectos de Investigación",
       "item1": {
-        "title": "IA per a Sostenibilitat",
-        "description": "Recerca en aplicacions d'IA per a la transició energètica i sostenibilitat ambiental.",
+        "title": "IA para Sostenibilidad",
+        "description": "Investigación en aplicaciones de IA para la transición energética y sostenibilidad ambiental.",
         "tags": ["Research", "Sustainability", "IoT"]
       },
       "item2": {
-        "title": "Interfícies Humà-Agent",
-        "description": "Disseny d'interfícies intuïtives per a la interacció amb sistemes d'agents complexos.",
+        "title": "Interfaces Humano-Agente",
+        "description": "Diseño de interfaces intuitivas para la interacción con sistemas de agentes complejos.",
         "tags": ["UX Research", "HCI", "Frontend"]
       }
     },
     "cta": {
-      "title": "Interessat en Col·laborar?",
-      "description": "Si alguna d'aquestes idees t'interessa o tens un projecte similar en ment, m'encantaria parlar-ne.",
-      "cta": "Contacta'm"
+      "title": "¿Interesado en Colaborar?",
+      "description": "Si alguna de estas ideas te interesa o tienes un proyecto similar en mente, me encantaría hablar sobre ello.",
+      "cta": "Contacta"
     }
   },
   "curriculum": {
     "header": {
       "title": "Curriculum Vitae",
-      "description": "Versions especialitzades del meu currículum per diferents rols professionals."
+      "description": "Versiones especializadas de mi currículum para diferentes roles profesionales."
     },
     "additional": {
-      "title": "Informació Addicional",
-      "line1": "Els currículums inclouen experiència professional detallada, projectes destacats, tecnologies dominades i certificacions rellevants.",
-      "line2": "Disponible per a versions personalitzades segons requisits específics de posició o empresa."
+      "title": "Información Adicional",
+      "line1": "Los currículos incluyen experiencia profesional detallada, proyectos destacados, tecnologías dominadas y certificaciones relevantes.",
+      "line2": "Disponible para versiones personalizadas según requisitos específicos de posición o empresa."
     },
     "cards": {
       "fullstack": {
         "title": "Full Stack Developer",
         "subtitle": "Frontend + Backend + APIs + arquitectura moderna",
-        "description": "Disseny i desenvolupament d’aplicacions web completes, arquitectures escalables i fluxos de treball optimitzats per productes digitals moderns."
+        "description": "Diseño y desarrollo de aplicaciones web completas, arquitecturas escalables y flujos de trabajo optimizados para productos digitales modernos."
       },
       "ai-systems": {
         "title": "AI Systems Engineer",
-        "subtitle": "LLMs, Multi-Agent Systems i automatització IA",
-        "description": "Creació de sistemes d’intel·ligència artificial orientats a producte amb agents col·laboratius, automatització intel·ligent i fluxos de dades avançats."
+        "subtitle": "LLMs, Multi-Agent Systems y automatización IA",
+        "description": "Creación de sistemas de inteligencia artificial orientados a producto con agentes colaborativos, automatización inteligente y flujos de datos avanzados."
       },
       "database-admin": {
         "title": "Database Administrator",
-        "subtitle": "SQL, PostgreSQL, MySQL i optimització de dades",
-        "description": "Administració de bases de dades robusta, optimització de rendiment i models de dades fiables per aplicacions empresarials i serveis en producció."
+        "subtitle": "SQL, PostgreSQL, MySQL y optimización de datos",
+        "description": "Administración de bases de datos robusta, optimización de rendimiento y modelos de datos fiables para aplicaciones empresariales y servicios en producción."
       },
       "systems-admin": {
         "title": "Systems Administrator",
-        "subtitle": "Linux, Docker, networking i infraestructura",
-        "description": "Infraestructura senzilla i segura, deploys automatitzats i manteniment de sistemes amb enfoc en disponibilitat, escalabilitat i fiabilitat."
+        "subtitle": "Linux, Docker, networking e infraestructura",
+        "description": "Infraestructura simple y segura, deploys automatizados y mantenimiento de sistemas con enfoque en disponibilidad, escalabilidad y fiabilidad."
       },
       "it-technician": {
         "title": "IT Technician",
-        "subtitle": "Suport tècnic, hardware, software i manteniment",
-        "description": "Gestió d’equips, resolució d’incidències i monitoratge proactiu per mantenir operatives les infraestructures i l’experiència dels usuaris."
+        "subtitle": "Soporte técnico, hardware, software y mantenimiento",
+        "description": "Gestión de equipos, resolución de incidencias y monitoreo proactivo para mantener operativas las infraestructuras y la experiencia de los usuarios."
       }
     },
     "card": {
       "label": "Currículum",
-      "viewPdf": "Veure CV",
-      "downloadPdf": "Descarregar PDF",
+      "viewPdf": "Ver CV",
+      "downloadPdf": "Descargar PDF",
       "alt": "Preview del CV"
     }
   },
   "projectCard": {
-    "featured": "Featured",
+    "featured": "Destacado",
     "github": "GitHub",
-    "live": "Live"
+    "live": "En Vivo"
   },
   "sections": {
     "about": {
-      "title": "About me",
-      "description": "Sóc enginyer de sistemes AI i desenvolupador full stack orientat a construir solucions escalables, mantenibles i orientades a negoci. Tinc experiència en ecosistemes Laravel/Vue, integracions cloud i sistemes multiagent."
+      "title": "Sobre Mí",
+      "description": "Soy ingeniero de sistemas IA y desarrollador full stack orientado a construir soluciones escalables, mantenibles y orientadas al negocio. Tengo experiencia en ecosistemas Laravel/Vue, integraciones cloud y sistemas multi-agente."
     },
     "projects": {
-      "title": "Projectes",
-      "subtitle": "Importació automàtica de GitHub + projectes manuals en JSON"
+      "title": "Proyectos",
+      "subtitle": "Importación automática de GitHub + proyectos manuales en JSON"
     },
     "contact": {
-      "title": "Contacte",
-      "description": "Disponible per a projectes de desenvolupament web, consultoria AI i col·laboracions tècniques."
+      "title": "Contacto",
+      "description": "Disponible para proyectos de desarrollo web, consultoría IA y colaboraciones técnicas."
     }
   }
 }
