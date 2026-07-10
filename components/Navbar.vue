@@ -3,7 +3,7 @@
     <div class="mx-auto w-[min(1120px,92vw)] px-4 py-4">
       <div class="flex items-center justify-between">
         <NuxtLink to="/" class="text-lg font-semibold text-white hover:text-slate-300">
-          Josafe
+          Josafe's Portfolio
         </NuxtLink>
 
         <div class="hidden space-x-8 md:flex items-center">
@@ -41,8 +41,8 @@
           </div>
         </div>
 
-        <!-- Mobile menu button
-        <button
+        <!-- Mobile menu button -->
+        <!-- <button
           @click="isOpen = !isOpen"
           class="md:hidden text-slate-300 hover:text-white flex items-center gap-3"
         >
@@ -99,8 +99,9 @@
         <NuxtLink :to="localePath('/future-projects')" @click="isOpen = false" class="block text-slate-300 hover:text-white transition-colors">
           {{ t('nav.future') }}
         </NuxtLink>
+      </div> -->
       </div>
-    </div>
+    </div> 
   </nav>
 </template>
 
