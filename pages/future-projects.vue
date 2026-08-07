@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { useI18n } from '#imports'
 const { t } = useI18n()
-</script>
+</script> -->
 
 <script setup lang="ts">
 import { useI18n } from '#imports'
