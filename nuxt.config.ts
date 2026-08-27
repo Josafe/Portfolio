@@ -41,7 +41,7 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     prerender: {
       crawlLinks: true,
-      //routes: ['/ca', '/es', '/en', '/']
+      routes: ['/', '/es', '/en']
     }
   }
 })

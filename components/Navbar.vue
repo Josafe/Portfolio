@@ -129,7 +129,13 @@ const currentLangName = computed(() => {
 
 const setLocale = async (newLocale: string) => {
   const path = route.path.replace(/^\/(ca|es|en)/, '') || '/'
-  await navigateTo(`/${newLocale}${path}`)
+
+  const targetPath = newLocale === 'ca'
+    ? path
+    : `/${newLocale}${path === '/' ? '' : path}`
+
+  await navigateTo(targetPath)
+
   langOpen.value = false
   isOpen.value = false
 }
