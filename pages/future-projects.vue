@@ -32,7 +32,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.saas.item1.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.saas.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.saas.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.saas.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
 
@@ -40,7 +40,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.saas.item2.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.saas.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.saas.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.saas.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.automation.item1.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.automation.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.automation.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.automation.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
 
@@ -62,7 +62,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.automation.item2.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.automation.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.automation.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.automation.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.multiAgent.item1.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.multiAgent.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.multiAgent.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.multiAgent.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
 
@@ -84,7 +84,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.multiAgent.item2.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.multiAgent.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.multiAgent.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.multiAgent.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.research.item1.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.research.item1.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.research.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.research.item1.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
 
@@ -106,7 +106,7 @@ useSeoMeta({
             <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.research.item2.title') }}</h3>
             <p class="text-sm text-slate-400 mb-4">{{ t('future.research.item2.description') }}</p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="tag in t('future.research.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span>
+              <!-- <span v-for="tag in t('future.research.item2.tags')" :key="tag" class="rounded-full bg-slate-800 px-2 py-1 text-xs text-slate-300">{{ tag }}</span> -->
             </div>
           </div>
         </div>
