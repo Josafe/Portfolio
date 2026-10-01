@@ -15,7 +15,7 @@
   "meta": {
     "index": {
       "title": "Josafe.com · Portfolio Full Stack & AI Systems",
-      "description": "Landing page premium de Josafe con proyectos Full Stack, AI Systems y arquitectura de software moderna.",
+      "description": "Landing page profesional de Josafe con proyectos Full Stack, AI Systems y arquitectura de software moderna.",
       "ogTitle": "Josafe.com · Portfolio Full Stack & AI Systems",
       "ogDescription": "Portfolio moderno de Josafe: experiencias digitales premium, sistemas inteligentes y arquitectura de software escalable."
     },
@@ -38,7 +38,7 @@
   },
   "index": {
     "hero": {
-      "badge": "Portfolio de ingeniería premium",
+      "badge": "Portfolio de ingeniería profesional",
       "heading": "Construyendo experiencias Full Stack modernas y Sistemas IA para productos digitales orientados al producto.",
       "paragraph": "Creando plataformas escalables, automatización inteligente e interfaces elegantes con un enfoque técnico premium enfocado en la excelencia del producto.",
       "projects": "Ver Proyectos",
