@@ -1,87 +1,84 @@
 <script setup lang="ts">
 import { useI18n } from '#imports'
+
 const { t } = useI18n()
 
 useSeoMeta({
   title: t('meta.about.title'),
   description: t('meta.about.description')
 })
+
+const specializations = ['fullStack', 'ai', 'architecture'] as const
+const interests = ['impact', 'innovation', 'collaboration'] as const
 </script>
 
 <template>
-  <div class="grid gap-16">
-    <!-- Hero Section -->
-    <section class="grid gap-7">
-      <div class="grid gap-4">
-        <br> </br>
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-brand-500">{{ t('about.hero.label') }}</p>
-        <h1 class="max-w-4xl text-4xl font-bold leading-tight text-white md:text-6xl">
-          {{ t('about.hero.heading') }}
-        </h1>
-      </div>
-        <h2 class="text-2xl font-semibold text-white">{{ t('sections.about.title') }}</h2>
-        <p class="max-w-4xl text-slate-300">{{ t('sections.about.description') }}</p>
+  <div class="space-y-16 sm:space-y-20">
+    <header class="max-w-3xl">
+      <p class="text-sm font-medium text-brand-300">{{ t('about.hero.label') }}</p>
+      <h1 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+        {{ t('about.hero.heading') }}
+      </h1>
+      <p class="mt-6 text-pretty text-base leading-relaxed text-slate-300 sm:text-lg">{{ t('about.hero.text') }}</p>
+    </header>
+
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-8">
+      <section aria-labelledby="specializations-heading">
+        <h2 id="specializations-heading" class="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+          {{ t('about.specializations.title') }}
+        </h2>
+        <ul class="mt-6 space-y-3">
+          <li v-for="key in specializations" :key="key" class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
+            <h3 class="font-semibold text-white">{{ t(`about.specializations.${key}.title`) }}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-slate-400">{{ t(`about.specializations.${key}.description`) }}</p>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="interests-heading">
+        <h2 id="interests-heading" class="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+          {{ t('about.interests.title') }}
+        </h2>
+        <ul class="mt-6 space-y-3">
+          <li v-for="key in interests" :key="key" class="rounded-2xl border border-slate-800 bg-slate-900/40 p-5">
+            <h3 class="font-semibold text-white">{{ t(`about.interests.${key}.title`) }}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-slate-400">{{ t(`about.interests.${key}.description`) }}</p>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <section aria-labelledby="philosophy-heading" class="max-w-3xl">
+      <h2 id="philosophy-heading" class="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+        {{ t('about.philosophy.title') }}
+      </h2>
+      <p class="mt-4 text-base leading-relaxed text-slate-300">{{ t('about.philosophy.text') }}</p>
     </section>
 
-    <!-- Specializations -->
-    <section class="grid gap-8 md:grid-cols-2">
-      <div class="grid gap-4">
-        <h2 class="text-2xl font-semibold text-white">{{ t('about.specializations.title') }}</h2>
-        <div class="grid gap-3">
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.specializations.fullStack.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.specializations.fullStack.description') }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.specializations.ai.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.specializations.ai.description') }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.specializations.architecture.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.specializations.architecture.description') }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid gap-4">
-        <h2 class="text-2xl font-semibold text-white">{{ t('about.interests.title') }}</h2>
-        <div class="grid gap-3">
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.interests.impact.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.interests.impact.description') }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.interests.innovation.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.interests.innovation.description') }}</p>
-          </div>
-          <div class="rounded-lg border border-slate-800 p-4">
-            <h3 class="font-semibold text-white">{{ t('about.interests.collaboration.title') }}</h3>
-            <p class="mt-1 text-sm text-slate-400">{{ t('about.interests.collaboration.description') }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Philosophy -->
-    <section class="grid gap-6">
-      <h2 class="text-2xl font-semibold text-white">{{ t('about.philosophy.title') }}</h2>
-      <div class="max-w-4xl">
-        <p class="text-slate-300 leading-relaxed">{{ t('about.philosophy.text') }}</p>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section class="grid gap-6">
-      <h2 class="text-2xl font-semibold text-white">{{ t('about.contact.title') }}</h2>
-      <p class="text-slate-300">{{ t('about.contact.text') }}</p>
-      <div class="flex flex-wrap gap-4">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      class="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8"
+    >
+      <h2 id="contact-heading" class="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+        {{ t('about.contact.title') }}
+      </h2>
+      <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-300">{{ t('about.contact.text') }}</p>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <a
           href="mailto:josafesf2@gmail.com"
-          class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
+          class="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-white px-5 text-sm font-semibold text-slate-950 transition-colors hover:bg-slate-200"
         >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4 shrink-0" aria-hidden="true">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+            />
+          </svg>
           {{ t('about.contact.email') }}
         </a>
-        <HomeSocialLinks class="w-full" />
+        <SocialLinks hide-email />
       </div>
     </section>
   </div>

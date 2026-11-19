@@ -15,7 +15,26 @@
     @apply min-h-screen;
   }
 
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+
   a {
     @apply transition-colors duration-200;
+  }
+
+  :focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-brand-300;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

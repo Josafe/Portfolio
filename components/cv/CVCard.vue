@@ -2,67 +2,46 @@
 import { useI18n } from '#imports'
 
 const props = defineProps<{
-  title: string
-  subtitle: string
-  description: string
+  /** Matches the `curriculum.cards.<id>` translation keys. */
+  id: string
   pdf: string
-  preview: string
   tags: string[]
 }>()
 
 const { t } = useI18n()
 
+const text = (field: 'title' | 'subtitle' | 'description') => t(`curriculum.cards.${props.id}.${field}`)
 const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
 </script>
 
 <template>
-  <div class="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-2xl shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10">
-    <div class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none"></div>
+  <article class="flex h-full flex-col rounded-2xl border border-slate-800 bg-slate-900/40 p-5 transition-colors hover:border-slate-600 sm:p-6">
+    <h2 class="text-lg font-semibold leading-snug text-white">{{ text('title') }}</h2>
+    <p class="mt-1 text-sm text-brand-300">{{ text('subtitle') }}</p>
+    <p class="mt-4 text-sm leading-relaxed text-slate-300">{{ text('description') }}</p>
 
-    <div class="flex flex-col gap-6">
-      <div class="space-y-3">
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-500">{{ t('curriculum.card.label') }}</p>
-        <h3 class="text-2xl font-semibold text-white">{{ props.title }}</h3>
-        <p class="text-sm text-slate-400">{{ props.subtitle }}</p>
-      </div>
+    <ul class="mt-5 flex flex-wrap gap-1.5">
+      <li v-for="tag in tags" :key="tag" class="rounded-md bg-slate-800/80 px-2 py-1 text-xs text-slate-300">{{ tag }}</li>
+    </ul>
 
-      <div class="overflow-hidden rounded-[1.5rem] border border-white/10 bg-slate-950/70">
-        <img
-          :src="props.preview"
-          :alt="`${t('curriculum.card.alt')} ${props.title}`"
-          class="h-64 w-full object-cover object-center transition duration-500 group-hover:scale-105"
-        />
-      </div>
-
-      <p class="text-sm leading-7 text-slate-300">{{ props.description }}</p>
-
-      <div class="flex flex-wrap gap-2">
-        <span
-          v-for="tag in props.tags"
-          :key="tag"
-          class="rounded-full border border-slate-700/80 bg-slate-950/60 px-3 py-1 text-xs font-medium text-slate-300"
-        >
-          {{ tag }}
-        </span>
-      </div>
-
-      <div class="grid gap-3 sm:grid-cols-2">
-        <a
-          :href="props.pdf"
-          target="_blank"
-          rel="noreferrer noopener"
-          class="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/20 hover:bg-white/15"
-        >
-          {{ t('curriculum.card.viewPdf') }}
-        </a>
-        <a
-          :href="props.pdf"
-          :download="downloadFilename"
-          class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
-        >
-          {{ t('curriculum.card.downloadPdf') }}
-        </a>
-      </div>
+    <div class="mt-auto flex flex-wrap gap-2 pt-6">
+      <a
+        :href="pdf"
+        :aria-label="`${t('curriculum.card.viewPdf')}: ${text('title')}`"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-11 grow basis-36 items-center justify-center whitespace-nowrap rounded-full border border-slate-700 px-4 text-sm font-semibold text-white transition-colors hover:border-slate-500 hover:bg-white/5"
+      >
+        {{ t('curriculum.card.viewPdf') }}
+      </a>
+      <a
+        :href="pdf"
+        :download="downloadFilename"
+        :aria-label="`${t('curriculum.card.downloadPdf')}: ${text('title')}`"
+        class="inline-flex min-h-11 grow basis-36 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-slate-200"
+      >
+        {{ t('curriculum.card.downloadPdf') }}
+      </a>
     </div>
-  </div>
+  </article>
 </template>

@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
+  // main.css already contains the @tailwind directives: register it so the module
+  // does not inject a second copy of Tailwind's styles.
+  tailwindcss: { cssPath: '~/assets/css/main.css' },
   components: ['~/components'],
   app: {
     head: {

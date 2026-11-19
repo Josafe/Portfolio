@@ -1,6 +1,8 @@
-# Josafe.com Portfolio · Nuxt 3
+# Josafe.dev Portfolio · Nuxt 3
 
 Portfolio personal modern per a un desenvolupador full stack i enginyer de sistemes AI.
+
+Web: https://www.josafe.dev
 
 ## Stack tècnic
 
@@ -13,15 +15,15 @@ Portfolio personal modern per a un desenvolupador full stack i enginyer de siste
 
 - `pages/index.vue`: composició de seccions i SEO.
 - `sections/`: Hero, About, Projects i Contact.
-- `components/ProjectCard.vue`: card reutilitzable amb animació.
-- `data/projects.json`: projectes manuals destacats.
-- `server/api/github-repos.get.ts`: proxy SSR a GitHub API.
-- `composables/useGithubRepos.ts`: transformació de repositoris GitHub a format card.
+- `components/ProjectCard.vue`: targeta de projecte (estat, categoria, context, notes, tecnologies i enllaços).
+- `data/projects.ts`: font única i tipada dels projectes seleccionats manualment, amb textos en CA/ES/EN.
+- `types/project.ts`: model de dades dels projectes i valors vàlids d'estat, categoria i context.
+- `composables/useProjects.ts`: projectes ordenats (destacats primer i després per `order`).
+- `server/api/github-repos.get.ts`: proxy a l'API de GitHub; actualment no l'utilitza cap pàgina.
 
-## Projectes inicials inclosos
+## Projectes
 
-- AGC Padel Academy · https://agcpadelacademy.com/
-- Chatbot Multiagent System · https://github.com/Josafe/TFM-Sistema-Chatbot-Multiagent
+La pàgina de projectes només mostra projectes seleccionats manualment a `data/projects.ts`. No hi ha cap importació automàtica de repositoris: cada projecte enllaça el seu repositori públic (si en té) i la pàgina enllaça el perfil general de GitHub.
 
 ## Configuració ràpida
 
@@ -30,14 +32,16 @@ npm install
 npm run dev
 ```
 
-## Com connectar GitHub API
+## Com afegir o actualitzar un projecte
 
-1. La ruta SSR `server/api/github-repos.get.ts` consulta `https://api.github.com/users/Josafe/repos`.
-2. Pots definir `GITHUB_TOKEN` a variables d'entorn per augmentar límits de rate limit.
-3. El composable `useGithubRepos.ts` converteix els repositoris en targetes de projecte.
-4. `ProjectsSection.vue` barreja projectes manuals (`data/projects.json`) amb els automàtics de GitHub.
+1. Afegeix o edita l'entrada a `data/projects.ts` amb un `slug` únic.
+2. Escriu `title`, `description` i, si cal, `notes` en català, castellà i anglès.
+3. Indica `status` (`live`, `in-development`, `experimental`) i `context` (`personal`, `academic`) només si són reals i confirmats; si no, omet-los.
+4. Completa `category`, `technologies`, `links` (`live`, `repository`), `featured` i `order`.
+5. Si necessites un estat, una categoria o un context nous, afegeix-los a `types/project.ts` i les seves etiquetes a `i18n/locales/{ca,es,en}.json` (`projects.status`, `projects.category`, `projects.context`).
+6. No afegeixis projectes de mostra ni dates, clients o mètriques que no siguin reals.
 
 ## Escalabilitat
 
-- Per afegir projectes manuals, només cal editar `data/projects.json`.
+- Per afegir projectes, segueix els passos de la secció anterior a `data/projects.ts`.
 - Per backend Laravel 11, crea endpoints propis i substitueix/combina la càrrega del composable amb `$fetch` cap a la teva API.

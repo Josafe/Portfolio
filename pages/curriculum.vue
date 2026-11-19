@@ -1,29 +1,37 @@
 <script setup lang="ts">
 import { useI18n } from '#imports'
-import { curriculums } from '../data/curriculums'
+import { curriculums } from '~/data/curriculums'
+
 const { t } = useI18n()
+
+useSeoMeta({
+  title: t('meta.curriculum.title'),
+  description: t('meta.curriculum.description')
+})
 </script>
 
 <template>
-  <div class="grid gap-12">
-    <!-- Header -->
-    <div class="grid gap-4">
-      <br> </br>
-      <h1 class="text-4xl font-bold text-white">{{ t('curriculum.header.title') }}</h1>
-      <p class="text-slate-400">{{ t('curriculum.header.description') }}</p>
-    </div>
+  <div>
+    <header class="max-w-3xl">
+      <h1 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{{ t('curriculum.header.title') }}</h1>
+      <p class="mt-4 text-base leading-relaxed text-slate-400 sm:text-lg">{{ t('curriculum.header.description') }}</p>
+    </header>
 
-    <div class="grid gap-8 lg:grid-cols-2">
-      <CVCard v-for="cv in curriculums" :key="cv.id" v-bind="cv" />
-    </div>
+    <ul class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      <li v-for="cv in curriculums" :key="cv.id" class="flex">
+        <CVCard v-bind="cv" class="w-full" />
+      </li>
+    </ul>
 
-    <!-- Additional Info -->
-    <div class="rounded-lg border border-slate-800 p-6">
-      <h3 class="text-lg font-semibold text-white mb-4">{{ t('curriculum.additional.title') }}</h3>
-      <div class="grid gap-4 text-sm text-slate-300">
+    <section
+      aria-labelledby="cv-additional-heading"
+      class="mt-12 rounded-2xl border border-slate-800 bg-slate-900/40 p-6 sm:p-8"
+    >
+      <h2 id="cv-additional-heading" class="text-lg font-semibold text-white">{{ t('curriculum.additional.title') }}</h2>
+      <div class="mt-3 max-w-3xl space-y-3 text-sm leading-relaxed text-slate-300">
         <p>{{ t('curriculum.additional.line1') }}</p>
         <p>{{ t('curriculum.additional.line2') }}</p>
       </div>
-    </div>
+    </section>
   </div>
 </template>

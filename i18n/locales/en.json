@@ -1,11 +1,11 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About Me",
+    "about": "About me",
     "projects": "Projects",
     "curriculum": "Resume",
-    "future": "Future Projects",
-    "menu": "Menu"
+    "menu": "Menu",
+    "main": "Main navigation"
   },
   "language": {
     "label": "Language",
@@ -13,123 +13,111 @@
     "es": "Español",
     "en": "English"
   },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
   "meta": {
     "index": {
-      "title": "Josafe.com · Portfolio Full Stack & AI Systems",
+      "title": "Josafe.dev · Portfolio Full Stack & AI Systems",
       "description": "Josafe premium portfolio with Full Stack, AI Systems and modern software architecture projects.",
-      "ogTitle": "Josafe.com · Portfolio Full Stack & AI Systems",
+      "ogTitle": "Josafe.dev · Portfolio Full Stack & AI Systems",
       "ogDescription": "Josafe portfolio: premium digital experiences, intelligent systems and scalable software architecture."
     },
     "about": {
-      "title": "About Me · Josafe.com",
+      "title": "About me · Josafe.dev",
       "description": "Professional overview of Josafe: Full Stack Developer and AI Systems Engineer specialized in scalable solutions and artificial intelligence."
     },
     "projects": {
-      "title": "Projects · Josafe.com",
-      "description": "Live projects and GitHub repositories by Josafe: web development, AI systems and multi-agent engineering."
-    },
-    "future": {
-      "title": "Future Projects · Josafe.com",
-      "description": "Josafe professional roadmap: SaaS ideas, AI automations and advanced multi-agent systems."
+      "title": "Projects · Josafe.dev",
+      "description": "Selected projects by Josafe: web development, business software, AI systems and computer vision, with clear status labels."
     },
     "curriculum": {
-      "title": "Resume · Josafe.com",
+      "title": "Resume · Josafe.dev",
       "description": "Specialized resume versions for professional roles, available as downloadable PDFs."
     }
   },
   "index": {
     "hero": {
-      "badge": "Professional engineering portfolio",
-      "heading": "Building modern Full Stack experiences and AI Systems for product-led digital products.",
-      "paragraph": "Crafting scalable platforms, intelligent automation and elegant interfaces with a premium technical approach focused on product excellence.",
-      "projects": "View Projects",
-      "about": "About Me",
-      "stats": {
-        "projects": "Projects",
-        "ai": "Architect",
-        "fullStack": "Apps",
-        "cloud": "DevOps"
-      },
-      "platformsLabel": "Platforms",
-      "platformsText": "Scalable web experiences for product-led growth.",
-      "systemsLabel": "Systems",
-      "systemsText": "Multi-agent automation, monitoring and cloud-native deployment.",
-      "featuredStackLabel": "Featured stack",
-      "featuredStackText": "Vue · Nuxt · TypeScript · Docker",
-      "liveConceptLabel": "Live concept",
-      "liveConceptText": "Modern landing page design with subtle motion.",
-      "visualTitle": "AI Systems Architect",
-      "visualDescription": "Designing premium product experiences with intelligent infrastructure and elegant interfaces."
+      "badge": "Hi, I'm Josafe",
+      "heading": "Full Stack Developer & AI Systems Engineer",
+      "paragraph": "I build web applications, business software and AI systems: from live web platforms to development environments with specialized agents and computer-vision experiments.",
+      "projects": "View projects",
+      "cv": "View resume"
     },
-    "connect": {
-      "label": "Connect & collaborate",
-      "title": "Connect with the core systems that shape premium digital products."
+    "featured": {
+      "title": "Featured projects",
+      "description": "A selection of the most representative projects.",
+      "viewAll": "View all {count} projects"
     },
     "tech": {
-      "title": "Engineering Stack",
-      "subtitle": "Modern architecture across every layer."
-    },
-    "navigation": {
-      "about": {
-        "title": "About Me",
-        "description": "Discover my story, values and how I build digital products.",
-        "href": "/about"
-      },
-      "projects": {
-        "title": "Projects",
-        "description": "Explore purpose-driven builds, SaaS and AI systems in production.",
-        "href": "/projects"
-      },
-      "curriculum": {
-        "title": "Resume",
-        "description": "Get the resume details, skills matrix and downloadable CV.",
-        "href": "/curriculum"
-      },
-      "future": {
-        "title": "Future Projects",
-        "description": "See the roadmap, new product ideas and next-generation systems.",
-        "href": "/future-projects"
+      "title": "Engineering stack",
+      "subtitle": "Technologies and tools I work with, grouped by area.",
+      "categories": {
+        "frontend": {
+          "title": "Frontend engineering",
+          "description": "Modern UI frameworks and component architecture"
+        },
+        "backend": {
+          "title": "Backend & APIs",
+          "description": "Scalable server architectures and integrations"
+        },
+        "ai": {
+          "title": "AI & automation",
+          "description": "Intelligent systems and multi-agent architectures"
+        },
+        "databases": {
+          "title": "Databases",
+          "description": "Data modeling and query optimization"
+        },
+        "cloud": {
+          "title": "Cloud & infrastructure",
+          "description": "Distributed systems and edge computing"
+        },
+        "devops": {
+          "title": "DevOps & containers",
+          "description": "Deployment pipelines and infrastructure automation"
+        }
       }
     }
   },
   "about": {
     "hero": {
-      "label": "About Me",
+      "label": "About me",
       "heading": "Full Stack Developer & AI Systems Engineer",
       "text": "I'm an AI Systems Engineer and Full Stack Developer focused on building scalable, maintainable and business-oriented solutions. I have experience in Laravel/Vue ecosystems, cloud integrations and multi-agent systems."
     },
     "specializations": {
       "title": "Specializations",
       "fullStack": {
-        "title": "Full Stack Development",
+        "title": "Full stack development",
         "description": "Laravel, Vue.js, Node.js, relational and NoSQL databases"
       },
       "ai": {
-        "title": "AI Systems & Multi-Agent",
+        "title": "AI & multi-agent systems",
         "description": "Artificial intelligence systems, multi-agent systems, automation"
       },
       "architecture": {
-        "title": "Scalable Architecture",
+        "title": "Scalable architecture",
         "description": "Design of scalable systems, microservices, cloud integrations"
       }
     },
     "interests": {
-      "title": "Professional Interests",
+      "title": "Professional interests",
       "impact": {
-        "title": "Impact Projects",
+        "title": "Impact projects",
         "description": "Modern web applications, SaaS, scalable digital products"
       },
       "innovation": {
-        "title": "AI Innovation",
+        "title": "AI innovation",
         "description": "Intelligent systems, automations, conversational agents"
       },
       "collaboration": {
-        "title": "Technical Collaborations",
+        "title": "Technical collaborations",
         "description": "Multidisciplinary teams, consulting, mentoring"
       }
     },
     "philosophy": {
-      "title": "Work Philosophy",
+      "title": "Work philosophy",
       "text": "I believe in the power of technology to transform businesses and improve lives. My approach combines solid software engineering with AI innovation, always prioritizing code quality, user experience and real impact. I work with agile methodologies, focused on measurable results and long-term sustainable solutions."
     },
     "contact": {
@@ -140,78 +128,29 @@
   },
   "projects": {
     "title": "Projects",
-    "description": "A collection of live projects and technical repositories showcasing my work in web development and AI systems.",
-    "tabs": {
-      "deployed": "Live Projects",
-      "github": "GitHub Repositories"
-    },
+    "description": "A curated selection of web development, business software and AI systems projects. Status labels show whether a project is live, in development or experimental.",
     "filter": {
+      "label": "Filter by category",
       "all": "All"
     },
-    "empty": "No projects found with this filter."
-  },
-  "future": {
-    "header": {
-      "title": "Future Projects",
-      "description": "A vision of my professional roadmap: innovative ideas, scalable products and emerging technologies."
+    "empty": "No projects found with this filter.",
+    "status": {
+      "live": "Live",
+      "in-development": "In development",
+      "experimental": "Experimental"
     },
-    "saas": {
-      "title": "SaaS Ideas",
-      "item1": {
-        "title": "Automation Platform for SMEs",
-        "description": "SaaS combining AI and automation to help small businesses optimize internal processes.",
-        "tags": ["Vue.js", "Laravel", "AI Integration"]
-      },
-      "item2": {
-        "title": "Digital Services Marketplace",
-        "description": "Platform connecting digital professionals with companies needing specialized services.",
-        "tags": ["Next.js", "Stripe", "Real-time"]
-      }
+    "category": {
+      "web": "Web platform",
+      "business-software": "Business software",
+      "ai-systems": "AI systems",
+      "computer-vision": "Computer vision"
     },
-    "automation": {
-      "title": "AI Automations",
-      "item1": {
-        "title": "Content Management Agent",
-        "description": "Multi-agent system that generates, optimizes and distributes content for social networks and blogs.",
-        "tags": ["Python", "LLMs", "Multi-Agent"]
-      },
-      "item2": {
-        "title": "Predictive Analytics System",
-        "description": "AI that analyzes business data to provide predictive insights and actionable recommendations.",
-        "tags": ["Machine Learning", "Data Science", "APIs"]
-      }
+    "context": {
+      "personal": "Personal project",
+      "academic": "Academic project"
     },
-    "multiAgent": {
-      "title": "Advanced Multi-Agent Systems",
-      "item1": {
-        "title": "Agent Coordination Framework",
-        "description": "Open framework for developing and coordinating AI agent systems in complex environments.",
-        "tags": ["Python", "Distributed Systems", "Open Source"]
-      },
-      "item2": {
-        "title": "Business Optimization Agent",
-        "description": "Intelligent agent that optimizes business processes through continuous learning and adaptation.",
-        "tags": ["Reinforcement Learning", "Business Intelligence", "APIs"]
-      }
-    },
-    "research": {
-      "title": "Research Projects",
-      "item1": {
-        "title": "AI for Sustainability",
-        "description": "Research in AI applications for energy transition and environmental sustainability.",
-        "tags": ["Research", "Sustainability", "IoT"]
-      },
-      "item2": {
-        "title": "Human-Agent Interfaces",
-        "description": "Design of intuitive interfaces for interaction with complex agent systems.",
-        "tags": ["UX Research", "HCI", "Frontend"]
-      }
-    },
-    "cta": {
-      "title": "Interested in Collaborating?",
-      "description": "If any of these ideas interests you or you have a similar project in mind, I'd love to talk about it.",
-      "cta": "Contact Me"
-    }
+    "githubProfile": "View all repositories on GitHub",
+    "results": "{count} project | {count} projects"
   },
   "curriculum": {
     "header": {
@@ -219,7 +158,7 @@
       "description": "Specialized resume versions for different professional roles."
     },
     "additional": {
-      "title": "Additional Information",
+      "title": "Additional information",
       "line1": "Resumes include detailed professional experience, highlighted projects, mastered technologies and relevant certifications.",
       "line2": "Available for customized versions according to specific position or company requirements."
     },
@@ -251,29 +190,18 @@
       }
     },
     "card": {
-      "label": "Resume",
       "viewPdf": "View Resume",
-      "downloadPdf": "Download PDF",
-      "alt": "Preview del CV"
+      "downloadPdf": "Download PDF"
     }
   },
   "projectCard": {
     "featured": "Featured",
-    "github": "GitHub",
-    "live": "Live Demo"
+    "repository": "Repository",
+    "live": "Live site",
+    "technologies": "Technologies"
   },
-  "sections": {
-    "about": {
-      "title": "About Me",
-      "description": "I'm an AI Systems Engineer and Full Stack Developer focused on building scalable, maintainable and business-oriented solutions. I have experience in Laravel/Vue ecosystems, cloud integrations and multi-agent systems."
-    },
-    "projects": {
-      "title": "Projects",
-      "subtitle": "Automatic GitHub imports + manual projects in JSON"
-    },
-    "contact": {
-      "title": "Contact",
-      "description": "Available for web development projects, AI consulting and technical collaborations."
-    }
+  "footer": {
+    "navigation": "Navigation",
+    "contact": "Contact"
   }
 }

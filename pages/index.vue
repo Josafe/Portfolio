@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useRuntimeConfig, useSeoMeta, useI18n } from '#imports'
-import BackgroundEffects from '~/components/home/BackgroundEffects.vue'
 import HeroSection from '~/components/home/HeroSection.vue'
-import HomeSocialLinks from '~/components/home/SocialLinks.vue'
-import HomeTechStack from '~/components/home/TechStack.vue'
-import NavigationCards from '~/components/home/NavigationCards.vue'
+import TechStack from '~/components/home/TechStack.vue'
 
 const { t } = useI18n()
 const config = useRuntimeConfig()
+const localePath = useLocalePath()
+
+const projects = useProjects()
+const featuredProjects = projects.filter(project => project.featured)
 
 useSeoMeta({
   title: t('meta.index.title'),
@@ -20,33 +21,33 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="relative overflow-hidden bg-slate-950 text-white min-w-0">
-    <BackgroundEffects />
+  <div>
+    <HeroSection />
 
-    <main class="relative mx-auto w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-      <HeroSection />
-
-      <section class="mt-16 grid gap-8 grid-cols-1 xl:grid-cols-[1fr_0.9fr]">
-        <div class="space-y-6 min-w-0">
-          <div class="w-full min-w-0 overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70 p-5 sm:p-6 shadow-soft backdrop-blur-xl">
-            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div class="min-w-0">
-                <p class="text-sm uppercase tracking-[0.11em] sm:tracking-[0.14em] text-slate-400">{{ t('index.connect.label') }}</p>
-                <h2 class="mt-3 text-2xl font-semibold text-white break-words">{{ t('index.connect.title') }}</h2>
-              </div>
-            </div>
-            <div class="mt-6">
-              <HomeSocialLinks />
-            </div>
-          </div>
-
-          <HomeTechStack />
+    <section aria-labelledby="featured-projects-heading" class="mt-20 sm:mt-28">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div class="max-w-2xl">
+          <h2 id="featured-projects-heading" class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            {{ t('index.featured.title') }}
+          </h2>
+          <p class="mt-3 text-base leading-relaxed text-slate-400">{{ t('index.featured.description') }}</p>
         </div>
+        <NuxtLink
+          :to="localePath('/projects')"
+          class="inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-sm font-semibold text-brand-300 transition-colors hover:text-white sm:self-auto"
+        >
+          {{ t('index.featured.viewAll', { count: projects.length }) }}
+          <span aria-hidden="true">→</span>
+        </NuxtLink>
+      </div>
 
-        <div class="min-w-0">
-          <NavigationCards />
-        </div>
-      </section>
-    </main>
+      <ul class="mt-8 grid gap-5 md:grid-cols-2">
+        <li v-for="project in featuredProjects" :key="project.slug" class="flex">
+          <ProjectCard :project="project" class="w-full" />
+        </li>
+      </ul>
+    </section>
+
+    <TechStack class="mt-20 sm:mt-28" />
   </div>
 </template>
