@@ -6,6 +6,7 @@ const { t } = useI18n()
 <script setup lang="ts">
 import { useI18n } from '#imports'
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useSeoMeta({
   title: t('meta.future.title'),
@@ -118,7 +119,7 @@ useSeoMeta({
       <h3 class="text-lg font-semibold text-white mb-2">{{ t('future.cta.title') }}</h3>
       <p class="text-slate-400 mb-4">{{ t('future.cta.description') }}</p>
       <NuxtLink
-        to="/about"
+        :to="localePath('/about')"
         class="inline-block rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
       >
         {{ t('future.cta.cta') }}

@@ -76,12 +76,12 @@ useSeoMeta({
       <p class="text-slate-300">{{ t('about.contact.text') }}</p>
       <div class="flex flex-wrap gap-4">
         <a
-          href="mailto:josafesf2@gmail.co"
+          href="mailto:josafesf2@gmail.com"
           class="rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-slate-200"
         >
           {{ t('about.contact.email') }}
         </a>
-        <SocialLinks />
+        <HomeSocialLinks class="w-full" />
       </div>
     </section>
   </div>

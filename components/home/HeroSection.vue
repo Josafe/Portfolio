@@ -2,6 +2,7 @@
 import { useI18n } from '#imports'
 
 const { t } = useI18n()
+const localePath = useLocalePath()
 </script>
 
 <template>
@@ -28,13 +29,13 @@ const { t } = useI18n()
 
         <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <NuxtLink
-            :to="'/projects'"
+            :to="localePath('/projects')"
             class="inline-flex w-full justify-center whitespace-nowrap rounded-full bg-gradient-to-r from-brand-500 via-violet-500 to-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_18px_50px_rgba(99,102,241,0.22)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_80px_rgba(99,102,241,0.28)] sm:w-auto"
           >
             {{ t('index.hero.projects') }}
           </NuxtLink>
           <NuxtLink
-            :to="'/about'"
+            :to="localePath('/about')"
             class="inline-flex w-full justify-center whitespace-nowrap rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur transition duration-300 hover:border-brand-400 hover:bg-white/10 sm:w-auto"
           >
             {{ t('index.hero.about') }}

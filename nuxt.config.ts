@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
   css: ['~/assets/css/main.css'],
-  components: ['~/components', '~/sections'],
+  components: ['~/components'],
   app: {
     head: {
       title: 'Josafe · Full Stack & AI Systems Engineer',
@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     githubToken: process.env.GITHUB_TOKEN,
     public: {
-      siteUrl: 'https://josafe.com',
+      siteUrl: 'https://www.josafe.dev',
       githubUser: 'Josafe'
     }
   },

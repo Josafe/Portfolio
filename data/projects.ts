@@ -9,7 +9,7 @@ export const projects: Project[] = [
     image: '/images/projects/portfolio.webp',
     technologies: ['Nuxt 3', 'Vue', 'TypeScript', 'Tailwind', 'i18n', 'SEO'],
     github: 'https://github.com/Josafe/Portfolio',
-    live: 'https://josafe.dev',
+    live: 'https://www.josafe.dev',
     featured: true,
     status: 'live',
     type: 'featured'
@@ -24,6 +24,18 @@ export const projects: Project[] = [
     live: 'https://agcpadelacademy.com/',
     featured: true,
     status: 'live',
+    type: 'featured'
+  },
+{
+    id: 'ai-development-harness',
+    title: 'AI Development Harness',
+    description:
+      'Local AI-powered development framework orchestrating specialized agents for specification generation, semantic validation, automated revisions, and reliable software engineering workflows.',
+    image: '/images/projects/ai-development-harness.webp',
+    technologies: ['PowerShell', 'Ollama', 'Qwen2.5-Coder', 'DeepSeek-R1', 'Docker'],
+    live: '',
+    featured: true,
+    status: 'in-progress',
     type: 'featured'
   },
   {
