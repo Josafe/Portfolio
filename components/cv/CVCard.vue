@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from '#imports'
+import { computed, useI18n } from '#imports'
 
 const props = defineProps<{
   /** Matches the `curriculum.cards.<id>` translation keys. */
@@ -8,10 +8,16 @@ const props = defineProps<{
   tags: string[]
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const text = (field: 'title' | 'subtitle' | 'description') => t(`curriculum.cards.${props.id}.${field}`)
-const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
+
+/**
+ * `pdf` is the base path (for example `/cv/fullstack.pdf`). Each CV exists in the three site
+ * languages as `<base>-<locale>.pdf`; the PDF in the visitor's language is served.
+ */
+const pdfUrl = computed(() => props.pdf.replace(/\.pdf$/, `-${locale.value}.pdf`))
+const downloadFilename = computed(() => pdfUrl.value.split('/').pop() ?? 'cv.pdf')
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
 
     <div class="mt-auto flex flex-wrap gap-2 pt-6">
       <a
-        :href="pdf"
+        :href="pdfUrl"
         :aria-label="`${t('curriculum.card.viewPdf')}: ${text('title')}`"
         target="_blank"
         rel="noopener noreferrer"
@@ -35,7 +41,7 @@ const downloadFilename = props.pdf.split('/').pop() ?? 'cv.pdf'
         {{ t('curriculum.card.viewPdf') }}
       </a>
       <a
-        :href="pdf"
+        :href="pdfUrl"
         :download="downloadFilename"
         :aria-label="`${t('curriculum.card.downloadPdf')}: ${text('title')}`"
         class="inline-flex min-h-11 grow basis-36 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 text-sm font-semibold text-slate-950 transition-colors hover:bg-slate-200"

@@ -75,7 +75,7 @@ export const projects: Project[] = [
     featured: true,
     order: 3,
     links: {
-      repository: 'https://github.com/Josafe/AgenticEnvirOllama'
+      repository: 'https://github.com/Josafe/AI-Dev-Harness'
     }
   },
   {
