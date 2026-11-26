@@ -9,26 +9,26 @@ export const curriculums: Curriculum[] = [
   {
     id: 'fullstack',
     pdf: '/cv/fullstack.pdf',
-    tags: ['Vue', 'Nuxt', 'Laravel', 'Node.js']
+    tags: ['Laravel', 'Vue', 'React', 'Go']
   },
   {
     id: 'ai-systems',
     pdf: '/cv/ai-systems.pdf',
-    tags: ['LLM', 'Multi-Agent', 'Python', 'Automation']
+    tags: ['LLM agents', 'LangGraph', 'Ollama', 'Python']
   },
   {
     id: 'database-admin',
     pdf: '/cv/database-administrator.pdf',
-    tags: ['PostgreSQL', 'MySQL', 'SQL', 'Data Modeling']
+    tags: ['SQL', 'MySQL', 'PostgreSQL', 'ERP data']
   },
   {
     id: 'systems-admin',
     pdf: '/cv/systems-administrator.pdf',
-    tags: ['Linux', 'Docker', 'Kubernetes', 'DevOps']
+    tags: ['Linux', 'Docker', 'AWS', 'Terraform']
   },
   {
     id: 'it-technician',
     pdf: '/cv/it-technician.pdf',
-    tags: ['Support', 'Hardware', 'Software', 'Maintenance']
+    tags: ['Support', 'Hardware', 'Linux', 'Remote maintenance']
   }
 ]
